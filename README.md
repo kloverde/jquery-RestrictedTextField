@@ -10,8 +10,9 @@ ResrictedTextField is a jQuery plugin which enforces data formats on HTML text b
 
 ## Features
 
-* You can choose whether to prevent invalid keystrokes, or to allow them and catch the error to deal with as you wish
-* Supports the following input formats:
+* Prevent invalid keystrokes or catch the validation failure event to deal with it as you wish
+* Define your own types
+* Supports the following types:
 
 1.  Alpha strings
 2.  Uppercase alpha strings
@@ -30,9 +31,6 @@ ResrictedTextField is a jQuery plugin which enforces data formats on HTML text b
 15.  Negative money
 16.  Accounting money notation (negatives expressed by wrapping the value in parentheses)
 17.  Positive and negative money, where negative can be expressed both ways (minus sign and accounting notation)
-
-* Fires user-catchable events on valid/invalid input
-* Define your own types
 
 
 ## Configuration

@@ -30,7 +30,7 @@ ResrictedTextField is a jQuery plugin which enforces data formats on HTML text b
 14.  Positive money
 15.  Negative money
 16.  Accounting money notation (negatives expressed by wrapping the value in parentheses)
-17.  Positive and negative money, where negative can be expressed both ways (minus sign and accounting notation)
+17.  Negative accounting money
 
 
 ## Configuration

@@ -31,7 +31,7 @@ ResrictedTextField is a jQuery plugin which enforces data formats on HTML text b
 | Property | Description   | Data Type | Valid Values         | Default Value |
 | -------- | --------------|---------- |----------------------|---------------|
 | `type`   | Text field type | string | alpha, upperAlpha, lowerAlpha, int, positiveInt, negativeInt, float, positiveFloat, negativeFloat | null |
-| `preventInvalidInput` | When enabled, invalid keystrokes are prevented.  When disabled, invalid keystrokes are not prevented.  In either case, the events `validationFailure, `validationSuccess` and `inputInProgress` will fire. | boolean | true/false | true |
+| `preventInvalidInput` | When enabled, invalid keystrokes are prevented.  When disabled, invalid keystrokes are not prevented.  In either case, the events `validationFailure`, `validationSuccess` and `inputInProgress` will fire. | boolean | true/false | true |
 
 
 #### Example

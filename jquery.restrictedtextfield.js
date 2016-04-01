@@ -125,14 +125,14 @@
                var floatRegex = null;
 
                if( settings.type === FLOAT ) {
-                  floatRegex = /^[-\.\d]$|^-\.$|^-?\d*\.$/;
+                  floatRegex = /^[-\.\d]$|^-\.$|^-?\d*\.$/;   // [-], [.], [digit], [-.], [+/-digits.]
                } else if( settings.type === POSITIVE_FLOAT ) {
                   floatRegex = /^[\.\d]$|^\.$|^\d*\.$/;
                } else if( settings.type === NEGATIVE_FLOAT ) {
                   floatRegex = /^0\.?$|^-\.?$|^-\d*\.$/;
                }
 
-               if( floatRegex.test(this.value) ) {   // [-], [.], [digit] OR [-.] OR [+/-digits.]
+               if( floatRegex.test(this.value) ) {
                   jqThis.trigger( EVENT_INPUT_IN_PROGRESS );
                   handled = true;
                } else {

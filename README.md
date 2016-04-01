@@ -5,22 +5,23 @@ RestrictedTextField
 
 See LICENSE for this software's licensing terms.
 
-ResrictedTextField is a jQuery plugin which ...does what it sounds like.
+ResrictedTextField is a jQuery plugin which enforces data formats on HTML text boxes.  Data which doesn't match the declared format is rejected.
 
 
 ## Features
 
+* You can choose whether to prevent invalid keystrokes, or to allow them and catch the error to deal with as you wish
 * Supports the following input formats:
 
-      1.  Alpha strings
-      2.  Uppercase alpha strings
-      3.  Lowercase alpha strings
-      4.  Integers
-      5.  Positive integers
-      6.  Negative integers
-      7.  Floats
-      8.  Positive floats
-      9.  Negative floats
+1.  Alpha strings
+2.  Uppercase alpha strings
+3.  Lowercase alpha strings
+4.  Integers
+5.  Positive integers
+6.  Negative integers
+7.  Floats
+8.  Positive floats
+9.  Negative floats
 
 * Fires user-catchable events on valid/invalid input
 
@@ -30,7 +31,7 @@ ResrictedTextField is a jQuery plugin which ...does what it sounds like.
 | Property | Description   | Data Type | Valid Values         | Default Value |
 | -------- | --------------|---------- |----------------------|---------------|
 | `type`   | Text field type | string | alpha, upperAlpha, lowerAlpha, int, positiveInt, negativeInt, float, positiveFloat, negativeFloat | null |
-| 1preventInvalidInput` | When enabled, 
+| `preventInvalidInput` | When enabled, invalid keystrokes are prevented.  When disabled, invalid keystrokes are not prevented.  In either case, the events `validationFailure, `validationSuccess` and `inputInProgress` will fire. | boolean | true/false | true |
 
 
 #### Example

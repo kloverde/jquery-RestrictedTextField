@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+
+<!--
+   RestrictedTextField
+   https://www.github.com/kloverde/jquery-RestrictedTextField
+
+   Copyright (c) 2016 Kurtis LoVerde
+   All rights reserved
+
+   Donations:  https://paypal.me/KurtisLoVerde/5
+-->
+
+<html lang="en-US">
+   <head>
+      <meta charset="UTF-8"/>
+
+      <title>RestrictedTextField Demo</title>
+
+      <script type="text/javascript" src="http://code.jquery.com/jquery-1.12.1.min.js"></script>
+      <script type="text/javascript" src="jquery.restrictedtextfield.js"></script>
+
+      <style type="text/css">
+         input.error {
+            border: 2px solid red;
+         }
+
+         h2 {
+            width: 750px;
+         }
+
+         h3, p {
+            width: 450px;
+         }
+
+         h4 {
+            display: inline-block;
+         }
+
+         input {
+            margin-left: 20px;
+            display: inline-bock;
+         }
+
+         #break {
+            margin-top: 20px;
+            padding: 20px;
+            background-color: #F2F2F2;
+         }
+      </style>
+
+      <script type="text/javascript">
+         $( document ).ready( function() {
+            $( "#txtAlpha" ).restrictedTextField( {
+               type: "alpha",
+               preventInvalidInput : false
+            } );
+
+            // add listeners for RestrictedTextField events
+
+            $( "#txtAlpha" ).on( "validationFailure", function(event) {
+               $( this ).addClass( "error" );
+            } );
+
+            $( "#txtAlpha" ).on( "validationSuccess", function() {
+               $( this ).removeClass( "error" );
+            } );
+
+            // initialize the rest
+
+            $( "#txtUpperAlpha" ).restrictedTextField( { type: "upperAlpha" } );
+            $( "#txtLowerAlpha" ).restrictedTextField( { type: "lowerAlpha" } );
+            $( "#txtInt" ).restrictedTextField( { type: "int" } );
+            $( "#txtPosInt" ).restrictedTextField( { type : "positiveInt"} );
+            $( "#txtNegInt" ).restrictedTextField( { type : "negativeInt" } );
+            $( "#txtFloat" ).restrictedTextField( { type : "float" } );
+            $( "#txtPosFloat" ).restrictedTextField( { type : "positiveFloat" } );
+            $( "#txtNegFloat" ).restrictedTextField( { type : "negativeFloat" } );
+         } );
+      </script>
+   </head>
+
+   <body>
+      <h2>
+         Programming 101:  Never trust your data.  If you're submitting a form to a server, always validate your input on the server.
+         Client-side validation does not protect you.
+      </h2>
+      <h2>Now that that's out of the way, let's get to the examples.</h2>
+
+      <h4>Capturing validation failures</h4>
+      <p>
+         This text field has a listener to capture the <code>validationFailure</code> and <code>validationSuccess</code>
+         events.  This text field has been configured to allow invalid text to remain in the field.  The field's border
+         color will be red for as long as the invalid input remains.
+      </p>
+      <h4>Alpha characters (A-Z, case insensitive)</h4>
+      <input type="text" id="txtAlpha" />
+      
+      <span>
+      </span>
+
+      <div id="break">
+         <p>
+            The remaining examples prevent invalid text from being entered at all, so although you could capture
+            <code>validationFailure</code> and <code>validationSuccess</code>, you don't really need to - unless
+            you're planning on calling attention to the fact that the user's input was ignored.
+         </p>
+      </div>
+
+      <div>
+         <h4>Uppercase alpha characters (A-Z, case sensitive)</h4>
+         <input type="text" id="txtUpperAlpha"/>
+      </div>
+
+      <div>
+         <h4>Lowercase alpha characters (a-z, case sensitive)</h4>
+         <input type="text" id="txtLowerAlpha"/>
+      </div>
+
+      <div>
+         <h4>Positive/negative integers</h4>
+         <input type="text" id="txtInt"/>
+      </div>
+
+      <div>
+         <h4>Positive integers</h4>
+         <input type="text" id="txtPosInt"/>
+      </div>
+
+      <div>
+         <h4>Negative integers</h4>
+         <input type="text" id="txtNegInt"/>
+      </div>
+
+      <div>
+         <h4>Floating-point numbers</h4>
+         <input type="text" id="txtFloat"/>
+      </div>
+
+      <div>
+         <h4>Positive floating-point numbers</h4>
+         <input type="text" id="txtPosFloat"/>
+      </div>
+
+      <div>
+         <h4>Negative floating-point numbers</h4>
+         <input type="text" id="txtNegFloat"/>
+      </div>
+
+      <h3>Donations</h3>
+      Your support is greatly appreciated and it motivates me to release more open source software.<br/>
+      <a href="https://paypal.me/KurtisLoVerde/6" target="new">https://paypal.me/KurtisLoVerde/5</a>
+   </body>
+</html>

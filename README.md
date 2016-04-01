@@ -25,15 +25,21 @@ ResrictedTextField is a jQuery plugin which enforces data formats on HTML text b
 10.  Floats
 11.  Positive floats
 12.  Negative floats
+13.  Money
+14.  Positive money
+15.  Negative money
+16.  Accounting money notation (negatives expressed by wrapping the value in parentheses)
+17.  Positive and negative money, where negative can be expressed both ways (minus sign and accounting notation)
 
 * Fires user-catchable events on valid/invalid input
+* Define your own types
 
 
 ## Configuration
 
 | Property | Description   | Data Type | Valid Values         | Default Value |
 | -------- | --------------|---------- |----------------------|---------------|
-| `type`   | Text field type | string | alpha, upperAlpha, lowerAlpha, alphanumeric, upperAlphanumeric, lowerAlphanumeric, int, positiveInt, negativeInt, float, positiveFloat, negativeFloat | null |
+| `type`   | Text field type | string | alpha, upperAlpha, lowerAlpha, alphanumeric, upperAlphanumeric, lowerAlphanumeric, int, positiveInt, negativeInt, float, positiveFloat, negativeFloat, money, positiveMoney, negativeMoney, accountingMoney, negativeAccountingMoney| null |
 | `preventInvalidInput` | When enabled, invalid keystrokes are prevented.  When disabled, invalid keystrokes are not prevented.  In either case, the events `validationFailure`, `validationSuccess` and `inputInProgress` will fire. | boolean | true/false | true |
 
 

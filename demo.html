@@ -72,18 +72,27 @@
             $( "#txtAlphanum" ).restrictedTextField( { type: "alphanumeric" } );
             $( "#txtUpperAlphanum" ).restrictedTextField( { type: "upperAlphanumeric" } );
             $( "#txtLowerAlphanum" ).restrictedTextField( { type: "lowerAlphanumeric" } );
-            $( "#txtInt" ).restrictedTextField( { type: "int" } );
+            $( "#txtInt" ).restrictedTextField( { type : "int" } );
             $( "#txtPosInt" ).restrictedTextField( { type : "positiveInt"} );
             $( "#txtNegInt" ).restrictedTextField( { type : "negativeInt" } );
             $( "#txtFloat" ).restrictedTextField( { type : "float" } );
             $( "#txtPosFloat" ).restrictedTextField( { type : "positiveFloat" } );
             $( "#txtNegFloat" ).restrictedTextField( { type : "negativeFloat" } );
+            $( "#txtMoney" ).restrictedTextField( { type : "money" } );
+            $( "#txtPosMoney" ).restrictedTextField( { type : "positiveMoney" } );
+            $( "#txtNegMoney" ).restrictedTextField( { type : "negativeMoney" } );
+            $( "#txtAccountingMoney" ).restrictedTextField( { type : "accountingMoney" } );
+            $( "#txtNegAccountingMoney" ).restrictedTextField( { type : "negativeAccountingMoney" } );
+
+            // Creating your own type
+            $.fn.restrictedTextField.types[ "vowels" ] = /^[aeiou]+$/;
+            $( "#txtVowelsOnly" ).restrictedTextField( { type : "vowels" } );
          } );
       </script>
    </head>
 
    <body>
-      <h2>Programming 101:  Never trust your data.  If you're submitting a form to a server, always validate your input on the server.</h2>
+      <h2>The first rule of programming:  never trust your data.  If you're submitting a form, you still need to validate the input on the back end.</h2>
 
       <h4>Capturing validation failures</h4>
       <p>
@@ -91,11 +100,8 @@
          events.  This text field has been configured to allow invalid text to remain in the field.  The field's border
          color will be red for as long as the invalid input remains.
       </p>
-      <h4>Alpha characters (A-Z, case insensitive)</h4>
+      <h4>Alpha characters (A-Z, case-insensitive)</h4>
       <input type="text" id="txtAlpha" />
-      
-      <span>
-      </span>
 
       <div id="break">
          <p>
@@ -106,12 +112,12 @@
       </div>
 
       <div>
-         <h4>Uppercase alpha characters (A-Z, case sensitive)</h4>
+         <h4>Uppercase alpha characters (A-Z, case-sensitive)</h4>
          <input type="text" id="txtUpperAlpha"/>
       </div>
 
       <div>
-         <h4>Lowercase alpha characters (a-z, case sensitive)</h4>
+         <h4>Lowercase alpha characters (a-z, case-sensitive)</h4>
          <input type="text" id="txtLowerAlpha"/>
       </div>
 
@@ -160,8 +166,45 @@
          <input type="text" id="txtNegFloat"/>
       </div>
 
-      <h3>Donations</h3>
-      Your support is greatly appreciated and it motivates me to release more open source software.<br/>
+      <div>
+         <h4>Money</h4>
+         <input type="text" id="txtMoney"/>
+      </div>
+
+      <div>
+         <h4>Positive money</h4>
+         <input type="text" id="txtPosMoney"/>
+      </div>
+
+      <div>
+         <h4>Negative money</h4>
+         <input type="text" id="txtNegMoney"/>
+      </div>
+
+      <div>
+         <h4>Accounting notation money (negatives expressed as (12.34) instead of -12.34)</h4>
+         <input type="text" id="txtAccountingMoney"/>
+      </div>
+
+      <div>
+         <h4>Negative accounting notation money</h4>
+         <input type="text" id="txtNegAccountingMoney"/>
+      </div>
+
+      <h2>Creating Your Own Type</h2>
+
+      <p>
+         You can declare your own type by adding a regular expression to the associative
+         array <code>$.fn.restrictedTextField.types</code>.
+      </p>
+
+      <div>
+         <h4>Vowels</h4>
+         <input type="text" id="txtVowelsOnly" />
+      </div>
+
+      <h2>Donations</h2>
+      Your support is greatly appreciated, and it motivates me to keep this project alive and to release more open source software.<br/>
       <a href="https://paypal.me/KurtisLoVerde/6" target="new">https://paypal.me/KurtisLoVerde/5</a>
    </body>
 </html>

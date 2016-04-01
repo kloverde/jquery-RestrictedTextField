@@ -51,28 +51,6 @@
          throw "Invalid type: " + settings.type;
       }
 
-      function arrayContains( searchThis, forThis ) {
-         for( var i = 0; i < searchThis.length; i++ ) {
-            if( searchThis[i] === forThis ) {
-               return true;
-            }
-         }
-
-         return false;
-      }
-
-      function isNegativeIntType() {
-         return arrayContains( negativeIntTypes, settings.type );
-      }
-
-      function isNegativeFloatType() {
-         return arrayContains( negativeFloatTypes, settings.type );
-      }
-
-      function isPositiveFloatType() {
-         return arrayContains( positiveFloatTypes, settings.type );
-      }
-
       function isNothing( value ) {
          return value == undefined || value == null || value.length < 1;
       }

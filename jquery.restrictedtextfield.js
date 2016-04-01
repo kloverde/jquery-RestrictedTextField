@@ -15,15 +15,18 @@
 
    $.fn.restrictedTextField = function( options ) {
 
-      var ALPHA          = "alpha",
-          UPPER_ALPHA    = "upperAlpha",
-          LOWER_ALPHA    = "lowerAlpha",
-          INT            = "int",
-          POSITIVE_INT   = "positiveInt",
-          NEGATIVE_INT   = "negativeInt",
-          FLOAT          = "float",
-          POSITIVE_FLOAT = "positiveFloat",
-          NEGATIVE_FLOAT = "negativeFloat";
+      var ALPHA           = "alpha",
+          UPPER_ALPHA     = "upperAlpha",
+          LOWER_ALPHA     = "lowerAlpha",
+          ALPHANUMERIC    = "alphanumeric",
+          UPPER_ALPHANUM  = "upperAlphanumeric",
+          LOWER_ALPHANUM  = "lowerAlphanumeric",
+          INT             = "int",
+          POSITIVE_INT    = "positiveInt",
+          NEGATIVE_INT    = "negativeInt",
+          FLOAT           = "float",
+          POSITIVE_FLOAT  = "positiveFloat",
+          NEGATIVE_FLOAT  = "negativeFloat";
 
       var EVENT_VALIDATION_FAILURE = "validationFailure",
           EVENT_VALIDATION_SUCCESS = "validationSuccess",
@@ -33,6 +36,9 @@
       if( $.fn.restrictedTextField.types[ ALPHA ]          == undefined ) $.fn.restrictedTextField.types[ ALPHA ]          = /^[a-zA-Z]*$/;
       if( $.fn.restrictedTextField.types[ UPPER_ALPHA ]    == undefined ) $.fn.restrictedTextField.types[ UPPER_ALPHA ]    = /^[A-Z]*$/;
       if( $.fn.restrictedTextField.types[ LOWER_ALPHA ]    == undefined ) $.fn.restrictedTextField.types[ LOWER_ALPHA ]    = /^[a-z]*$/;
+      if( $.fn.restrictedTextField.types[ ALPHANUMERIC ]   == undefined ) $.fn.restrictedTextField.types[ ALPHANUMERIC ]   = /^[a-zA-Z\d]*$/;
+      if( $.fn.restrictedTextField.types[ UPPER_ALPHANUM ] == undefined ) $.fn.restrictedTextField.types[ UPPER_ALPHANUM ] = /^[A-Z\d]*$/;
+      if( $.fn.restrictedTextField.types[ LOWER_ALPHANUM ] == undefined ) $.fn.restrictedTextField.types[ LOWER_ALPHANUM ] = /^[a-z\d]*$/;
       if( $.fn.restrictedTextField.types[ INT ]            == undefined ) $.fn.restrictedTextField.types[ INT ]            = /^0$|^-?[1-9][0-9]*$/;
       if( $.fn.restrictedTextField.types[ POSITIVE_INT ]   == undefined ) $.fn.restrictedTextField.types[ POSITIVE_INT ]   = /^0$|^[1-9][0-9]*$/;
       if( $.fn.restrictedTextField.types[ NEGATIVE_INT ]   == undefined ) $.fn.restrictedTextField.types[ NEGATIVE_INT ]   = /^0$|^-[1-9][0-9]*$/;

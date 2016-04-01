@@ -69,6 +69,9 @@
 
             $( "#txtUpperAlpha" ).restrictedTextField( { type: "upperAlpha" } );
             $( "#txtLowerAlpha" ).restrictedTextField( { type: "lowerAlpha" } );
+            $( "#txtAlphanum" ).restrictedTextField( { type: "alphanumeric" } );
+            $( "#txtUpperAlphanum" ).restrictedTextField( { type: "upperAlphanumeric" } );
+            $( "#txtLowerAlphanum" ).restrictedTextField( { type: "lowerAlphanumeric" } );
             $( "#txtInt" ).restrictedTextField( { type: "int" } );
             $( "#txtPosInt" ).restrictedTextField( { type : "positiveInt"} );
             $( "#txtNegInt" ).restrictedTextField( { type : "negativeInt" } );
@@ -80,11 +83,7 @@
    </head>
 
    <body>
-      <h2>
-         Programming 101:  Never trust your data.  If you're submitting a form to a server, always validate your input on the server.
-         Client-side validation does not protect you.
-      </h2>
-      <h2>Now that that's out of the way, let's get to the examples.</h2>
+      <h2>Programming 101:  Never trust your data.  If you're submitting a form to a server, always validate your input on the server.</h2>
 
       <h4>Capturing validation failures</h4>
       <p>
@@ -114,6 +113,21 @@
       <div>
          <h4>Lowercase alpha characters (a-z, case sensitive)</h4>
          <input type="text" id="txtLowerAlpha"/>
+      </div>
+
+      <div>
+         <h4>Alphanumeric (letters and numbers, case-insensitive)</h4>
+         <input type="text" id="txtAlphanum"/>
+      </div>
+
+      <div>
+         <h4>Uppercase alphanumeric (letters and numbers, case-sensitive)</h4>
+         <input type="text" id="txtUpperAlphanum"/>
+      </div>
+
+      <div>
+         <h4>Lowercase alphanumeric (letters and numbers, case-sensitive)</h4>
+         <input type="text" id="txtLowerAlphanum"/>
       </div>
 
       <div>

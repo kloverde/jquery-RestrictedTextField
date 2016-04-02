@@ -52,7 +52,7 @@
           EVENT_VALIDATION_SUCCESS = "validationSuccess",
           EVENT_INPUT_IN_PROGRESS  = "inputInProgress";
 
-      if( $.fn.restrictedTextField.types == undefined || $.fn.restrictedTextField.types == null ) {
+      if( $.fn.restrictedTextField.types === undefined || $.fn.restrictedTextField.types === null ) {
          init();
       }
 
@@ -62,7 +62,7 @@
              positiveFloat = /^[\.\d]$|^\.$|^\d*\.$/,
              negativeFloat = /^0\.?$|^-\.?$|^-\d*\.$/;
 
-         if( $.fn.restrictedTextField.types == undefined || $.fn.restrictedTextField.types == null ) {
+         if( $.fn.restrictedTextField.types === undefined || $.fn.restrictedTextField.types === null ) {
             $.fn.restrictedTextField.types = [];
          }
 
@@ -102,7 +102,7 @@
       var regexes = $.fn.restrictedTextField.types[ settings.type ];
 
       if( isNothing(regexes) ) {
-         if( $.fn.RestrictedTextFieldConfig.customTypes != undefined && $.fn.RestrictedTextFieldConfig.customTypes != null ) {
+         if( $.fn.RestrictedTextFieldConfig.customTypes !== undefined && $.fn.RestrictedTextFieldConfig.customTypes !== null ) {
             regexes = $.fn.RestrictedTextFieldConfig.customTypes[ settings.type ];
          }
 
@@ -153,13 +153,13 @@
             var jqThis = $( this );
 
             // The user is entering data, but has yet to reach the minimum number of characters needed to satisfy
-            // the regular expression in $.fn.restrictedTextField.types.  We can't check against that yet because
-            // it would result in the user being unable to enter anything.  Until we've reached the minimum number
-            // of required characters, allow the user to input any character which would satisfy the regular
+            // the regular expression in regexes.fullRegex.  We can't check against that yet because it would
+            // result in the user being unable to enter anything.  Until we've reached the minimum number of
+            // required characters, allow the user to input any character which would satisfy the regular
             // expression.  If we've reached the minimum required number of characters, perform the validation
-            // against the regular expression in $.fn.restrictedTextField.types.
+            // against the regular expression in regexes.fullRegex.
 
-            if( regexes.partialRegex != undefined && regexes.partialRegex != null ) {
+            if( regexes.partialRegex !== undefined && regexes.partialRegex !== null ) {
                if( regexes.partialRegex.test(this.value) ) {
                   jqThis.trigger( EVENT_INPUT_IN_PROGRESS );
                } else {
@@ -177,7 +177,7 @@
    };
 
    function isNothing( value ) {
-      return value == undefined || value == null || value.length < 1;
+      return value === undefined || value === null || value.length < 1;
    }
 
    function isClassName( obj, className ) {

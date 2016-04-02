@@ -1,3 +1,5 @@
+# This project is unfinished and is currently under development.  Check back soon.
+
 RestrictedTextField v1.0
 ========================
 

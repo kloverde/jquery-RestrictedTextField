@@ -1,5 +1,5 @@
-/*
- * RestrictedTextField
+/**
+ * RestrictedTextField v1.0
  * https://www.github.com/kloverde/jquery-RestrictedTextField
  *
  * This software is licensed under the 3-clause BSD license.
@@ -9,102 +9,100 @@
  *
  * Donations:  https://paypal.me/KurtisLoVerde/5
  */
-
 (function( $ ) {
    "use strict";
 
+   /**
+    * Developers:  Instantiate this to add your own types
+    */  
+   $.fn.RestrictedTextFieldConfig = function() {
+      var dest = $.fn.RestrictedTextFieldConfig.customTypes = $.fn.RestrictedTextFieldConfig.customTypes || [];
+
+      return {
+         /**
+          * Adds a custom type
+          *
+          * @param id           - The identifier you will use to access the new type
+          *
+          * @param fullRegex    - RegExp object.  This regular expression describes what a valid value looks like when the user is finished
+          *                       entering data, NOT what valid input looks like as it's being entered.  If your type is complex, like a
+          *                       phone number for example, you need to provide a value for partialRegex to ensure that your user will be
+          *                       able to continue to type into the field.  If partialRegex is not defined or is null, the text field will
+          *                       be validated against this regular expression on every keystroke.  Notwithstanding any of the foregoing,
+          *                       this regular expression is also used to validate the text field on blur. 
+          *
+          * @param partialRegex - RegExp object.  This regular expression describes what a valid value looks like while the user is entering
+          *                       it, NOT what valid input looks like after the user has finished.  If you provide a value for this, this
+          *                       regular expression will be used to validate the text field on every keystroke.  This parameter may be
+          *                       null, but if your type is complex, you will find it necessary to provide a value.
+          */
+         addType : function addType( id, fullRegex, partialRegex ) {
+                      _addType( dest, id, fullRegex, partialRegex );
+                   }
+      };
+   };
+
    $.fn.restrictedTextField = function( options ) {
-
-      var // Uppercase and lowercase letters
-          ALPHA            = "alpha",
-
-          // Uppercase letters
-          UPPER_ALPHA      = "upperAlpha",
-
-          // Lowercase letters
-          LOWER_ALPHA      = "lowerAlpha",
-
-          // Uppercase letters, lowercase letters, digits 0-9
-          ALPHANUMERIC     = "alphanumeric",
-
-          // Uppercase letters and digits 0-9
-          UPPER_ALPHANUM   = "upperAlphanumeric",
-
-          // Lowercase letters and digits 0-9
-          LOWER_ALPHANUM   = "lowerAlphanumeric",
-
-          // Positive and negative integers
-          INT              = "int",
-
-          // Positive integers
-          POSITIVE_INT     = "positiveInt",
-
-          // Negative integers
-          NEGATIVE_INT     = "negativeInt",
-
-          // Positive and negative floating-point numbers, plus positive and negative integers
-          FLOAT            = "float",
-
-          // Positive floating-point numbers and positive integers
-          POSITIVE_FLOAT   = "positiveFloat",
-
-          // Negative floating-point numbers and negative integers
-          NEGATIVE_FLOAT   = "negativeFloat",
-
-          // Positive and negative floating-point numbers with one or two numbers after the decimal point, plus positive and negative integers
-          MONEY            = "money",
-
-          // Positive floating-point numbers with one or two numbers after the decimal point, and positive integers
-          POSITIVE_MONEY   = "positiveMoney",
-
-          // Negative floating-point numbers with one or two numbers after the decimal point, plus negative integers
-          NEGATIVE_MONEY   = "negativeMoney",
-
-          // Positive floating-point numbers with one or two numbers after the decimal point;
-          // Positive integers;
-          // Negative floating-point numbers with one or two numbers after the decimal point, where sign is denoted by
-          // wrapping the value in parentheses rather than using a minus sign (sometimes referred to as "accounting notation")
-          ACCOUNTING_MONEY = "accountingMoney",
-
-          // The negative-only version of ACCOUNTING_MONEY
-          NEGATIVE_ACCOUNTING_MONEY = "negativeAccountingMoney";
+      var settings = $.extend( {
+         type                : null,
+         preventInvalidInput : true
+      }, options );
 
       var EVENT_VALIDATION_FAILURE = "validationFailure",
           EVENT_VALIDATION_SUCCESS = "validationSuccess",
           EVENT_INPUT_IN_PROGRESS  = "inputInProgress";
 
-      $.fn.restrictedTextField.types = $.fn.restrictedTextField.types || [];
-      if( $.fn.restrictedTextField.types[ ALPHA ]            == undefined ) $.fn.restrictedTextField.types[ ALPHA ]            = /^[a-zA-Z]*$/;
-      if( $.fn.restrictedTextField.types[ UPPER_ALPHA ]      == undefined ) $.fn.restrictedTextField.types[ UPPER_ALPHA ]      = /^[A-Z]*$/;
-      if( $.fn.restrictedTextField.types[ LOWER_ALPHA ]      == undefined ) $.fn.restrictedTextField.types[ LOWER_ALPHA ]      = /^[a-z]*$/;
-      if( $.fn.restrictedTextField.types[ ALPHANUMERIC ]     == undefined ) $.fn.restrictedTextField.types[ ALPHANUMERIC ]     = /^[a-zA-Z\d]*$/;
-      if( $.fn.restrictedTextField.types[ UPPER_ALPHANUM ]   == undefined ) $.fn.restrictedTextField.types[ UPPER_ALPHANUM ]   = /^[A-Z\d]*$/;
-      if( $.fn.restrictedTextField.types[ LOWER_ALPHANUM ]   == undefined ) $.fn.restrictedTextField.types[ LOWER_ALPHANUM ]   = /^[a-z\d]*$/;
-      if( $.fn.restrictedTextField.types[ INT ]              == undefined ) $.fn.restrictedTextField.types[ INT ]              = /^0$|^-?[1-9]\d*$/;
-      if( $.fn.restrictedTextField.types[ POSITIVE_INT ]     == undefined ) $.fn.restrictedTextField.types[ POSITIVE_INT ]     = /^0$|^[1-9]\d*$/;
-      if( $.fn.restrictedTextField.types[ NEGATIVE_INT ]     == undefined ) $.fn.restrictedTextField.types[ NEGATIVE_INT ]     = /^0$|^-[1-9]\d*$/;
-      if( $.fn.restrictedTextField.types[ FLOAT ]            == undefined ) $.fn.restrictedTextField.types[ FLOAT ]            = /^-?\d*\.?\d+$/;
-      if( $.fn.restrictedTextField.types[ POSITIVE_FLOAT ]   == undefined ) $.fn.restrictedTextField.types[ POSITIVE_FLOAT ]   = /^\d*\.?\d+$/;
-      if( $.fn.restrictedTextField.types[ NEGATIVE_FLOAT ]   == undefined ) $.fn.restrictedTextField.types[ NEGATIVE_FLOAT ]   = /^-\d*\.?\d+$/;
-      if( $.fn.restrictedTextField.types[ MONEY ]            == undefined ) $.fn.restrictedTextField.types[ MONEY ]            = /^-?\d*\.?\d{1,2}$/;
-      if( $.fn.restrictedTextField.types[ POSITIVE_MONEY ]   == undefined ) $.fn.restrictedTextField.types[ POSITIVE_MONEY ]   = /^\d*\.?\d{1,2}$/;
-      if( $.fn.restrictedTextField.types[ NEGATIVE_MONEY ]   == undefined ) $.fn.restrictedTextField.types[ NEGATIVE_MONEY ]   = /^-\d*\.?\d{1,2}$/;
-      if( $.fn.restrictedTextField.types[ ACCOUNTING_MONEY ] == undefined ) $.fn.restrictedTextField.types[ ACCOUNTING_MONEY ] = /^\d*\.?\d{1,2}$|^\(\d*\.?\d{1,2}\)$/;
-      if( $.fn.restrictedTextField.types[ NEGATIVE_ACCOUNTING_MONEY ] == undefined ) $.fn.restrictedTextField.types[ NEGATIVE_ACCOUNTING_MONEY ] = /^\(\d*\.?\d{1,2}\)$/;
-
-      var settings = $.extend( {
-          type                : null,
-          preventInvalidInput : true
-      }, options );
-
-      var regex = $.fn.restrictedTextField.types[ settings.type ];
-
-      if( isNothing(regex) ) {
-         throw "Invalid type: " + settings.type;
+      if( $.fn.restrictedTextField.types == undefined || $.fn.restrictedTextField.types == null ) {
+         init();
       }
 
-      function isNothing( value ) {
-         return value == undefined || value == null || value.length < 1;
+      function init() {
+         var negativeInt   = /^-$/,
+             posNegFloat = /^[-\.\d]$|^-\.$|^-?\d*\.$/,
+             positiveFloat = /^[\.\d]$|^\.$|^\d*\.$/,
+             negativeFloat = /^0\.?$|^-\.?$|^-\d*\.$/;
+
+         if( $.fn.restrictedTextField.types == undefined || $.fn.restrictedTextField.types == null ) {
+            $.fn.restrictedTextField.types = [];
+         }
+
+         var dest = $.fn.restrictedTextField.types = $.fn.restrictedTextField.types || [];
+
+         _addType( dest, "alpha",             /^[a-zA-Z]*$/        , null );  // Uppercase and lowercase letters
+         _addType( dest, "upperAlpha",        /^[A-Z]*$/           , null );  // Uppercase letters
+         _addType( dest, "lowerAlpha",        /^[a-z]*$/           , null );  // Lowercase letters
+         _addType( dest, "alphanumeric",      /^[a-zA-Z\d]*$/      , null );  // Uppercase letters, lowercase letters, digits 0-9
+         _addType( dest, "upperAlphanumeric", /^[A-Z\d]*$/         , null );  // Uppercase letters and digits 0-9
+         _addType( dest, "lowerAlphanumeric", /^[a-z\d]*$/         , null );  // Lowercase letters and digits 0-9
+         _addType( dest, "int",               /^0$|^-?[1-9]\d*$/   , negativeInt );    // Positive and negative integers
+         _addType( dest, "positiveInt",       /^0$|^[1-9]\d*$/     , null );           // Positive integers
+         _addType( dest, "negativeInt",       /^0$|^-[1-9]\d*$/    , negativeInt );    // Negative integers
+         _addType( dest, "float",             /^-?\d*\.?\d+$/      , posNegFloat );    // Positive and negative floating-point numbers, plus positive and negative integers
+         _addType( dest, "positiveFloat",     /^\d*\.?\d+$/        , positiveFloat );  // Positive floating-point numbers and positive integers
+         _addType( dest, "negativeFloat",     /^-\d*\.?\d+$/       , negativeFloat );  // Negative floating-point numbers and negative integers
+         _addType( dest, "money",             /^-?\d*\.?\d{1,2}$/  , posNegFloat );    // Positive and negative floating-point numbers with one or two numbers after the decimal point, plus positive and negative integers
+         _addType( dest, "positiveMoney",     /^\d*\.?\d{1,2}$/    , positiveFloat );  // Positive floating-point numbers with one or two numbers after the decimal point, and positive integers
+         _addType( dest, "negativeMoney",     /^-\d*\.?\d{1,2}$/   , negativeFloat );  // Negative floating-point numbers with one or two numbers after the decimal point, plus negative integers
+
+         // Positive floating-point numbers with one or two numbers after the decimal point;
+         // Positive integers;
+         // Negative floating-point numbers with one or two numbers after the decimal point, where sign is denoted by
+         // wrapping the value in parentheses rather than using a minus sign (sometimes referred to as "accounting notation")
+         _addType( dest, "accountingMoney", /^\d*\.?\d{1,2}$|^\(\d*\.?\d{1,2}\)$/  ,  /^[\.\d]$|^\.$|^\d*\.$|^\(\d*\.?$|^\(\d*\.\d{1,2}?$/ );
+
+         _addType( dest, "negativeAccountingMoney", /^\(\d*\.?\d{1,2}\)$/  ,  /^\(\d*\.?$|^\(\d*\.\d{1,2}?$/ );  // The negative-only version of accountingMoney
+      }
+
+      var regexes = $.fn.restrictedTextField.types[ settings.type ];
+
+      if( isNothing(regexes) ) {
+         if( $.fn.RestrictedTextFieldConfig.customTypes != undefined && $.fn.RestrictedTextFieldConfig.customTypes != null ) {
+            regexes = $.fn.RestrictedTextFieldConfig.customTypes[ settings.type ];
+         }
+
+         if( isNothing(regexes) ) {
+            throw "Invalid type: " + settings.type;
+         }
       }
 
       function processFinishedInput( jqField, valueBeforeCommit ) {
@@ -112,22 +110,26 @@
 
          if( val.length === 0 ) {
             console.log( "triggering success" );
+
             jqField.trigger( EVENT_VALIDATION_SUCCESS );
          } else if( val.length > 0 ) {
-            console.log( "processFinishedInput - " + settings.type + ":  " + regex ); 
+            console.log( "processFinishedInput - " + settings.type + ":  " + regexes.fullRegex ); 
 
-            if( !regex.test(val) ) {
+            if( !regexes.fullRegex.test(val) ) {
                console.log( "failed validation" );
 
                if( settings.preventInvalidInput ) {
                   console.log( "reverting" );
+
                   jqField.val( valueBeforeCommit );
                }
 
                console.log( "triggering fail event" );
+
                jqField.trigger( EVENT_VALIDATION_FAILURE );
             } else {
                console.log( "triggering success" );
+
                jqField.trigger( EVENT_VALIDATION_SUCCESS );
             }
          }
@@ -151,44 +153,14 @@
             // expression.  If we've reached the minimum required number of characters, perform the validation
             // against the regular expression in $.fn.restrictedTextField.types.
 
-            var handled = false;
-
-            if( settings.type === INT || settings.type === NEGATIVE_INT ) {
-               if( this.value.length === 1 && this.value[0] === "-" ) {
+            if( regexes.partialRegex != undefined && regexes.partialRegex != null ) {
+               if( regexes.partialRegex.test(this.value) ) {
                   jqThis.trigger( EVENT_INPUT_IN_PROGRESS );
-                  handled = true;
                } else {
                   processFinishedInput( jqThis, valueBeforeCommit );
-                  handled = true;
                }
-            } else if( settings.type === FLOAT || settings.type === POSITIVE_FLOAT || settings.type === NEGATIVE_FLOAT ||
-                       settings.type === MONEY || settings.type === POSITIVE_MONEY || settings.type === NEGATIVE_MONEY ||
-                       settings.type === ACCOUNTING_MONEY || settings.type === NEGATIVE_ACCOUNTING_MONEY ) {
-               var unfinishedInputRegex = null;
-
-               if( settings.type === FLOAT || settings.type === MONEY ) {
-                  unfinishedInputRegex = /^[-\.\d]$|^-\.$|^-?\d*\.$/;
-               } else if( settings.type === POSITIVE_FLOAT || settings.type === POSITIVE_MONEY ||
-                          (settings.type === ACCOUNTING_MONEY && !isNaN(this.value) && this.value >= 0) ) {
-                  unfinishedInputRegex = /^[\.\d]$|^\.$|^\d*\.$/;
-               } else if( settings.type === NEGATIVE_FLOAT || settings.type === NEGATIVE_MONEY ) {
-                  unfinishedInputRegex = /^0\.?$|^-\.?$|^-\d*\.$/;
-               } else if( settings.type === ACCOUNTING_MONEY || settings.type === NEGATIVE_ACCOUNTING_MONEY ) {
-                  unfinishedInputRegex = /^\(\d*\.?$|^\(\d*\.\d{1,2}?$/;
-               }
-
-               if( unfinishedInputRegex.test(this.value) ) {
-                  jqThis.trigger( EVENT_INPUT_IN_PROGRESS );
-                  handled = true;
-               } else {
-                  processFinishedInput( jqThis, valueBeforeCommit );
-                  handled = true;
-               }
-            }
-
-            if( !handled ) {
+            } else {
                processFinishedInput( jqThis, valueBeforeCommit );
-               handled = true;
             }
          } );
 
@@ -197,4 +169,22 @@
          } );
       } );
    };
+
+   function isNothing( value ) {
+      return value == undefined || value == null || value.length < 1;
+   }
+
+   function _addType( destination, id, fullRegex, partialRegex ) {
+      if( id == undefined || id == null ) throw "id is undefined";
+      if( !typeof(id) === "string" ) throw "id should be a string";
+      if( id.length < 1 ) throw "id is empty";
+
+      if( fullRegex == undefined || fullRegex == null ) throw "fullRegex is undefined";
+      if( fullRegex != undefined && fullRegex != null && typeof(fullRegex) !== "object" || fullRegex.constructor.name !== "RegExp" ) throw "fullRegex should be a regular expression object";
+
+      if( partialRegex != undefined && partialRegex != null && (typeof(partialRegex) !== "object" || partialRegex.constructor.name !== "RegExp") ) throw "partialRegex should be a regular expression object";
+
+      destination[ id ] = { "fullRegex"    : fullRegex,
+                            "partialRegex" : partialRegex };
+   }
 }( jQuery ));

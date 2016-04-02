@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 
 <!--
-   RestrictedTextField
+   RestrictedTextField v1.0
    https://www.github.com/kloverde/jquery-RestrictedTextField
 
    Copyright (c) 2016 Kurtis LoVerde
@@ -28,16 +28,16 @@
             width: 750px;
          }
 
-         h3, p {
+         h3, p, ol {
             width: 450px;
          }
 
          h4 {
             display: inline-block;
+            padding-right: 20px;
          }
 
          input {
-            margin-left: 20px;
             display: inline-bock;
          }
 
@@ -49,7 +49,16 @@
       </style>
 
       <script type="text/javascript">
+         function createCustomTypes() {
+            var cfg= new $.fn.RestrictedTextFieldConfig();
+
+            cfg.addType( "vowels", /^[aeiou]*$/, null );
+            cfg.addType( "additionExpr", /^\d+\+\d+$/, /^\d+$|^\d+\+$/ );
+         }
+
          $( document ).ready( function() {
+            createCustomTypes();
+
             $( "#txtAlpha" ).restrictedTextField( {
                type: "alpha",
                preventInvalidInput : false
@@ -83,10 +92,8 @@
             $( "#txtNegMoney" ).restrictedTextField( { type : "negativeMoney" } );
             $( "#txtAccountingMoney" ).restrictedTextField( { type : "accountingMoney" } );
             $( "#txtNegAccountingMoney" ).restrictedTextField( { type : "negativeAccountingMoney" } );
-
-            // Creating your own type
-            $.fn.restrictedTextField.types[ "vowels" ] = /^[aeiou]+$/;
             $( "#txtVowelsOnly" ).restrictedTextField( { type : "vowels" } );
+            $( "#txtAdditionExpr" ).restrictedTextField( { type : "additionExpr" } );
          } );
       </script>
    </head>
@@ -191,20 +198,72 @@
          <input type="text" id="txtNegAccountingMoney"/>
       </div>
 
-      <h2>Creating Your Own Type</h2>
-
-      <p>
-         You can declare your own type by adding a regular expression to the associative
-         array <code>$.fn.restrictedTextField.types</code>.
-      </p>
+      <h2>Creating Your Own Types</h2>
 
       <div>
-         <h4>Vowels</h4>
+         Defining your own types requires an understanding of regular expressions.  A good resource is<br/>
+         <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/RegExp">https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/RegExp</a>.
+
+         <p>
+            RestrictedTextField provides a function class called <code>RestrictedTextFieldConfig</code>.  This class
+            contains an <code>add</code> method which accepts three arguments:
+         </p>
+         <ol>
+            <li><code>id</code>:  The identifier you will use to access your type</li>
+            <li><code>fullRegex</code>:  A regular expression which describes what valid data looks like when input is finished</li>
+            <li>
+               <code>partialRegex</code>:  A regular expression which describes what valid data looks like while it's being
+               entered -- partially-entered data.  Data which passes this regular expression will fail evaluation by <code>fullRegex</code>.
+            </li>
+         </ol>
+
+         <h3>Simple type:  vowels</h3>
+         <p>Create a type which restricts input to the characters a, e, i, o and u.</p>
+         <p>
+            This is a simple type:  the presence of a character
+            at position X does not require a character to be present at position X + Y.  Therefore, any value in the text field could be
+            regarded as the complete input.  For this reason, we provide a regular expression for <code>fullRegex</code> and no value for
+            <code>partialRegex</code>.
+         </p>
+         <p>
+            <code>
+               var cfg = new $.fn.RestrictedTextFieldConfig();
+               cfg.addType( "vowels", /^[aeiou]*$/, null );
+            </code>
+         </p>
          <input type="text" id="txtVowelsOnly" />
+
+         <br/>
+
+         <h3>Complex type:  mathematical expression</h3>
+         <p>Create a type which recognizes the addition of two integers, such as 2+1.</p>
+         <p>
+            This is trickier than the previous example.  In the first example, you could throw down any number of letters in any quantity
+            and any order.  'a' was valid, as was 'uo', 'iiiuuuuuiie', etc.  Any keystroke within the set of allowed characters passed
+            validation by the regular expression.
+         </p>
+         <p>
+            That's not the case here.  This type requires an integer, followed by a plus sign, followed by another integer.  The regular
+            expression for that is <code>^\d+\+\d+$</code>.  Because validation occurs on every keystroke, you can't validate against
+            that regular expression.  When the user enters the first character, '2', that does not satisfy the regular expression.  In
+            order for the partial input to be accepted, you must provide a value for <code>partialRegex</code> which describes what
+            valid data looks like while it's still being entered.  Valid partial input could be:
+         </p>
+         <ul>
+            <li>An integer</li>
+            <li>An integer followed by a plus sign</li>
+         </ul>
+         <p>The regular expression for that is <code>^\d+\+\d+$/, /^\d+$|^\d+\+$</code>.  Putting it all together, we get:</p>
+         <code>cfg.addType( "additionExpr", /^\d+\+\d+$/, /^\d+$|^\d+\+$/ );</code><br/><br/>
+         <input type="text" id="txtAdditionExpr" />
       </div>
 
       <h2>Donations</h2>
-      Your support is greatly appreciated, and it motivates me to keep this project alive and to release more open source software.<br/>
-      <a href="https://paypal.me/KurtisLoVerde/6" target="new">https://paypal.me/KurtisLoVerde/5</a>
+      <p>
+         I hope you found the code behind these examples helpful.  Please consider donating to this project to show your
+         support.  Your support is greatly appreciated, and it motivates me to keep this project alive and to release
+         more open source software.
+      </p>
+      <a href="https://paypal.me/KurtisLoVerde/6" target="new">https://paypal.me/KurtisLoVerde/6</a>
    </body>
 </html>

@@ -1,5 +1,3 @@
-# This project is unfinished and is currently under development to rectify compatibility issues with IE.  Check back soon.
-
 RestrictedTextField v1.0
 ========================
 

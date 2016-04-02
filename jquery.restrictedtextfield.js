@@ -180,15 +180,20 @@
       return value == undefined || value == null || value.length < 1;
    }
 
+   function isClassName( obj, className ) {
+      var name = Object.prototype.toString.call( obj ).slice( 8, -1 );
+      return obj !== undefined && obj !== null && name === className;
+   }
+
    function _addType( destination, id, fullRegex, partialRegex ) {
       if( id == undefined || id == null ) throw "id is undefined";
       if( !typeof(id) === "string" ) throw "id should be a string";
       if( id.length < 1 ) throw "id is empty";
 
       if( fullRegex == undefined || fullRegex == null ) throw "fullRegex is undefined";
-      if( fullRegex != undefined && fullRegex != null && typeof(fullRegex) !== "object" || fullRegex.constructor.name !== "RegExp" ) throw "fullRegex should be a regular expression object";
+      if( !isClassName(fullRegex, "RegExp") ) throw "fullRegex must be a RegExp object";
 
-      if( partialRegex != undefined && partialRegex != null && (typeof(partialRegex) !== "object" || partialRegex.constructor.name !== "RegExp") ) throw "partialRegex should be a regular expression object";
+      if( partialRegex != undefined && partialRegex != null && !isClassName(partialRegex, "RegExp") ) throw "partialRegex must be a RegExp object";
 
       destination[ id ] = { "fullRegex"    : fullRegex,
                             "partialRegex" : partialRegex };

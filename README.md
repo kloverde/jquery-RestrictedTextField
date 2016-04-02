@@ -11,6 +11,7 @@ ResrictedTextField is a jQuery plugin which enforces data formats on HTML text b
 * Prevent invalid keystrokes or catch a validation failure event to handle it as you wish
 * Endlessly extendible:  define your own types
 * Features 23 built-in types:
+
 1.  Alpha strings
 2.  Uppercase alpha strings
 3.  Lowercase alpha strings

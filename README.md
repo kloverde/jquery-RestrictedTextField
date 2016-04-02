@@ -1,3 +1,6 @@
+# This project is unfinished and is currently under development.  Check back soon for the first release.
+
+
 RestrictedTextField v1.0
 ========================
 
@@ -9,7 +12,7 @@ ResrictedTextField is a jQuery plugin which enforces data formats on HTML text b
 ## Features
 
 * Prevent invalid keystrokes or catch a validation failure event to handle it as you wish
-* Endlessly extendible:  Define your own types
+* Endlessly extendible:  define your own types
 * Features 23 built-in types:
 
 1.  Alpha strings
@@ -58,6 +61,17 @@ $( "#field" ).restrictedTextField( {
 ```
 
 See the included HTML file for a complete demo.
+
+
+# Browser Compatibility
+
+* Firefox 45.0.1:  Compatible
+* Chrome 49.0.2623.108 m:  Compatible
+* Edge:  Compatible
+* IE 11:  Compatible
+* IE 10:  Compatible
+* IE 9:  Compatible
+* IE 8:  INCOMPATIBLE
 
 
 ## Thanks

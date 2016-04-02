@@ -182,12 +182,12 @@
 
    function isClassName( obj, className ) {
       var name = Object.prototype.toString.call( obj ).slice( 8, -1 );
-      return obj !== undefined && obj !== null && name === className;
+      return obj !== undefined && obj !== null && name.toUpperCase() === className.toUpperCase();
    }
 
    function _addType( destination, id, fullRegex, partialRegex ) {
       if( id == undefined || id == null ) throw "id is undefined";
-      if( !typeof(id) === "string" ) throw "id should be a string";
+      if( !isClassName(id, "String") ) throw "id must be a string";
       if( id.length < 1 ) throw "id is empty";
 
       if( fullRegex == undefined || fullRegex == null ) throw "fullRegex is undefined";

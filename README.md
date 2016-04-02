@@ -1,6 +1,3 @@
-# This project is unfinished and is currently under development.  Check back soon for the first release.
-
-
 RestrictedTextField v1.0
 ========================
 
@@ -45,7 +42,18 @@ ResrictedTextField is a jQuery plugin which enforces data formats on HTML text b
 | Property | Description   | Data Type | Valid Values         | Default Value |
 | -------- | --------------|---------- |----------------------|---------------|
 | `type`   | Text field type | string | alpha, upperAlpha, lowerAlpha, alphaSpace, upperAlphaSpace, lowerAlphaSpace, alphanumeric, upperAlphanumeric, lowerAlphanumeric, alphanumericSpace, upperAlphanumericSpace, lowerAlphanumericSpace, int, positiveInt, negativeInt, float, positiveFloat, negativeFloat, money, positiveMoney, negativeMoney, accountingMoney, negativeAccountingMoney| null |
-| `preventInvalidInput` | When enabled, invalid keystrokes are prevented.  When disabled, invalid keystrokes are not prevented.  In either case, the events `validationFailure`, `validationSuccess` and `inputInProgress` will fire. | boolean | true/false | true |
+| `preventInvalidInput` | When enabled, invalid keystrokes are ignored (the value of the text field is not updated).  When disabled, invalid keystrokes are not ignored. | boolean | true/false | true |
+
+
+## Events
+
+The following events are fired based on the state of the text field:
+
+| Event name        | Description                                                     |
+| ------------------| ----------------------------------------------------------------|
+| inputIgnored      | Fires when an invalid keystroke is ignored.  `preventInvalidInput` must be enabled for this event to fire. |
+| validationFailed  | Fires when an invalid keystroke is made when `preventInvalidInput` is disabled.  Also fires if validation performed on blur() fails. |
+| validationSuccess | Fires when the user removes invalid data when `preventInvalidInput` is disabled.  Also fires if validation performed on blur() passes. |
 
 
 #### Example

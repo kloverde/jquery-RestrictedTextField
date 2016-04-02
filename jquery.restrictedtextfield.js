@@ -48,9 +48,9 @@
          preventInvalidInput : true
       }, options );
 
-      var EVENT_VALIDATION_FAILURE = "validationFailure",
-          EVENT_VALIDATION_SUCCESS = "validationSuccess",
-          EVENT_INPUT_IN_PROGRESS  = "inputInProgress";
+      var EVENT_INPUT_IGNORED      = "inputIgnored",
+          EVENT_VALIDATION_FAILED  = "validationFailed",
+          EVENT_VALIDATION_SUCCESS = "validationSuccess";
 
       if( $.fn.restrictedTextField.types === undefined || $.fn.restrictedTextField.types === null ) {
          init();
@@ -111,36 +111,6 @@
          }
       }
 
-      function processFinishedInput( jqField, valueBeforeCommit ) {
-         var val = jqField.val();
-
-         if( val.length === 0 ) {
-            //console.log( "triggering success" );
-
-            jqField.trigger( EVENT_VALIDATION_SUCCESS );
-         } else if( val.length > 0 ) {
-            //console.log( "processFinishedInput - " + settings.type + ":  " + regexes.fullRegex ); 
-
-            if( !regexes.fullRegex.test(val) ) {
-               //console.log( "failed validation" );
-
-               if( settings.preventInvalidInput ) {
-                  //console.log( "reverting" );
-
-                  jqField.val( valueBeforeCommit );
-               }
-
-               //console.log( "triggering fail event" );
-
-               jqField.trigger( EVENT_VALIDATION_FAILURE );
-            } else {
-               //console.log( "triggering success" );
-
-               jqField.trigger( EVENT_VALIDATION_SUCCESS );
-            }
-         }
-      }
-
       return this.each( function() {
          var jqThis = $( this );
          var valueBeforeCommit = "";
@@ -152,26 +122,43 @@
          jqThis.on( "input", function() {
             var jqThis = $( this );
 
-            // The user is entering data, but has yet to reach the minimum number of characters needed to satisfy
-            // the regular expression in regexes.fullRegex.  We can't check against that yet because it would
-            // result in the user being unable to enter anything.  Until we've reached the minimum number of
-            // required characters, allow the user to input any character which would satisfy the regular
-            // expression.  If we've reached the minimum required number of characters, perform the validation
-            // against the regular expression in regexes.fullRegex.
+            var passesPartialRegex = false,
+                passesFullRegex    = false;
 
-            if( regexes.partialRegex !== undefined && regexes.partialRegex !== null ) {
-               if( regexes.partialRegex.test(this.value) ) {
-                  jqThis.trigger( EVENT_INPUT_IN_PROGRESS );
-               } else {
-                  processFinishedInput( jqThis, valueBeforeCommit );
-               }
+            var event = EVENT_VALIDATION_FAILED;
+
+            if( this.value.length === 0 ) {
+               passesPartialRegex = true;
+               passesFullRegex = true;
+               event = EVENT_VALIDATION_SUCCESS;
             } else {
-               processFinishedInput( jqThis, valueBeforeCommit );
+               passesFullRegex = regexes.fullRegex.test( this.value );
+
+               if( regexes.partialRegex !== undefined && regexes.partialRegex !== null ) {
+                  passesPartialRegex = regexes.partialRegex.test( this.value );
+               }
+   
+               if( passesFullRegex ) {
+                  event = EVENT_VALIDATION_SUCCESS;
+               } else if( passesPartialRegex ) {
+                  event = EVENT_VALIDATION_SUCCESS;
+               } else {
+                  event = EVENT_VALIDATION_FAILED;
+               }
+   
+               if( !passesPartialRegex && !passesFullRegex ) {
+                  if( settings.preventInvalidInput ) {
+                     event = EVENT_INPUT_IGNORED;
+                     jqThis.val( valueBeforeCommit );
+                  }
+               }
             }
+
+            jqThis.trigger( event );
          } );
 
          jqThis.on( "blur", function() {
-            processFinishedInput( jqThis, jqThis.val() );
+            jqThis.trigger( this.value.length === 0 || regexes.fullRegex.test(this.value) ? EVENT_VALIDATION_SUCCESS : EVENT_VALIDATION_FAILED );
          } );
       } );
    };

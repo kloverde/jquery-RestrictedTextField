@@ -20,8 +20,12 @@
       <script type="text/javascript" src="jquery.restrictedtextfield.js"></script>
 
       <style type="text/css">
-         input.error {
-            border: 2px solid red;
+         input.inputIgnored {
+            border: 2px solid #FC8D3D;
+         }
+
+         input.invalid {
+            border: 2px solid #FF0000;
          }
 
          h2 {
@@ -49,11 +53,30 @@
       </style>
 
       <script type="text/javascript">
+         "use strict";
+
          function createCustomTypes() {
             var cfg= new $.fn.RestrictedTextFieldConfig();
 
             cfg.addType( "vowels", /^[aeiou]*$/, null );
             cfg.addType( "additionExpr", /^\d+\+\d+$/, /^\d+$|^\d+\+$/ );
+         }
+
+         function flashBorder( jqField, cssClass, times, delayMillis ) {
+            if( times === -2 ) {
+               jqField.removeClass( cssClass );
+               return;
+            }
+
+            if( jqField.hasClass(cssClass) ) {
+               jqField.removeClass( cssClass );
+            } else {
+               jqField.addClass( cssClass );
+            }
+
+            setTimeout( function() {
+               flashBorder( jqField, cssClass, --times, delayMillis );
+            }, delayMillis );
          }
 
          $( document ).ready( function() {
@@ -63,18 +86,6 @@
                type: "alpha",
                preventInvalidInput : false
             } );
-
-            // add listeners for RestrictedTextField events
-
-            $( "#txtAlpha" ).on( "validationFailure", function(event) {
-               $( this ).addClass( "error" );
-            } );
-
-            $( "#txtAlpha" ).on( "validationSuccess", function() {
-               $( this ).removeClass( "error" );
-            } );
-
-            // initialize the rest
 
             $( "#txtUpperAlpha" ).restrictedTextField( { type : "upperAlpha" } );
             $( "#txtLowerAlpha" ).restrictedTextField( { type : "lowerAlpha" } );
@@ -88,7 +99,7 @@
             $( "#txtUpperAlphanumSpace" ).restrictedTextField( { type : "upperAlphanumericSpace" } );
             $( "#txtLowerAlphanumSpace" ).restrictedTextField( { type : "lowerAlphanumericSpace" } );
             $( "#txtInt" ).restrictedTextField( { type : "int" } );
-            $( "#txtPosInt" ).restrictedTextField( { type : "positiveInt"} );
+            $( "#txtPosInt" ).restrictedTextField( { type : "positiveInt" } );
             $( "#txtNegInt" ).restrictedTextField( { type : "negativeInt" } );
             $( "#txtFloat" ).restrictedTextField( { type : "float" } );
             $( "#txtPosFloat" ).restrictedTextField( { type : "positiveFloat" } );
@@ -100,6 +111,27 @@
             $( "#txtNegAccountingMoney" ).restrictedTextField( { type : "negativeAccountingMoney" } );
             $( "#txtVowelsOnly" ).restrictedTextField( { type : "vowels" } );
             $( "#txtAdditionExpr" ).restrictedTextField( { type : "additionExpr" } );
+
+            $( "input" ).on( "inputIgnored", function(event) {
+               var jqThis = $( this );
+
+               jqThis.removeClass( "invalid" );
+               jqThis.removeClass( "inputIgnored" );
+
+               flashBorder( jqThis, "inputIgnored", 3, 150 );
+            } )
+            .on( "validationFailed", function(event) {
+               var jqThis = $( this );
+
+               jqThis.removeClass( "inputIgnored" );
+               jqThis.addClass( "invalid" );
+            } )
+            .on( "validationSuccess", function() {
+               var jqThis = $( this );
+
+               jqThis.removeClass( "inputIgnored" );
+               jqThis.removeClass( "invalid" );
+            } );
          } );
       </script>
    </head>
@@ -109,18 +141,24 @@
 
       <h4>Capturing validation failures</h4>
       <p>
-         This text field has a listener to capture the <code>validationFailure</code> and <code>validationSuccess</code>
-         events.  This text field has been configured to allow invalid text to remain in the field.  The field's border
-         color will be red for as long as the invalid input remains.
+         This text field has been configured to allow invalid text to remain in the field.  When the invalid keystroke
+         fails validation, the <code>validationFailed</code> event fires.  When the invalid data is removed, the
+         <code>validationSuccess</code> event fires.  The <code>validationFailed</code> listener turns the border red,
+         and it remains red until the <code>validationSuccess</code> listener turns it off.  When the blur event
+         fires, the field is validated again, and one of these two events will fire.
       </p>
       <h4>Alpha characters (A-Z, case-insensitive)</h4>
       <input type="text" id="txtAlpha" />
 
       <div id="break">
          <p>
-            The remaining examples prevent invalid text from being entered at all, so although you could capture
-            <code>validationFailure</code> and <code>validationSuccess</code>, you don't really need to - unless
-            you're planning on calling attention to the fact that the user's input was ignored.
+            The remaining examples work differently.  Instead of allowing invalid input to remain in the field, the
+            invalid keystroke is ignored, so the field never has an invalid value.  Events work differently in this
+            scenario.  When an invalid keystroke is ignored, the <code>inputIgnored</code> event fires.  The
+            <code>validationFailed</code> event does not fire in response to an invalid keystroke.  The
+            <code>inputIgnored</code> listener flashes the border of the textbox to alert the user that the
+            keystroke was ignored.  When the blur event fires, the field is validated again, and either the
+            <code>validationFailed</code> or <code>validationSuccess</code> event will fire.
          </p>
       </div>
 

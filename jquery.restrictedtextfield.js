@@ -109,26 +109,26 @@
          var val = jqField.val();
 
          if( val.length === 0 ) {
-            console.log( "triggering success" );
+            //console.log( "triggering success" );
 
             jqField.trigger( EVENT_VALIDATION_SUCCESS );
          } else if( val.length > 0 ) {
-            console.log( "processFinishedInput - " + settings.type + ":  " + regexes.fullRegex ); 
+            //console.log( "processFinishedInput - " + settings.type + ":  " + regexes.fullRegex ); 
 
             if( !regexes.fullRegex.test(val) ) {
-               console.log( "failed validation" );
+               //console.log( "failed validation" );
 
                if( settings.preventInvalidInput ) {
-                  console.log( "reverting" );
+                  //console.log( "reverting" );
 
                   jqField.val( valueBeforeCommit );
                }
 
-               console.log( "triggering fail event" );
+               //console.log( "triggering fail event" );
 
                jqField.trigger( EVENT_VALIDATION_FAILURE );
             } else {
-               console.log( "triggering success" );
+               //console.log( "triggering success" );
 
                jqField.trigger( EVENT_VALIDATION_SUCCESS );
             }

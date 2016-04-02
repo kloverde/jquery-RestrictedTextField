@@ -78,9 +78,15 @@
 
             $( "#txtUpperAlpha" ).restrictedTextField( { type: "upperAlpha" } );
             $( "#txtLowerAlpha" ).restrictedTextField( { type: "lowerAlpha" } );
+            $( "#txtAlphaSpace" ).restrictedTextField( { type : "alphaSpace" } );
+            $( "#txtUpperAlphaSpace" ).restrictedTextField( { type : "upperAlphaSpace" } );
+            $( "#txtLowerAlphaSpace" ).restrictedTextField( { type : "lowerAlphaSpace" } );
             $( "#txtAlphanum" ).restrictedTextField( { type: "alphanumeric" } );
             $( "#txtUpperAlphanum" ).restrictedTextField( { type: "upperAlphanumeric" } );
             $( "#txtLowerAlphanum" ).restrictedTextField( { type: "lowerAlphanumeric" } );
+            $( "#txtAlphanumSpace" ).restrictedTextField( { type: "alphanumericSpace" } );
+            $( "#txtUpperAlphanumSpace" ).restrictedTextField( { type: "upperAlphanumericSpace" } );
+            $( "#txtLowerAlphanumSpace" ).restrictedTextField( { type: "lowerAlphanumericSpace" } );
             $( "#txtInt" ).restrictedTextField( { type : "int" } );
             $( "#txtPosInt" ).restrictedTextField( { type : "positiveInt"} );
             $( "#txtNegInt" ).restrictedTextField( { type : "negativeInt" } );
@@ -129,6 +135,21 @@
       </div>
 
       <div>
+         <h4>Alpha characters and space (A-Z, case-insensitive)</h4>
+         <input type="text" id="txtAlphaSpace"/>
+      </div>
+
+      <div>
+         <h4>Uppercase alpha characters and space (A-Z, case-sensitive)</h4>
+         <input type="text" id="txtUpperAlphaSpace"/>
+      </div>
+      
+      <div>
+         <h4>Lowercase alpha characters and space (a-z, case-sensitive)</h4>
+         <input type="text" id="txtLowerAlphaSpace"/>
+      </div>
+
+      <div>
          <h4>Alphanumeric (letters and numbers, case-insensitive)</h4>
          <input type="text" id="txtAlphanum"/>
       </div>
@@ -141,6 +162,21 @@
       <div>
          <h4>Lowercase alphanumeric (letters and numbers, case-sensitive)</h4>
          <input type="text" id="txtLowerAlphanum"/>
+      </div>
+
+      <div>
+         <h4>Alphanumeric and space (letters and numbers, case-insensitive)</h4>
+         <input type="text" id="txtAlphanumSpace"/>
+      </div>
+
+      <div>
+         <h4>Uppercase alphanumeric and space (letters and numbers, case-sensitive)</h4>
+         <input type="text" id="txtUpperAlphanumSpace"/>
+      </div>
+
+      <div>
+         <h4>Lowercase alphanumeric and space (letters and numbers, case-sensitive)</h4>
+         <input type="text" id="txtLowerAlphanumSpace"/>
       </div>
 
       <div>

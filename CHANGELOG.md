@@ -1,3 +1,3 @@
-## Release 1.0 (April 1, 2016)
+## Release 1.0 (April 2, 2016)
 
 * First release

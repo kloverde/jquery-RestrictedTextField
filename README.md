@@ -48,7 +48,7 @@ ResrictedTextField is a jQuery plugin which enforces data formats on HTML text b
 
 ## Events
 
-These events are fired based on the state of the text field
+These events are fired based on the state of the text field.
 
 | Event name        | Description                                                     |
 | ------------------| ----------------------------------------------------------------|

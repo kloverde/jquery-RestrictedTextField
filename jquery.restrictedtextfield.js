@@ -1,5 +1,5 @@
 /**
- * RestrictedTextField v1.0
+ * RestrictedTextField v1.0.1
  * https://www.github.com/kloverde/jquery-RestrictedTextField
  *
  * This software is licensed under the 3-clause BSD license.
@@ -14,32 +14,30 @@
 
    /**
     * Developers:  Instantiate this to add your own types
-    */  
+    */
    $.fn.RestrictedTextFieldConfig = function() {
       var dest = $.fn.RestrictedTextFieldConfig.customTypes = $.fn.RestrictedTextFieldConfig.customTypes || [];
 
-      return {
-         /**
-          * Adds a custom type
-          *
-          * @param id           - The identifier you will use to access the new type
-          *
-          * @param fullRegex    - RegExp object.  This regular expression describes what a valid value looks like when the user is finished
-          *                       entering data, NOT what valid input looks like as it's being entered.  If your type is complex, like a
-          *                       phone number for example, you need to provide a value for partialRegex to ensure that your user will be
-          *                       able to continue to type into the field.  If partialRegex is not defined or is null, the text field will
-          *                       be validated against this regular expression on every keystroke.  Notwithstanding any of the foregoing,
-          *                       this regular expression is also used to validate the text field on blur. 
-          *
-          * @param partialRegex - RegExp object.  This regular expression describes what a valid value looks like while the user is entering
-          *                       it, NOT what valid input looks like after the user has finished.  If you provide a value for this, this
-          *                       regular expression will be used to validate the text field on every keystroke.  This parameter may be
-          *                       null, but if your type is complex, you will find it necessary to provide a value.
-          */
-         addType : function addType( id, fullRegex, partialRegex ) {
-                      _addType( dest, id, fullRegex, partialRegex );
-                   }
-      };
+      /**
+       * Adds a custom type
+       *
+       * @param id           - The identifier you will use to access the new type
+       *
+       * @param fullRegex    - RegExp object.  This regular expression describes what a valid value looks like when the user is finished
+       *                       entering data, NOT what valid input looks like as it's being entered.  If your type is complex, like a
+       *                       phone number for example, you need to provide a value for partialRegex to ensure that your user will be
+       *                       able to continue to type into the field.  If partialRegex is not defined or is null, the text field will
+       *                       be validated against this regular expression on every keystroke.  Notwithstanding any of the foregoing,
+       *                       this regular expression is also used to validate the text field on blur. 
+       *
+       * @param partialRegex - RegExp object.  This regular expression describes what a valid value looks like while the user is entering
+       *                       it, NOT what valid input looks like after the user has finished.  If you provide a value for this, this
+       *                       regular expression will be used to validate the text field on every keystroke.  This parameter may be
+       *                       null, but if your type is complex, you will find it necessary to provide a value.
+       */
+      this.addType = function( id, fullRegex, partialRegex ) {
+         _addType( dest, id, fullRegex, partialRegex );
+      }
    };
 
    $.fn.restrictedTextField = function( options ) {

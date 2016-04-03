@@ -135,7 +135,7 @@
                if( regexes.partialRegex !== undefined && regexes.partialRegex !== null ) {
                   passesPartialRegex = regexes.partialRegex.test( this.value );
                }
-   
+
                if( passesFullRegex ) {
                   event = EVENT_VALIDATION_SUCCESS;
                } else if( passesPartialRegex ) {
@@ -143,7 +143,7 @@
                } else {
                   event = EVENT_VALIDATION_FAILED;
                }
-   
+
                if( !passesPartialRegex && !passesFullRegex ) {
                   if( settings.preventInvalidInput ) {
                      event = EVENT_INPUT_IGNORED;

@@ -327,7 +327,7 @@
             <li>An integer</li>
             <li>An integer followed by a plus sign</li>
          </ul>
-         <p>The regular expression for that is <code>^\d+\+\d+$/, /^\d+$|^\d+\+$</code>.  Putting it all together, we get:</p>
+         <p>The regular expression for that is <code>/^\d+$|^\d+\+$</code>.  Putting it all together, we get:</p>
          <code>cfg.addType( "additionExpr", /^\d+\+\d+$/, /^\d+$|^\d+\+$/ );</code><br/><br/>
          <input type="text" id="txtAdditionExpr" />
       </div>

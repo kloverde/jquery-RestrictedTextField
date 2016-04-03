@@ -1,5 +1,5 @@
 /**
- * RestrictedTextField v1.0.1
+ * RestrictedTextField v1.1
  * https://www.github.com/kloverde/jquery-RestrictedTextField
  *
  * This software is licensed under the 3-clause BSD license.
@@ -156,8 +156,32 @@
          } );
 
          jqThis.on( "blur", function() {
+            applyFormatting( this );
             jqThis.trigger( this.value.length === 0 || regexes.fullRegex.test(this.value) ? EVENT_VALIDATION_SUCCESS : EVENT_VALIDATION_FAILED );
          } );
+
+         function applyFormatting( domField ) {
+            if( isNothing(domField.value) ) return;
+
+            var t = settings.type;
+            
+            if( t === "money" || t === "positiveMoney" || t === "negativeMoney" || t === "accountingMoney" || t ==="negativeAccountingMoney" ) {
+               var len         = domField.value.length;
+               var openParen   = domField.value[0] === "(" ? "(" : "";
+               var closeParen  = domField.value[ len - 1 ] === ")" ? ")" : ""; 
+               var decimalIdx  = domField.value.indexOf( "." );
+               var integerPart = domField.value.substring( openParen === "" ? 0 : 1,
+                                                           decimalIdx > 0 ? decimalIdx -1 : (closeParen === ")" ? len - 1 : len) );
+               var decimalPart = "00";
+
+               if( decimalIdx > -1 ) {
+                  integerPart = domField.value.substring( openParen === "" ? 0 : 1, decimalIdx );
+                  decimalPart = domField.value.substring( decimalIdx + 1, closeParen === "" ? len : len - 1 );
+               }
+               
+               domField.value = openParen + integerPart + "." + decimalPart + (decimalPart.length === 1 ? "0" : "") + closeParen;
+            }
+         }
       } );
    };
 

@@ -1,5 +1,5 @@
-RestrictedTextField v1.0.1
-==========================
+RestrictedTextField v1.1
+=========================
 
 See LICENSE for this software's licensing terms.
 
@@ -10,7 +10,6 @@ ResrictedTextField is a jQuery plugin which enforces data formats on HTML text b
 
 * Prevent invalid keystrokes or catch a validation failure event to handle it as you wish
 
-* Endlessly extendible:  define your own types
 * Features 23 built-in types:
 
 1.  Alpha strings
@@ -36,6 +35,10 @@ ResrictedTextField is a jQuery plugin which enforces data formats on HTML text b
 21.  Negative money
 22.  Accounting money notation (negatives expressed by wrapping the value in parentheses)
 23.  Negative accounting money
+
+* Endlessly extendible:  define your own types
+
+* Money types automatically format on blur to end in a decimal point and two digits
 
 
 ## Configuration

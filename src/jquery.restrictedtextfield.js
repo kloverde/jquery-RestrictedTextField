@@ -114,13 +114,10 @@
          var valueBeforeCommit = "";
 
          jqThis.on( "keydown paste", function(event) {
-            console.log( "keydown or paste: " + event.which );
             valueBeforeCommit = this.value;
          } );
 
          jqThis.on( "input", function() {
-            console.log( "input" );
-
             var jqThis = $( this );
 
             var passesPartialRegex = false,
@@ -151,6 +148,7 @@
                   if( settings.preventInvalidInput ) {
                      event = EVENT_INPUT_IGNORED;
                      jqThis.val( valueBeforeCommit );
+                     console.log( "reverted value to " + valueBeforeCommit );
                   }
                }
             }

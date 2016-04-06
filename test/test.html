@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+
+<html>
+   <head>
+      <meta charset="utf-8"/>
+
+      <title>QUnit basic example</title>
+
+      <link rel="stylesheet" href="dep/qunit.css"/>
+
+      <script type="text/javascript" src="dep/jquery.js"></script>
+      <script type="text/javascript" src="dep/jquery.simulate.js"></script>
+      <script type="text/javascript" src="dep/bililiteRange.js"></script>
+      <script type="text/javascript" src="dep/jquery.simulate.key-sequence.js"></script>
+      <script type="text/javascript" src="dep/qunit.js"></script>
+      <script type="text/javascript" src="../src/jquery.restrictedtextfield.js"></script>
+
+      <script type="text/javascript">
+         var selector = "#field";
+         var field = null;
+         var moduleCfg;
+         var key = [];
+         var typeAlpha = { type : "alpha" };
+
+         ( function() {
+            $( document ).ready( function() {
+               field = $( selector );
+
+               moduleCfg = {
+                  beforeEach : function() {
+                     $( selector ).val( "" );
+                  }
+               };
+
+               for( var i = 33; i <= 126; i++ ) {
+                  var str = String.fromCharCode( i );
+                  key[ str ] = { sequence : str, delay : 0 };
+               }
+            } );
+         } )();
+
+         function press( k ) {
+            field.simulate( "key-sequence", key[k] );
+         }
+      </script>
+
+      <script type="text/javascript">
+         $( document ).ready( function() {
+            QUnit.module( "Alpha", moduleCfg );
+
+            QUnit.test( "alpha_keystroke_valid", function(assert) {
+               press( "A" );
+               assert.equal( field.val(), "A", "We expect value to be hello" );
+            } );
+         } );
+      </script>
+   </head>
+   <body>
+      <div style="padding-bottom: 25px;">
+         <input type="text" id="field" style=""/>
+      </div>
+
+      <div id="qunit"></div>
+      <div id="qunit-fixture"></div>
+   </body>
+</html>

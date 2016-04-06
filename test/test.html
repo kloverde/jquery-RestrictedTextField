@@ -16,48 +16,108 @@
       <script type="text/javascript" src="../src/jquery.restrictedtextfield.js"></script>
 
       <script type="text/javascript">
-         var selector = "#field";
-         var field = null;
+         var field = "#field";
          var moduleCfg;
          var key = [];
+
          var typeAlpha = { type : "alpha" };
+
+         var _inputIgnored,
+             _validationFailed,
+             _validationSuccess;
 
          ( function() {
             $( document ).ready( function() {
-               field = $( selector );
-
                moduleCfg = {
                   beforeEach : function() {
-                     $( selector ).val( "" );
+                     _inputIgnored = false;
+                     _validationFailed = false;
+                     _validationSuccess = false;
+
+                     // I know.  Clearing it before replacing it is unnecessary.  But, being able
+                     // to watch it be destroyed by stepping through in a debugger is reassuring.
+                     $( "#txtDiv" ).html( "" );
+                     $( "#txtDiv" ).html( "<input type='text' id='field'/>" );
+
+                     $( "#field" ).on( "inputIgnored", function() {
+                        _inputIgnored = true;
+                     } );
+
+                     $( "#field" ).on( "validationFailed", function() {
+                        _validationFailed = true;
+                     } );
+
+                     $( "#field" ).on( "validationSuccess", function() {
+                        _validationSuccess = true;
+                     } );
                   }
                };
-
-               for( var i = 33; i <= 126; i++ ) {
-                  var str = String.fromCharCode( i );
-                  key[ str ] = { sequence : str, delay : 0 };
-               }
             } );
          } )();
 
-         function press( k ) {
-            field.simulate( "key-sequence", key[k] );
-         }
-      </script>
-
-      <script type="text/javascript">
          $( document ).ready( function() {
-            QUnit.module( "Alpha", moduleCfg );
+            QUnit.module( "Type_alpha", moduleCfg );
 
-            QUnit.test( "alpha_keystroke_valid", function(assert) {
-               press( "A" );
-               assert.equal( field.val(), "A", "We expect value to be hello" );
+            QUnit.asyncTest( "alpha_onInput_success_acceptUppercase", function(assert) {
+               var box = $( field ).restrictedTextField( typeAlpha );
+               var str = "A";
+
+               $( "#field" ).simulate( "key-sequence", {
+                  sequence : str,
+                  delay    : 1,
+                  callback : function() {
+                     start();
+
+                     assert.equal( box.val(), str, "The text box has the entered value" );
+                     assert.ok( _validationSuccess, "Validation succeeded" );
+                     assert.notOk( _validationFailed, "Validation did not fail" );
+                     assert.notOk( _inputIgnored, "Input was not ignored" );
+                  }
+               } );
+            } );
+
+            QUnit.asyncTest( "alpha_onInput_success_acceptLowercase", function(assert) {
+               var box = $( field ).restrictedTextField( typeAlpha );
+               var str = "a";
+
+               $( "#field" ).simulate( "key-sequence", {
+                  sequence : str,
+                  delay    : 1,
+                  callback : function() {
+                     start();
+
+                     assert.equal( box.val(), str, "The text box has the entered value" );
+                     assert.ok( _validationSuccess, "Validation succeeded" );
+                     assert.notOk( _validationFailed, "Validation did not fail" );
+                     assert.notOk( _inputIgnored, "Input was not ignored" );
+                  }
+               } );
+            } );
+
+            QUnit.asyncTest( "alpha_onInput_success_rejectDigit", function(assert) {
+               var box = $( field ).restrictedTextField( typeAlpha );
+               var str = "1";
+
+               $( "#field" ).simulate( "key-sequence", {
+                  sequence : str,
+                  delay    : 1,
+                  callback : function() {
+                     start();
+
+                     // TODO:  FAILS.  Looks like jquery.simulate.key-sequence.js is probably using $.val() instead of actually simulating the keypress.
+                     assert.equal( box.val(), "", "The text box does not have the entered value" );
+
+                     assert.notOk( _validationSuccess, "Validation succeeded" );
+                     assert.notOk( _validationFailed, "Validation did not fail" );
+                     assert.ok( _inputIgnored, "The input was ignored" );
+                  }
+               } );
             } );
          } );
       </script>
    </head>
    <body>
-      <div style="padding-bottom: 25px;">
-         <input type="text" id="field" style=""/>
+      <div id="txtDiv" style="padding-bottom: 25px;">
       </div>
 
       <div id="qunit"></div>

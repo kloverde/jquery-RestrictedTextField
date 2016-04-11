@@ -97,7 +97,7 @@ The easiest way to get this running is to install the following build dependenci
 3. [Java SDK](http://www.oracle.com/technetwork/java/javase/index.html) version 7 or later
 4. [BuildScripts](https://github.com/kloverde/BuildScripts)
 
-Now:
+Now, from a command prompt:
 
 1.  <code>cd</code> into the <code>jquery-RestrictedTextField/SeleniumJUnitClient</code> directory
 2.  Modify the <code>buildScriptsDir</code> property in <code>gradle.properties</code> to reflect the location of BuildScripts on your filesystem

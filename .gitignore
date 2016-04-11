@@ -1,1 +1,6 @@
-/.project
+/bin
+/build
+/node_modules
+/src/temp
+/SeleniumJUnitClient/.gradle
+/SeleniumJUnitClient/build

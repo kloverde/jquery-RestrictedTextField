@@ -1,4 +1,4 @@
-/**
+/*
  * RestrictedTextField v1.1
  * https://www.github.com/kloverde/jquery-RestrictedTextField
  *
@@ -7,7 +7,7 @@
  * Copyright (c) 2016 Kurtis LoVerde
  * All rights reserved
  *
- * Donations:  https://paypal.me/KurtisLoVerde/5
+ * Donations:  https://paypal.me/KurtisLoVerde/7
  */
 (function( $ ) {
    "use strict";

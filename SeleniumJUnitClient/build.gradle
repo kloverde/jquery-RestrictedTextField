@@ -1,0 +1,9 @@
+apply plugin: "eclipse"   // Run 'gradle eclipse' to rebuild .classpath for other systems
+
+apply from: buildScriptsDir + "/build_java_lib.gradle"
+
+
+dependencies {
+   testCompile "junit:junit:4.+"
+   testCompile "org.seleniumhq.selenium:selenium-server:2.53.0"
+}

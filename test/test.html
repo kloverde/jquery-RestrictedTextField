@@ -1,182 +1,92 @@
 <!DOCTYPE html>
 
+<!--
+   RestrictedTextField v1.1
+   https://www.github.com/kloverde/jquery-RestrictedTextField
+
+   Copyright (c) 2016 Kurtis LoVerde
+   All rights reserved
+
+   Donations:  https://paypal.me/KurtisLoVerde/7
+-->
+
 <html>
    <head>
       <meta charset="utf-8"/>
 
-      <title>QUnit basic example</title>
+      <title>RestrictedTextField - Selenium Tests</title>
 
-      <link rel="stylesheet" href="dep/qunit.css"/>
-
-      <script type="text/javascript" src="dep/jquery.js"></script>
-      <script type="text/javascript" src="dep/jquery.simulate.js"></script>
-      <script type="text/javascript" src="dep/bililiteRange.js"></script>
-      <script type="text/javascript" src="dep/jquery.simulate.key-sequence.js"></script>
-      <script type="text/javascript" src="dep/qunit.js"></script>
-      <script type="text/javascript" src="../src/jquery.restrictedtextfield.js"></script>
+      <script type="text/javascript" src="/test/jquery.js"></script>
+      <script type="text/javascript" src="/src/jquery.restrictedtextfield.js"></script>
 
       <script type="text/javascript">
-         var field = "#field";
-         var moduleCfg;
-         var key = [];
+         var inputIgnoredEvent,
+             validationFailedEvent,
+             validationSuccessEvent;
 
-         var _inputIgnored,
-             _validationFailed,
-             _validationSuccess;
+         function setUp() {
+            log( "setUp" );
 
-         ( function() {
-            $( document ).ready( function() {
-               moduleCfg = {
-                  beforeEach : function() {
-                     _inputIgnored = false;
-                     _validationFailed = false;
-                     _validationSuccess = false;
+            $( "#fieldContainer" ).html( "" );  // I know.  Clearing it before replacing it is unnecessary.  But, being able to watch it be destroyed by stepping through in a debugger is reassuring.
+            $( "#fieldContainer" ).html( "<input type='text' id='field'/>" );
 
-                     // I know.  Clearing it before replacing it is unnecessary.  But, being able
-                     // to watch it be destroyed by stepping through in a debugger is reassuring.
-                     $( "#txtDiv" ).html( "" );
-                     $( "#txtDiv" ).html( "<input type='text' id='field'/>" );
+            inputIgnoredEvent = false;
+            validationFailedEvent = false;
+            validationSuccessEvent = false;
+         }
 
-                     $( "#field" ).on( "inputIgnored", function() {
-                        _inputIgnored = true;
-                     } );
+         function tearDown() {
+            log( "tearDown" );
+         }
 
-                     $( "#field" ).on( "validationFailed", function() {
-                        _validationFailed = true;
-                     } );
+         function initField( fieldType, ignore ) {
+            log( "initField:  fieldType[" + fieldType + "], ignore[" + ignore + "]" );
 
-                     $( "#field" ).on( "validationSuccess", function() {
-                        _validationSuccess = true;
-                     } );
-                  }
-               };
-            } );
-         } )();
+            var jqField = $( "#field" );
 
-         $( document ).ready( function() {
-            QUnit.module( "Type_alpha", moduleCfg );
+            jqField.restrictedTextField( { type : fieldType,
+                                           ignoreInvalidInput : ignore } );
 
-            QUnit.asyncTest( "alpha_onInput_success_acceptUppercase", function(assert) {
-               var box = $( field ).restrictedTextField( { type : "alpha" } );
-               var str = "A";
-
-               $( "#field" ).simulate( "key-sequence", {
-                  sequence : str,
-                  delay    : 1,
-                  callback : function() {
-                     start();
-
-                     assert.equal( box.val(), str, "The text box has the entered value" );
-                     assert.ok( _validationSuccess, "Validation success event fired" );
-                     assert.notOk( _validationFailed, "Validation failure event did not fire" );
-                     assert.notOk( _inputIgnored, "Input ignored event did not fire" );
-                  }
-               } );
+            jqField.on( "inputIgnored", function() {
+               log( "inputIgnored event" );
+               inputIgnoredEvent = true;
             } );
 
-            QUnit.asyncTest( "alpha_onInput_success_acceptLowercase", function(assert) {
-               var box = $( field ).restrictedTextField( { type : "alpha" } );
-               var str = "a";
-
-               $( "#field" ).simulate( "key-sequence", {
-                  sequence : str,
-                  delay    : 1,
-                  callback : function() {
-                     start();
-
-                     assert.equal( box.val(), str, "The text box has the entered value" );
-                     assert.ok( _validationSuccess, "Validation success event fired" );
-                     assert.notOk( _validationFailed, "Validation failure event did not fire" );
-                     assert.notOk( _inputIgnored, "Input ignored event did not fire" );
-                  }
-               } );
+            jqField.on( "validationFailed", function() {
+               log( "validationFailed event" );
+               validationFailedEvent = true;
             } );
 
-            QUnit.asyncTest( "alpha_onInput_success_rejectDigit", function(assert) {
-               var box = $( field ).restrictedTextField( { type : "alpha" } );
-               var str = "1";
-
-               $( "#field" ).simulate( "key-sequence", {
-                  sequence : str,
-                  delay    : 1,
-                  callback : function() {
-                     start();
-
-                     // TODO:  FAILS.  Looks like jquery.simulate.key-sequence.js is probably using $.val() instead of actually simulating the keypress.
-                     assert.equal( box.val(), "", "The text box does not have the entered value" );
-
-                     assert.notOk( _validationSuccess, "Validation success event did not fire" );
-                     assert.notOk( _validationFailed, "Validation failure event did not fire" );
-                     assert.ok( _inputIgnored, "Input ignored event did not fire" );
-                  }
-               } );
+            jqField.on( "validationSuccess", function() {
+               log( "validationSuccess event" );
+               validationSuccessEvent = true;
             } );
+         }
 
-            QUnit.module( "Type_upperAlpha", moduleCfg );
+         function didInputIgnoredEventFire() {
+            log( "returning inputIgnoredEvent = " + inputIgnoredEvent );
+            return inputIgnoredEvent;
+         }
 
-            QUnit.asyncTest( "alpha_onInput_success_acceptUppercase", function(assert) {
-               var box = $( field ).restrictedTextField( { type : "upperAlpha" } );
-               var str = "A";
+         function didValidationFailedEventFire() {
+            log( "returning validationFailedEvent = " + validationFailedEvent );
+            return validationFailedEvent;
+         }
 
-               $( "#field" ).simulate( "key-sequence", {
-                  sequence : str,
-                  delay    : 1,
-                  callback : function() {
-                     start();
+         function didValidationSuccessEventFire() {
+            log( "returning validationSuccessEvent = " + validationSuccessEvent );
+            return validationSuccessEvent;
+         }
 
-                     assert.equal( box.val(), str, "The text box has the entered value" );
-                     assert.ok( _validationSuccess, "Validation success event fired" );
-                     assert.notOk( _validationFailed, "Validation failure event did not fire" );
-                     assert.notOk( _inputIgnored, "Input ignored event did not fire" );
-                  }
-               } );
-            } );
-
-            QUnit.asyncTest( "alpha_onInput_success_rejectLowercase", function(assert) {
-               var box = $( field ).restrictedTextField( { type : "upperAlpha" } );
-               var str = "a";
-
-               $( "#field" ).simulate( "key-sequence", {
-                  sequence : str,
-                  delay    : 1,
-                  callback : function() {
-                     start();
-
-                     assert.equal( box.val(), str, "The text box does not have the entered value" );
-                     assert.notOk( _validationSuccess, "Validation success event did not fire" );
-                     assert.notOk( _validationFailed, "Validation failure event did not fire" );
-                     assert.ok( _inputIgnored, "Input ignored event fired" );
-                  }
-               } );
-            } );
-
-            QUnit.asyncTest( "alpha_onInput_success_rejectDigit", function(assert) {
-               var box = $( field ).restrictedTextField( { type : "upperAlpha" } );
-               var str = "1";
-
-               $( "#field" ).simulate( "key-sequence", {
-                  sequence : str,
-                  delay    : 1,
-                  callback : function() {
-                     start();
-
-                     // TODO:  FAILS.  Looks like jquery.simulate.key-sequence.js is probably using $.val() instead of actually simulating the keypress.
-                     assert.equal( box.val(), "", "The text box does not have the entered value" );
-
-                     assert.notOk( _validationSuccess, "Validation success event did not fire" );
-                     assert.notOk( _validationFailed, "Validation failure event did not fire" );
-                     assert.ok( _inputIgnored, "Input ignored event fired" );
-                  }
-               } );
-            } );
-         } );
+         function log( msg ) {
+            if( console && console.log ) {
+               console.log( msg );
+            }
+         }
       </script>
    </head>
    <body>
-      <div id="txtDiv" style="padding-bottom: 25px;">
+      <div id="fieldContainer" style="padding-bottom: 25px;">
       </div>
-
-      <div id="qunit"></div>
-      <div id="qunit-fixture"></div>
    </body>
 </html>

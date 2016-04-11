@@ -1,4 +1,4 @@
-/**
+/*
  * RestrictedTextField v1.1
  * https://www.github.com/kloverde/jquery-RestrictedTextField
  *

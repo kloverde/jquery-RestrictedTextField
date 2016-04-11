@@ -88,7 +88,7 @@ See the included HTML file for a complete demo.
 
 # Running Unit Tests
 
-[Selenium](http://www.seleniumhq.org) is used for unit testing in order to generate keypresses in a text field.  This is because synthetic JavaScript events don't carry out the actual actions associated with them.  In other words, simulating a keypress fires the correct events, but doesn't result in actual text appearing.  This is a security restriction of JavaScript.
+[Selenium](http://www.seleniumhq.org) is used for unit testing in order to generate true keypresses in a text field.  This is because using JavaScript to create synthetic events results in an inability to test the state of the text field after a simulated keystroke.  Synthetic JavaScript events don't carry out the actual actions associated with them.  In other words, simulating a keypress fires the correct events, but doesn't result in actual text appearing.  This is a security restriction of JavaScript.
 
 The easiest way to get this running is to install the following build dependencies:
 

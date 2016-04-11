@@ -86,6 +86,26 @@ See the included HTML file for a complete demo.
 * IE 8:  INCOMPATIBLE
 
 
+# Running Unit Tests
+
+[Selenium](http://www.seleniumhq.org) is used for unit testing in order to generate keypresses in a text field.  This is because synthetic JavaScript events don't carry out the actual actions associated with them.  In other words, simulating a keypress fires the correct events, but doesn't result in actual text appearing.  This is a security restriction of JavaScript.
+
+The easiest way to get this running is to install the following build dependencies:
+
+1. [Node.js](https://nodejs.org/en)
+2. [Gradle](http://gradle.org)
+3. [Java SDK](http://www.oracle.com/technetwork/java/javase/index.html) version 7 or later
+4. [BuildScripts](https://github.com/kloverde/BuildScripts)
+
+Now:
+
+1.  <code>cd</code> into the <code>jquery-RestrictedTextField/SeleniumJUnitClient</code> directory
+2.  Modify the <code>buildScriptsDir</code> property in <code>gradle.properties</code> to reflect the location of BuildScripts on your filesystem
+3.  <code>cd</code> to the <code>jquery-RestrictedTextField</code> directory
+4.  Type <code>npm install</code>
+5.  Type <code>grunt test</code>
+
+
 ## Thanks
 
 Do you like this library?  Want to toss a few bucks my way to say thanks?  I accept donations at https://paypal.me/KurtisLoVerde/7.  Thank you for your support!

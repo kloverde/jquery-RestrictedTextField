@@ -71,7 +71,6 @@
          function setUp() {
             log( "setUp" );
 
-            $( "#fieldContainer" ).html( "" );  // I know.  Clearing it before replacing it is unnecessary.  But, being able to watch it be destroyed by stepping through in a debugger is reassuring.
             $( "#fieldContainer" ).html( "<input type='text' id='field'/>" );
 
             inputIgnoredEvent = false;

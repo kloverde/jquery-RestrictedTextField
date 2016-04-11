@@ -43,7 +43,8 @@
    $.fn.restrictedTextField = function( options ) {
       var settings = $.extend( {
          type                : null,
-         preventInvalidInput : true
+         preventInvalidInput : true,
+         logger              : undefined
       }, options );
 
       var EVENT_INPUT_IGNORED      = "inputIgnored",
@@ -117,18 +118,20 @@
             valueBeforeCommit = this.value;
          } );
 
-         jqThis.on( "input", function() {
+         jqThis.on( "input", function(event) {
+            log( "caught input - new value: " + this.value );
+
             var jqThis = $( this );
 
             var passesPartialRegex = false,
                 passesFullRegex    = false;
 
-            var event = EVENT_VALIDATION_FAILED;
+            var responseEvent = EVENT_VALIDATION_FAILED;
 
             if( this.value.length === 0 ) {
                passesPartialRegex = true;
                passesFullRegex = true;
-               event = EVENT_VALIDATION_SUCCESS;
+               responseEvent = EVENT_VALIDATION_SUCCESS;
             } else {
                passesFullRegex = regexes.fullRegex.test( this.value );
 
@@ -137,23 +140,25 @@
                }
 
                if( passesFullRegex ) {
-                  event = EVENT_VALIDATION_SUCCESS;
+                  responseEvent = EVENT_VALIDATION_SUCCESS;
                } else if( passesPartialRegex ) {
-                  event = EVENT_VALIDATION_SUCCESS;
+                  responseEvent = EVENT_VALIDATION_SUCCESS;
                } else {
-                  event = EVENT_VALIDATION_FAILED;
+                  responseEvent = EVENT_VALIDATION_FAILED;
                }
 
                if( !passesPartialRegex && !passesFullRegex ) {
                   if( settings.preventInvalidInput ) {
-                     event = EVENT_INPUT_IGNORED;
+                     responseEvent = EVENT_INPUT_IGNORED;
                      jqThis.val( valueBeforeCommit );
-                     console.log( "reverted value to " + valueBeforeCommit );
+                     log( "reverted field to \"" + valueBeforeCommit + "\"" );
                   }
                }
             }
 
-            jqThis.trigger( event );
+            log( "triggering " + responseEvent + " event " );
+
+            jqThis.trigger( responseEvent );
          } );
 
          jqThis.on( "blur", function() {
@@ -184,6 +189,12 @@
             }
          }
       } );
+
+      function log( msg ) {
+         if( settings.logger ) {
+            settings.logger( "jquery.restrictedtextfield.js:  " + msg );
+         }
+      }
    };
 
    function isNothing( value ) {

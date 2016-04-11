@@ -45,6 +45,7 @@ public class SeleniumJUnitClient {
 
    private static WebDriver driver;
    private WebElement field;
+   private WebElement body;
 
 
    @BeforeClass
@@ -71,6 +72,7 @@ public class SeleniumJUnitClient {
    public void setUp() {
       ((JavascriptExecutor) driver).executeScript( "setUp();" );
       field = driver.findElement( By.id("field") );
+      body = driver.findElement( By.tagName("body") );
    }
 
    @After
@@ -79,11 +81,63 @@ public class SeleniumJUnitClient {
    }
 
    @Test
-   public void alpha_ignoreInvalid_success() {
+   public void invalidInput_ignoreInvalidInputTrue_inputIgnoredEventFires() {
+      final String val = "/";
+
+      initField( "invalidInput_ignoreInvalidInputTrue_inputIgnoredEventFires", FieldType.ALPHA, true );
+      keypress( val );
+
+      assertTrue( StringUtil.isNothing(getFieldValue()) );
+      assertTrue( inputIgnoredEventFired() );
+      assertFalse( validationFailedEventFired() );
+      assertFalse( validationSuccessEventFired() );
+
+      body.click();
+
+      assertTrue( StringUtil.isNothing(getFieldValue()) );
+
+      // Unlike the @Tests immediately below, we don't check validationInputIgnoredEventFired()
+      // for false because the page is using global variables to keep track of which events fired.
+      // The inputIgnoredEventFired flag is still going to be 'true', even though the event
+      // doesn't actually fire on blur.
+
+      assertFalse( validationFailedEventFired() );
+      assertTrue( validationSuccessEventFired() );
+   }
+
+   @Test
+   public void invalidInput_ignoreInvalidInputFalse_validationFailedEventFires() {
+      final String val = "/";
+
+      initField( "invalidInput_ignoreInvalidInputFalse_validationFailedEventFires", FieldType.ALPHA, false );
+      keypress( val );
+
+      assertEquals( val, getFieldValue() );
+      assertFalse( inputIgnoredEventFired() );
+      assertTrue( validationFailedEventFired() );
+      assertFalse( validationSuccessEventFired() );
+
+      body.click();
+
+      assertEquals( val, getFieldValue() );
+      assertFalse( inputIgnoredEventFired() );
+      assertTrue( validationFailedEventFired() );
+      assertFalse( validationSuccessEventFired() );
+   }
+
+   @Test
+   public void validInput_ignoreInvalidInputTrue_validationSuccessEventFires() {
       final String val = "C";
 
-      initField( FieldType.ALPHA, true );
+      initField( "validInput_ignoreInvalidInputTrue_validationSuccessEventFires", FieldType.ALPHA, true );
       keypress( val );
+
+      assertEquals( val, getFieldValue() );
+      assertFalse( inputIgnoredEventFired() );
+      assertFalse( validationFailedEventFired() );
+      assertTrue( validationSuccessEventFired() );
+
+      body.click();
 
       assertEquals( val, getFieldValue() );
       assertFalse( inputIgnoredEventFired() );
@@ -96,15 +150,16 @@ public class SeleniumJUnitClient {
       field.sendKeys( s );
    }
 
-   private void initField( final FieldType fieldType, final boolean ignoreInvalidInput ) {
+   private void initField( final String testName, final FieldType fieldType, final boolean ignoreInvalidInput ) {
       if( fieldType == null ) throw new IllegalArgumentException( "fieldType is null" );
 
-      final String command = String.format( "initField(\"%s\", %b);", fieldType.toString(), ignoreInvalidInput );
+      final String command = String.format( "initField(\"%s\", \"%s\", %b);", testName, fieldType.toString(), ignoreInvalidInput );
       ((JavascriptExecutor) driver).executeScript( command );
    }
 
    private String getFieldValue() {
-      return field.getAttribute( "value" );
+      final String value = field.getAttribute( "value" );
+      return value != null ? value : "";
    }
 
    private boolean inputIgnoredEventFired() {

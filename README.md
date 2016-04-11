@@ -45,8 +45,9 @@ ResrictedTextField is a jQuery plugin which enforces data formats on HTML text b
 
 | Property | Description   | Data Type | Valid Values         | Default Value |
 | -------- | --------------|---------- |----------------------|---------------|
-| `type`   | Text field type | string | alpha, upperAlpha, lowerAlpha, alphaSpace, upperAlphaSpace, lowerAlphaSpace, alphanumeric, upperAlphanumeric, lowerAlphanumeric, alphanumericSpace, upperAlphanumericSpace, lowerAlphanumericSpace, int, positiveInt, negativeInt, float, positiveFloat, negativeFloat, money, positiveMoney, negativeMoney, accountingMoney, negativeAccountingMoney| null |
+| `type`   | Text field type.  This is a required setting. | string | alpha, upperAlpha, lowerAlpha, alphaSpace, upperAlphaSpace, lowerAlphaSpace, alphanumeric, upperAlphanumeric, lowerAlphanumeric, alphanumericSpace, upperAlphanumericSpace, lowerAlphanumericSpace, int, positiveInt, negativeInt, float, positiveFloat, negativeFloat, money, positiveMoney, negativeMoney, accountingMoney, negativeAccountingMoney| null |
 | `preventInvalidInput` | When enabled, invalid keystrokes are ignored (the value of the text field is not updated).  When disabled, invalid keystrokes are not ignored. | boolean | true/false | true |
+| `logger` | A optional callback function for logging.  If you want to enable logging, provide a function and then do whatever you wish with the message. | function | A function accepting the log message as a string argument | undefined |
 
 
 ## Events
@@ -88,9 +89,9 @@ See the included HTML file for a complete demo.
 
 # Running Unit Tests
 
-[Selenium](http://www.seleniumhq.org) is used for unit testing in order to generate true keypresses in a text field.  This is because using JavaScript to create synthetic events results in an inability to test the state of the text field after a simulated keystroke.  Synthetic JavaScript events don't carry out the actual actions associated with them.  In other words, simulating a keypress fires the correct events, but doesn't result in actual text appearing.  This is a security restriction of JavaScript.
+[Selenium](http://www.seleniumhq.org) is used for unit testing in order to generate true keypresses in a text field.  A JavaScript-based framework (such as QUnit, etc.) would have made life much easier, but synthetic JavaScript events don't carry out the actual actions associated with them.  In other words, simulating a keypress fires the correct events, but doesn't result in actual text being written to a text field.  This is a security restriction of JavaScript.  As a result, this project uses Selenium and JUnit.
 
-The easiest way to get this running is to install the following build dependencies:
+The easiest way to get this running is to install the following dependencies:
 
 1. [Node.js](https://nodejs.org/en)
 2. [Gradle](http://gradle.org)
@@ -99,11 +100,11 @@ The easiest way to get this running is to install the following build dependenci
 
 Now, from a command prompt:
 
-1.  <code>cd</code> into the <code>jquery-RestrictedTextField/SeleniumJUnitClient</code> directory
-2.  Modify the <code>buildScriptsDir</code> property in <code>gradle.properties</code> to reflect the location of BuildScripts on your filesystem
-3.  <code>cd</code> to the <code>jquery-RestrictedTextField</code> directory
-4.  Type <code>npm install</code>
-5.  Type <code>grunt test</code>
+1.  `cd` into the `jquery-RestrictedTextField/SeleniumJUnitClient` directory
+2.  Modify the `buildScriptsDir` property in `gradle.properties` to reflect the location of BuildScripts on your filesystem
+3.  `cd` to the `jquery-RestrictedTextField` directory
+4.  Type `npm install`
+5.  Type `grunt test`
 
 
 ## Thanks

@@ -2,6 +2,7 @@
 
 * All money types automatically format on blur:  values will be updated, if necessary, to always end in a period followed by two digits
 * Tightened up the float types to not allow more than one leading zero, and to disallow negative zero
+* Added a logging callback function as a configurable option
 * Added unit tests
 
 

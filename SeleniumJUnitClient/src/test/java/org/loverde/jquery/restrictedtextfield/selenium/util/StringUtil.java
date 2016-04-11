@@ -15,7 +15,7 @@ package org.loverde.jquery.restrictedtextfield.selenium.util;
 
 public class StringUtil {
    public static boolean isNothing( final String s ) {
-      return s == null || s.trim().length() == 0;
+      return s == null || s.length() < 1;
    }
 
    public static String trim( final String s ) {

@@ -55,6 +55,10 @@
       <script type="text/javascript">
          "use strict";
 
+         function log( msg ) {
+            console.log( msg );
+         }
+
          function createCustomTypes() {
             var cfg= new $.fn.RestrictedTextFieldConfig();
 
@@ -87,30 +91,30 @@
                preventInvalidInput : false
             } );
 
-            $( "#txtUpperAlpha" ).restrictedTextField( { type : "upperAlpha" } );
-            $( "#txtLowerAlpha" ).restrictedTextField( { type : "lowerAlpha" } );
-            $( "#txtAlphaSpace" ).restrictedTextField( { type : "alphaSpace" } );
-            $( "#txtUpperAlphaSpace" ).restrictedTextField( { type : "upperAlphaSpace" } );
-            $( "#txtLowerAlphaSpace" ).restrictedTextField( { type : "lowerAlphaSpace" } );
-            $( "#txtAlphanum" ).restrictedTextField( { type: "alphanumeric" } );
-            $( "#txtUpperAlphanum" ).restrictedTextField( { type : "upperAlphanumeric" } );
-            $( "#txtLowerAlphanum" ).restrictedTextField( { type : "lowerAlphanumeric" } );
-            $( "#txtAlphanumSpace" ).restrictedTextField( { type : "alphanumericSpace" } );
-            $( "#txtUpperAlphanumSpace" ).restrictedTextField( { type : "upperAlphanumericSpace" } );
-            $( "#txtLowerAlphanumSpace" ).restrictedTextField( { type : "lowerAlphanumericSpace" } );
-            $( "#txtInt" ).restrictedTextField( { type : "int" } );
-            $( "#txtPosInt" ).restrictedTextField( { type : "positiveInt" } );
-            $( "#txtNegInt" ).restrictedTextField( { type : "negativeInt" } );
-            $( "#txtFloat" ).restrictedTextField( { type : "float" } );
-            $( "#txtPosFloat" ).restrictedTextField( { type : "positiveFloat" } );
-            $( "#txtNegFloat" ).restrictedTextField( { type : "negativeFloat" } );
-            $( "#txtMoney" ).restrictedTextField( { type : "money" } );
-            $( "#txtPosMoney" ).restrictedTextField( { type : "positiveMoney" } );
-            $( "#txtNegMoney" ).restrictedTextField( { type : "negativeMoney" } );
-            $( "#txtAccountingMoney" ).restrictedTextField( { type : "accountingMoney" } );
-            $( "#txtNegAccountingMoney" ).restrictedTextField( { type : "negativeAccountingMoney" } );
-            $( "#txtVowelsOnly" ).restrictedTextField( { type : "vowels" } );
-            $( "#txtAdditionExpr" ).restrictedTextField( { type : "additionExpr" } );
+            $( "#txtUpperAlpha" ).restrictedTextField( { type: "upperAlpha", logger: log } );
+            $( "#txtLowerAlpha" ).restrictedTextField( { type: "lowerAlpha", logger: log } );
+            $( "#txtAlphaSpace" ).restrictedTextField( { type: "alphaSpace", logger: log } );
+            $( "#txtUpperAlphaSpace" ).restrictedTextField( { type: "upperAlphaSpace", logger: log } );
+            $( "#txtLowerAlphaSpace" ).restrictedTextField( { type: "lowerAlphaSpace", logger: log } );
+            $( "#txtAlphanum" ).restrictedTextField( { type: "alphanumeric", logger: log } );
+            $( "#txtUpperAlphanum" ).restrictedTextField( { type: "upperAlphanumeric", logger: log } );
+            $( "#txtLowerAlphanum" ).restrictedTextField( { type: "lowerAlphanumeric", logger: log } );
+            $( "#txtAlphanumSpace" ).restrictedTextField( { type: "alphanumericSpace", logger: log } );
+            $( "#txtUpperAlphanumSpace" ).restrictedTextField( { type: "upperAlphanumericSpace", logger: log } );
+            $( "#txtLowerAlphanumSpace" ).restrictedTextField( { type: "lowerAlphanumericSpace", logger: log } );
+            $( "#txtInt" ).restrictedTextField( { type: "int", logger: log } );
+            $( "#txtPosInt" ).restrictedTextField( { type: "positiveInt", logger: log } );
+            $( "#txtNegInt" ).restrictedTextField( { type: "negativeInt", logger: log } );
+            $( "#txtFloat" ).restrictedTextField( { type: "float", logger: log } );
+            $( "#txtPosFloat" ).restrictedTextField( { type: "positiveFloat", logger: log } );
+            $( "#txtNegFloat" ).restrictedTextField( { type: "negativeFloat", logger: log } );
+            $( "#txtMoney" ).restrictedTextField( { type: "money", logger: log } );
+            $( "#txtPosMoney" ).restrictedTextField( { type: "positiveMoney", logger: log } );
+            $( "#txtNegMoney" ).restrictedTextField( { type: "negativeMoney", logger: log } );
+            $( "#txtAccountingMoney" ).restrictedTextField( { type: "accountingMoney", logger: log } );
+            $( "#txtNegAccountingMoney" ).restrictedTextField( { type: "negativeAccountingMoney", logger: log } );
+            $( "#txtVowelsOnly" ).restrictedTextField( { type: "vowels", logger: log } );
+            $( "#txtAdditionExpr" ).restrictedTextField( { type: "additionExpr", logger: log } );
 
             $( "input" ).on( "inputIgnored", function(event) {
                var jqThis = $( this );

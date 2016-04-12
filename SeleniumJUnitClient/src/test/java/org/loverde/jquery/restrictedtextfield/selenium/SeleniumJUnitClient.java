@@ -22,6 +22,7 @@ import java.io.IOException;
 import java.util.Properties;
 
 import org.junit.After;
+import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -66,6 +67,11 @@ public class SeleniumJUnitClient {
 
       driver = DriverFactory.newIeDriver();
       driver.get( props.getProperty(APP_PROP_KEY_URL) );
+   }
+
+   @AfterClass
+   public static void stopSelenium() {
+      driver.quit();
    }
 
    @Before

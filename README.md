@@ -110,4 +110,4 @@ If you're using Windows and if you haven't used Selenium before, Windows Firewal
 
 ## Thanks
 
-Do you like this library?  Want to toss a few bucks my way to say thanks?  I accept donations at https://paypal.me/KurtisLoVerde/7.  Thank you for your support!
+Do you like this library?  Want to toss a few bucks my way to say thanks?  I accept donations at https://paypal.me/KurtisLoVerde/10.  Thank you for your support!

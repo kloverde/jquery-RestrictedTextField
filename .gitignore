@@ -2,5 +2,5 @@
 /build
 /node_modules
 /src/temp
-/SeleniumJUnitClient/.gradle
-/SeleniumJUnitClient/build
+/SeleniumTester/.gradle
+/SeleniumTester/build

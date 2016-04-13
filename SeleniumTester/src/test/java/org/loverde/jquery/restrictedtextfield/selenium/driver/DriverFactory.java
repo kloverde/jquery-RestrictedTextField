@@ -1,5 +1,5 @@
 /*
- * RestrictedTextField v1.1
+ * RestrictedTextField
  * https://www.github.com/kloverde/jquery-RestrictedTextField
  *
  * This software is licensed under the 3-clause BSD license.
@@ -14,6 +14,7 @@ package org.loverde.jquery.restrictedtextfield.selenium.driver;
 
 import java.util.logging.Level;
 
+import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxProfile;
 import org.openqa.selenium.ie.InternetExplorerDriver;
@@ -22,10 +23,10 @@ import org.openqa.selenium.ie.InternetExplorerDriver;
 public class DriverFactory extends FirefoxDriver {
 
    /**
-    * Firefox keep breaking Selenium by making changes to things.
-    * You have to disable stuff to get WebDriver.get() to work.
-    * Oh, and this solution stopped working, too, because they
-    * made another change.  If you're using Firefox, good luck.
+    * Firefox keeps breaking Selenium by making changes to things.  You have to set
+    * options in the profile in order for WebDriver.get() to work.  It seems to be
+    * common wisdom that your Firefox installation should lag behind a few versions
+    * if using it with Selenium.
     */
    public static final FirefoxDriver newFirefoxDriver() {
       final FirefoxDriver driver;
@@ -44,6 +45,14 @@ public class DriverFactory extends FirefoxDriver {
 
    public static final InternetExplorerDriver newIeDriver() {
       final InternetExplorerDriver driver = new InternetExplorerDriver();
+
+      driver.setLogLevel( Level.ALL );
+
+      return driver;
+   }
+
+   public static final ChromeDriver newChromeDriver() {
+      final ChromeDriver driver = new ChromeDriver();
 
       driver.setLogLevel( Level.ALL );
 

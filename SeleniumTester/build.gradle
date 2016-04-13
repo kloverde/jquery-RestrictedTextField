@@ -4,6 +4,13 @@ apply from: buildScriptsDir + "/build_java_lib.gradle"
 
 
 dependencies {
-   testCompile "junit:junit:4.+"
+   testCompile "junit:junit:4.12"
    testCompile "org.seleniumhq.selenium:selenium-server:2.53.0"
+}
+
+test {
+   testLogging.showStandardStreams = true;
+
+   exclude "**/*Test.class"
+   include "**/SeleniumTestSuite.class"
 }

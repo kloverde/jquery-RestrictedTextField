@@ -1,5 +1,5 @@
 /*
- * RestrictedTextField v1.1
+ * RestrictedTextField
  * https://www.github.com/kloverde/jquery-RestrictedTextField
  *
  * This software is licensed under the 3-clause BSD license.

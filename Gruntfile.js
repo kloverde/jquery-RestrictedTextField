@@ -22,7 +22,7 @@ module.exports = function(grunt) {
       exec: {
          "gradle-test": {
             cmd: function() {
-               return "cd SeleniumJUnitClient && gradle clean test";
+               return "cd SeleniumTester && gradle clean test";
             }
          }
       },
@@ -43,7 +43,7 @@ module.exports = function(grunt) {
       },
 
       // The Selenium server loads the test page and automates the browser per the requests from the Selenium client.
-      // If you change the Selenium version here, be sure to update build.gradle in the SeleniumJUnitClient project.
+      // If you change the Selenium version here, be sure to update build.gradle in the SeleniumTester project.
       "start-selenium-server": {
          dev: {
             options: {

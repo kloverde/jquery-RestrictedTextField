@@ -1,5 +1,5 @@
 /*
- * RestrictedTextField v1.1
+ * RestrictedTextField
  * https://www.github.com/kloverde/jquery-RestrictedTextField
  *
  * This software is licensed under the 3-clause BSD license.
@@ -19,6 +19,7 @@ import static org.junit.Assert.assertTrue;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.lang.invoke.MethodHandles;
 import java.util.Properties;
 
 import org.junit.After;
@@ -34,25 +35,27 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
 
-public class SeleniumJUnitClient {
+public abstract class AbstractTest {
 
    private static Properties props;
 
-   private static final String PROPERTIES_FILENAME = "application.properties";
+   private static final String PROPERTIES_FILENAME = "gradle.properties";
 
-   public static final String APP_PROP_KEY_IE_DRIVER_PATH    = "ieDriverPath",
-                              APP_PROP_KEY_URL               = "url",
-                              SYSTEM_PROP_KEY_IE_DRIVER_PATH = "webdriver.ie.driver";
+   public static final String APP_PROP_KEY_IE_DRIVER_PATH        = "ieDriverPath",
+                              APP_PROP_KEY_CHROME_DRIVER_PATH    = "chromeDriverPath",
+                              APP_PROP_KEY_URL                   = "url",
+
+                              SYSTEM_PROP_KEY_IE_DRIVER_PATH     = "webdriver.ie.driver",
+                              SYSTEM_PROP_KEY_CHROME_DRIVER_PATH = "webdriver.chrome.driver";
 
    private static WebDriver driver;
    private WebElement field;
    private WebElement body;
 
+   private static Class<?> lastClass;
 
-   @BeforeClass
-   public static void init() {
-      final File exe;
 
+   public AbstractTest() throws Exception {
       props = new Properties();
 
       try {
@@ -62,16 +65,42 @@ public class SeleniumJUnitClient {
          System.exit( -1 );
       }
 
-      exe = new File( props.getProperty(APP_PROP_KEY_IE_DRIVER_PATH) );
-      System.setProperty( SYSTEM_PROP_KEY_IE_DRIVER_PATH, exe.getAbsolutePath() );
+      final String iePath = props.getProperty( APP_PROP_KEY_IE_DRIVER_PATH ),
+                   chromePath = props.getProperty( APP_PROP_KEY_CHROME_DRIVER_PATH );
 
-      driver = DriverFactory.newIeDriver();
-      driver.get( props.getProperty(APP_PROP_KEY_URL) );
+      if( !StringUtil.isNothing(iePath) ) {
+         System.setProperty( SYSTEM_PROP_KEY_IE_DRIVER_PATH, new File(iePath).getAbsolutePath() );
+      }
+
+      if( !StringUtil.isNothing(chromePath) ) {
+         System.setProperty( SYSTEM_PROP_KEY_CHROME_DRIVER_PATH, new File(chromePath).getAbsolutePath() );
+      }
+
+      if( this.getClass() != lastClass ) {
+         driver = null;
+
+         if( this.getClass() == InternetExplorerTest.class ) {
+            driver = DriverFactory.newIeDriver();
+         } else if( this.getClass() == FirefoxTest.class ) {
+            driver = DriverFactory.newFirefoxDriver();
+         } else if( this.getClass() == ChromeTest.class ) {
+            driver = DriverFactory.newChromeDriver();
+         }
+
+         if( driver == null ) {
+            throw new Exception( "No driver for " + this.getClass() );
+         }
+
+         driver.get( props.getProperty(APP_PROP_KEY_URL) );
+         lastClass = this.getClass();
+      }
    }
 
    @AfterClass
    public static void stopSelenium() {
-      driver.quit();
+      if( driver != null ) {
+         driver.quit();
+      }
    }
 
    @Before

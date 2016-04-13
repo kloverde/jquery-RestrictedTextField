@@ -89,22 +89,23 @@ See the included HTML file for a complete demo.
 
 # Running Unit Tests
 
-[Selenium](http://www.seleniumhq.org) is used for unit testing in order to generate true keypresses in a text field.  A JavaScript-based framework (such as QUnit, etc.) would have made life much easier, but synthetic JavaScript events don't carry out the actual actions associated with them.  In other words, simulating a keypress fires the correct events, but doesn't result in actual text being written to a text field.  This is a security restriction of JavaScript.  As a result, this project uses Selenium and JUnit.
+[Selenium](http://www.seleniumhq.org) is used for unit testing in order to generate true keypresses in a text field.  A JavaScript-based framework (such as QUnit, etc.) would have made life simpler, but synthetic JavaScript events don't carry out the actual actions associated with them.  In other words, simulating a keypress fires the correct events, but doesn't result in actual text being written to a text field.  This is a security restriction of JavaScript.  As a result, this project uses Selenium and JUnit.
 
-The easiest way to get this running is to install the following dependencies:
+1.  Install the following build dependencies:
+  * [Node.js](https://nodejs.org/en)
+  * [Gradle](http://gradle.org)
+  * [Java SDK](http://www.oracle.com/technetwork/java/javase/index.html) version 7 or later
+  * [BuildScripts](https://github.com/kloverde/BuildScripts)
+2.  If you are using IE or Chrome, download the appropriate browser driver for your system at [seleniumhq.org](http://seleniumhq.org).  Once you've downloaded the drivers, update the `ieDriverPath` and `chromeDriverPath` properties in `gradle.properties` with the paths.
+3.  Update the `browsers` property in `gradle.properties` to reflect which browsers you will be testing with.
+4.  Now, from a command prompt:
+  1.  `cd` into the `jquery-RestrictedTextField/SeleniumTester` directory
+  2.  Modify the `buildScriptsDir` property in `gradle.properties` to reflect the location of BuildScripts on your filesystem
+  3..  `cd` to the `jquery-RestrictedTextField` directory
+  4.  Type `npm install`
+  5.  Type `grunt test`
 
-1. [Node.js](https://nodejs.org/en)
-2. [Gradle](http://gradle.org)
-3. [Java SDK](http://www.oracle.com/technetwork/java/javase/index.html) version 7 or later
-4. [BuildScripts](https://github.com/kloverde/BuildScripts)
-
-Now, from a command prompt:
-
-1.  `cd` into the `jquery-RestrictedTextField/SeleniumJUnitClient` directory
-2.  Modify the `buildScriptsDir` property in `gradle.properties` to reflect the location of BuildScripts on your filesystem
-3.  `cd` to the `jquery-RestrictedTextField` directory
-4.  Type `npm install`
-5.  Type `grunt test`
+If you're using Windows and if you haven't used Selenium before, Windows Firewall will pop up an alert and ask for permission to listen for connections.  You need to grant this permission.  During this time, one or more of the unit tests may fail.  If this happens, re-run the tests after the permission has been granted.
 
 
 ## Thanks

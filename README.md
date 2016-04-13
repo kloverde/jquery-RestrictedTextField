@@ -97,11 +97,11 @@ See the included HTML file for a complete demo.
   * [Java SDK](http://www.oracle.com/technetwork/java/javase/index.html) version 7 or later
   * [BuildScripts](https://github.com/kloverde/BuildScripts)
 2.  If you are using IE or Chrome, download the appropriate browser driver for your system at [seleniumhq.org](http://seleniumhq.org).  Once you've downloaded the drivers, update the `ieDriverPath` and `chromeDriverPath` properties in `gradle.properties` with the paths.
-3.  Update the `browsers` property in `gradle.properties` to reflect which browsers you will be testing with.
+3.  Update the `browsers` property in `gradle.properties` to reflect which browsers you will be testing with
 4.  Now, from a command prompt:
   1.  `cd` into the `jquery-RestrictedTextField/SeleniumTester` directory
   2.  Modify the `buildScriptsDir` property in `gradle.properties` to reflect the location of BuildScripts on your filesystem
-  3..  `cd` to the `jquery-RestrictedTextField` directory
+  3.  `cd` to the `jquery-RestrictedTextField` directory
   4.  Type `npm install`
   5.  Type `grunt test`
 

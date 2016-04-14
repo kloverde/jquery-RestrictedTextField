@@ -43,9 +43,9 @@
     "url": "https://github.com/kloverde/jquery-RestrictedTextField.git"
   },
   "dependencies": {},
-  "homepage": "https://github.com/j-ulrich/jquery-simulate-ext",
+  "homepage": "https://github.com/kloverde/jquery-RestrictedTextField",
   "scripts": {
-    "test": "grunt qunit"
+    "test": "grunt test"
   },
   "devDependencies": {
     "grunt": "0.4.5",

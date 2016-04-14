@@ -98,7 +98,7 @@ See the included HTML file for a complete demo.
   * [BuildScripts](https://github.com/kloverde/BuildScripts)
 2.  Modify the `buildScriptsDir` property in `SeleniumTester/gradle.properties` to reflect the location of BuildScripts on your filesystem
 3.  If you are testing in IE or Chrome, download the appropriate browser driver for your system at [seleniumhq.org](http://www.seleniumhq.org).  Once you've downloaded the drivers, update `ieDriverPath` and `chromeDriverPath` in `SeleniumTester/gradle.properties` with their paths.
-4.  Update the `browsers` property in `SeleniumTester/gradle.properties` to reflect which browsers you'll be testing with
+4.  Update the `browsers` property in `SeleniumTester/gradle.properties` to reflect which browsers you'll be testing with.  This is explained further by documentation found in the properties file.
 5.  Now, from a command prompt:
   1.  `cd` to the project root (`jquery-RestrictedTextField`)
   2.  Type `npm install`

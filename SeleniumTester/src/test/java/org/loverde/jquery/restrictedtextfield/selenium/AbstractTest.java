@@ -39,7 +39,7 @@ public abstract class AbstractTest {
 
    private static Properties props;
 
-   private static final String PROPERTIES_FILENAME = "gradle.properties";
+   private static final String PROPERTIES_FILENAME = "gradle.propertiess";
 
    public static final String APP_PROP_IE_DRIVER_PATH        = "ieDriverPath",
                               APP_PROP_CHROME_DRIVER_PATH    = "chromeDriverPath",
@@ -56,15 +56,9 @@ public abstract class AbstractTest {
 
 
    @BeforeClass
-   public static void init() {
+   public static void init() throws IOException {
       props = new Properties();
-
-      try {
-         props.load( new FileInputStream(PROPERTIES_FILENAME) );
-      } catch( final IOException e ) {
-         e.printStackTrace();
-         System.exit( -1 );
-      }
+      props.load( new FileInputStream(PROPERTIES_FILENAME) );
    }
 
    public AbstractTest() throws Exception {

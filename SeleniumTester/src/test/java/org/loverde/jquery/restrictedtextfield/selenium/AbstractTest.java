@@ -39,7 +39,7 @@ public abstract class AbstractTest {
 
    private static Properties props;
 
-   private static final String PROPERTIES_FILENAME = "gradle.propertiess";
+   private static final String PROPERTIES_FILENAME = "gradle.properties";
 
    public static final String APP_PROP_IE_DRIVER_PATH        = "ieDriverPath",
                               APP_PROP_CHROME_DRIVER_PATH    = "chromeDriverPath",

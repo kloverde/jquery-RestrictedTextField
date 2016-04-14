@@ -41,12 +41,12 @@ public abstract class AbstractTest {
 
    private static final String PROPERTIES_FILENAME = "gradle.properties";
 
-   public static final String APP_PROP_KEY_IE_DRIVER_PATH        = "ieDriverPath",
-                              APP_PROP_KEY_CHROME_DRIVER_PATH    = "chromeDriverPath",
-                              APP_PROP_KEY_URL                   = "url",
+   public static final String APP_PROP_IE_DRIVER_PATH        = "ieDriverPath",
+                              APP_PROP_CHROME_DRIVER_PATH    = "chromeDriverPath",
+                              APP_PROP_URL                   = "url",
 
-                              SYSTEM_PROP_KEY_IE_DRIVER_PATH     = "webdriver.ie.driver",
-                              SYSTEM_PROP_KEY_CHROME_DRIVER_PATH = "webdriver.chrome.driver";
+                              SYSTEM_PROP_IE_DRIVER_PATH     = "webdriver.ie.driver",
+                              SYSTEM_PROP_CHROME_DRIVER_PATH = "webdriver.chrome.driver";
 
    private static WebDriver driver;
    private WebElement field;
@@ -55,7 +55,8 @@ public abstract class AbstractTest {
    private static Class<?> lastClass;
 
 
-   public AbstractTest() throws Exception {
+   @BeforeClass
+   public static void init() {
       props = new Properties();
 
       try {
@@ -64,16 +65,18 @@ public abstract class AbstractTest {
          e.printStackTrace();
          System.exit( -1 );
       }
+   }
 
-      final String iePath = props.getProperty( APP_PROP_KEY_IE_DRIVER_PATH ),
-                   chromePath = props.getProperty( APP_PROP_KEY_CHROME_DRIVER_PATH );
+   public AbstractTest() throws Exception {
+      final String iePath = props.getProperty( APP_PROP_IE_DRIVER_PATH ),
+                   chromePath = props.getProperty( APP_PROP_CHROME_DRIVER_PATH );
 
       if( !StringUtil.isNothing(iePath) ) {
-         System.setProperty( SYSTEM_PROP_KEY_IE_DRIVER_PATH, new File(iePath).getAbsolutePath() );
+         System.setProperty( SYSTEM_PROP_IE_DRIVER_PATH, new File(iePath).getAbsolutePath() );
       }
 
       if( !StringUtil.isNothing(chromePath) ) {
-         System.setProperty( SYSTEM_PROP_KEY_CHROME_DRIVER_PATH, new File(chromePath).getAbsolutePath() );
+         System.setProperty( SYSTEM_PROP_CHROME_DRIVER_PATH, new File(chromePath).getAbsolutePath() );
       }
 
       if( this.getClass() != lastClass ) {
@@ -91,7 +94,7 @@ public abstract class AbstractTest {
             throw new Exception( "No driver for " + this.getClass() );
          }
 
-         driver.get( props.getProperty(APP_PROP_KEY_URL) );
+         driver.get( props.getProperty(APP_PROP_URL) );
          lastClass = this.getClass();
       }
    }

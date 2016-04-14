@@ -13,6 +13,11 @@
 package org.loverde.jquery.restrictedtextfield.selenium;
 
 
+/**
+ * This class' purpose is to re-run {@linkplain AbstractTest} under
+ * a unique name so that in a multi-browser test scenario, you know
+ * which browser a test failed in.
+ */
 public class ChromeTest extends AbstractTest {
 
    public ChromeTest() throws Exception {

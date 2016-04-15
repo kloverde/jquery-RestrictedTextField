@@ -10,7 +10,7 @@
  * Donations:  https://paypal.me/KurtisLoVerde/10
  */
 
-package org.loverde.jquery.restrictedtextfield.selenium;
+package org.loverde.jquery.restrictedtextfield.selenium.tests;
 
 
 /**

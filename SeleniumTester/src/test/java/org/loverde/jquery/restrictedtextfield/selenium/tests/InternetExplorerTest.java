@@ -10,7 +10,7 @@
  * Donations:  https://paypal.me/KurtisLoVerde/10
  */
 
-package org.loverde.jquery.restrictedtextfield.selenium;
+package org.loverde.jquery.restrictedtextfield.selenium.tests;
 
 
 /**
@@ -18,9 +18,9 @@ package org.loverde.jquery.restrictedtextfield.selenium;
  * a unique name so that in a multi-browser test scenario, you know
  * which browser a test failed in.
  */
-public class FirefoxTest extends AbstractTest {
+public class InternetExplorerTest extends AbstractTest {
 
-   public FirefoxTest() throws Exception {
+   public InternetExplorerTest() throws Exception {
       super();
    }
 }

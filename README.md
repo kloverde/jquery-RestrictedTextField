@@ -104,7 +104,12 @@ See the included HTML file for a complete demo.
   2.  Type `npm install`
   3.  Type `grunt test`
 
-If you're using Windows and if you haven't used Selenium before, Windows Firewall will pop up an alert asking whether to allow the driver to listen for connections.  You need to grant this permission.  During this time, one or more of the unit tests may fail.  If this happens, re-run the tests after the permission has been granted.
+
+####NOTES:
+
+* #### The Selenium 64-bit IE driver has been utterly unusable since at least 2013, which, at the time I wrote this sentence, means it's been three years.  See [here](https://github.com/seleniumhq/selenium-google-code-issue-archive/issues/5116).  So, if you're testing on a 64-bit version of Windows with IE 10 or IE 11, use the 32-bit driver.
+
+* #### If you're using Windows and if you haven't used Selenium before, Windows Firewall will pop up an alert asking whether to allow the driver to listen for connections.  You need to grant this permission.  During this time, one or more of the unit tests may fail.  If this happens, re-run the tests after the permission has been granted.
 
 
 ## Thanks

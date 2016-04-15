@@ -15,7 +15,7 @@ package org.loverde.jquery.restrictedtextfield.selenium;
 
 public enum FieldType {
    ALPHA( "alpha" ),
-   UPPER_ALHPA( "upperAlpha" ),
+   UPPER_ALPHA( "upperAlpha" ),
    LOWER_ALPHA( "lowerAlpha" ),
    ALPHA_SPACE( "alphaSpace" ),
    UPPER_ALPHA_SPACE( "upperAlphaSpace" ),

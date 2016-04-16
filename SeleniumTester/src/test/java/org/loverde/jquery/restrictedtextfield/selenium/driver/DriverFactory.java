@@ -14,6 +14,7 @@ package org.loverde.jquery.restrictedtextfield.selenium.driver;
 
 import java.util.logging.Level;
 
+import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxProfile;
@@ -38,7 +39,9 @@ public class DriverFactory extends FirefoxDriver {
       //profile.setPreference( "toolkit.telemetry.reportingpolicy.firstRun", false );
 
       driver = new FirefoxDriver( profile );
+
       driver.setLogLevel( Level.ALL );
+      setCommonDriverProps( driver );
 
       return driver;
    }
@@ -47,6 +50,7 @@ public class DriverFactory extends FirefoxDriver {
       final InternetExplorerDriver driver = new InternetExplorerDriver();
 
       driver.setLogLevel( Level.ALL );
+      setCommonDriverProps( driver );
 
       return driver;
    }
@@ -55,7 +59,14 @@ public class DriverFactory extends FirefoxDriver {
       final ChromeDriver driver = new ChromeDriver();
 
       driver.setLogLevel( Level.ALL );
+      setCommonDriverProps( driver );
 
       return driver;
+   }
+
+   private static void setCommonDriverProps( final WebDriver driver ) {
+      // setLogLevel isn't in the interface... I guess there's a reason for that
+
+      driver.manage().window().maximize();
    }
 }

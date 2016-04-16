@@ -23,11 +23,13 @@ public class Characters {
                               UPPER_ALPHA_SPACE = UPPER_ALPHA + " ",
                               LOWER_ALPHA_SPACE = LOWER_ALPHA + " ",
 
-                              NUMBERS = "01234567890",
+                              NUMBERS_NO_ZERO = "123456789",
+                              NUMBERS_START_ZERO = "0" + NUMBERS_NO_ZERO,
+                              NUMBERS_END_ZERO = NUMBERS_NO_ZERO + "0",
 
-                              ALPHANUMERIC = ALPHA + NUMBERS,
-                              UPPER_ALPHANUMERIC = UPPER_ALPHA + NUMBERS,
-                              LOWER_ALPHANUMERIC = LOWER_ALPHA + NUMBERS,
+                              ALPHANUMERIC = ALPHA + NUMBERS_END_ZERO,
+                              UPPER_ALPHANUMERIC = UPPER_ALPHA + NUMBERS_END_ZERO,
+                              LOWER_ALPHANUMERIC = LOWER_ALPHA + NUMBERS_END_ZERO,
 
                               ALPHANUMERIC_SPACE = ALPHANUMERIC + " ",
                               UPPER_ALPHANUMERIC_SPACE = UPPER_ALPHANUMERIC + " ",

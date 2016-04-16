@@ -56,6 +56,7 @@
       }
 
       function init() {
+         // This first block of variables is a collection of regular expressions for incomplete (but valid so far) input.
          var negativeInt   = /^-$/,
              posNegFloat   = /^-?\.?$|^-?0$|^-?\d*\.$/,
              positiveFloat = /^[\.\d]$|^\.$|^\d*\.$/,
@@ -82,7 +83,7 @@
          _addType( dest, "int",                    /^0$|^-?[1-9]\d*$/               , negativeInt );    // Positive and negative integers
          _addType( dest, "positiveInt",            /^0$|^[1-9]\d*$/                 , null );           // Positive integers
          _addType( dest, "negativeInt",            /^0$|^-[1-9]\d*$/                , negativeInt );    // Negative integers
-         _addType( dest, "float",                  /^0$|^-?0?\.\d+$|^-?[1-9]*\.\d+$|^-?[1-9]$/  , posNegFloat );    // 0/positive/negative floating-point numbers, with or without a value to the left of the decimal point; positive and negative integers
+         _addType( dest, "float",                  /^0$|^-?0?\.\d+$|^-?[1-9]\d*\.\d+$|^-?[1-9]+\d*$/  , posNegFloat );    // 0/positive/negative floating-point numbers, with or without a value to the left of the decimal point; positive and negative integers
          _addType( dest, "positiveFloat",          /^\d*\.?\d+$/                    , positiveFloat );  // Positive floating-point numbers and positive integers
          _addType( dest, "negativeFloat",          /^-\d*\.?\d+$/                   , negativeFloat );  // Negative floating-point numbers and negative integers
          _addType( dest, "money",                  /^-?\d*\.?\d{1,2}$/              , posNegFloat );    // Positive and negative floating-point numbers with one or two numbers after the decimal point, plus positive and negative integers
@@ -163,7 +164,16 @@
 
          jqThis.on( "blur", function() {
             applyFormatting( this );
-            jqThis.trigger( this.value.length === 0 || regexes.fullRegex.test(this.value) ? EVENT_VALIDATION_SUCCESS : EVENT_VALIDATION_FAILED );
+
+            var responseEvent = EVENT_VALIDATION_FAILED;
+
+            if( this.value.length === 0 || regexes.fullRegex.test(this.value) ) {
+               responseEvent = EVENT_VALIDATION_SUCCESS;
+            }
+
+            log( "triggering " + responseEvent + " event " );
+
+            jqThis.trigger( responseEvent );
          } );
 
          function applyFormatting( domField ) {

@@ -16,10 +16,14 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.lang.invoke.MethodHandles;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.Properties;
 
@@ -28,6 +32,7 @@ import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.junit.runners.Parameterized.Parameters;
 import org.loverde.jquery.restrictedtextfield.selenium.Characters;
 import org.loverde.jquery.restrictedtextfield.selenium.FieldType;
 import org.loverde.jquery.restrictedtextfield.selenium.driver.DriverFactory;
@@ -56,12 +61,16 @@ public abstract class AbstractTest {
    private WebElement body;
 
    private static Class<?> lastClass;
-
+   private static File logDirectory;
 
    @BeforeClass
    public static void init() throws IOException {
       props = new Properties();
       props.load( new FileInputStream(PROPERTIES_FILENAME) );
+
+      if( logDirectory == null ) {
+         logDirectory = createLogDirectory();
+      }
    }
 
    public AbstractTest() throws Exception {
@@ -99,7 +108,9 @@ public abstract class AbstractTest {
    }
 
    @AfterClass
-   public static void stopSelenium() {
+   public static void stopSelenium() throws IOException {
+      writeLog();
+
       if( driver != null ) {
          driver.quit();
       }
@@ -135,10 +146,9 @@ public abstract class AbstractTest {
 
       assertTrue( StringUtil.isNothing(getFieldValue()) );
 
-      // Unlike the @Tests immediately below, we don't check validationInputIgnoredEventFired()
-      // for false because the page is using global variables to keep track of which events fired.
-      // The inputIgnoredEventFired flag is still going to be 'true', even though the event
-      // doesn't actually fire on blur.
+      // We don't check validationInputIgnoredEventFired() for false because the page is using global
+      // variables to keep track of which events fired.  The inputIgnoredEventFired flag is still
+      // going to be 'true', even though the event doesn't actually fire on blur.
 
       assertFalse( validationFailedEventFired() );
       assertTrue( validationSuccessEventFired() );
@@ -188,6 +198,8 @@ public abstract class AbstractTest {
    // To be practical, inputs are limited to characters found on a U.S. keyboard.  Testing against every Unicode
    // character is NOT practical.
 
+   // alpha
+/*
    @Test
    public void alpha() {
       initField( FieldType.ALPHA, true );
@@ -229,6 +241,8 @@ public abstract class AbstractTest {
       keypress( Characters.ALL );
       assertEquals( Characters.LOWER_ALPHA_SPACE, getFieldValue() );
    }
+
+   // alphanumeric
 
    @Test
    public void alphanumeric() {
@@ -272,7 +286,309 @@ public abstract class AbstractTest {
       assertEquals( Characters.LOWER_ALPHANUMERIC_SPACE, getFieldValue() );
    }
 
+   // int
 
+   @Test
+   public void integer() {
+      initField( "integer", FieldType.INT, true );
+      keypress( Characters.ALPHANUMERIC );
+      assertEquals( Characters.NUMBERS_END_ZERO, getFieldValue() );
+   }
+
+   @Test
+   public void integer_noDoubleZero() {
+      initField( "integer_noDoubleZero", FieldType.INT, true );
+      keypress( "00" );
+      assertEquals( "0", getFieldValue() );
+   }
+
+   @Test
+   public void integer_positive_noLeadingZeroBeforeNonZeroNumber() {
+      initField( "integer_positive_noLeadingZeroBeforeNonZeroNumber", FieldType.INT, true );
+      keypress( "01" );
+      assertEquals( "0", getFieldValue() );
+   }
+
+   @Test
+   public void integer_nevative_noNegativeZero() {
+      initField( "integer_nevative_noNegativeZero", FieldType.INT, true );
+      keypress( "-0" );
+      assertEquals( "-", getFieldValue() );
+   }
+
+   @Test
+   public void integer_negative() {
+      initField( "integer_negative", FieldType.INT, true );
+      keypress( "-123" );
+      assertEquals( "-123", getFieldValue() );
+   }
+
+   @Test
+   public void integer_noDoubleNegative() {
+      initField( "integer_noDoubleNegative", FieldType.INT, true );
+      keypress( "--1" );
+      assertEquals( "-1", getFieldValue() );
+   }
+
+   @Test
+   public void integer_noFloatingPoint() {
+      initField( "integer_noFloatingPoint", FieldType.INT, true );
+      keypress( "1.23" );
+      assertEquals( "123", getFieldValue() );
+   }
+
+   // positiveInt
+
+   @Test
+   public void positiveInt() {
+      initField( "positiveInt", FieldType.POSITIVE_INT, true );
+      keypress( Characters.ALPHANUMERIC );
+      assertEquals( Characters.NUMBERS_END_ZERO, getFieldValue() );
+   }
+
+   @Test
+   public void positiveInt_noDoubleZero() {
+      initField( "positiveInt_noDoubleZero", FieldType.POSITIVE_INT, true );
+      keypress( "00" );
+      assertEquals( "0", getFieldValue() );
+   }
+
+   @Test
+   public void positiveInt_noLeadingZeroBeforeNonZeroNumber() {
+      initField( "postiveInt_noLeadingZeroBeforeNonZeroNumber", FieldType.POSITIVE_INT, true );
+      keypress( "01" );
+      assertEquals( "0", getFieldValue() );
+   }
+
+   @Test
+   public void positiveInt_noNegative() {
+      initField( "positiveInt_noNegative", FieldType.POSITIVE_INT, true );
+      keypress( "-1" );
+      assertEquals( "1", getFieldValue() );
+   }
+
+   @Test
+   public void positiveInt_noFloatingPoint() {
+      initField( "positiveInt_noFloatingPoint", FieldType.POSITIVE_INT, true );
+      keypress( "1.23" );
+      assertEquals( "123", getFieldValue() );
+   }
+
+   // negativeInt
+
+   @Test
+   public void negativeInt() {
+      initField( "negativeInt", FieldType.NEGATIVE_INT, true );
+      keypress( "-" + Characters.ALPHANUMERIC );
+      assertEquals( "-" + Characters.NUMBERS_END_ZERO, getFieldValue() );
+   }
+
+   @Test
+   public void negativeInt_noPositives() {
+      initField( "negativeInt_noPositives", FieldType.NEGATIVE_INT, true );
+      keypress( Characters.NUMBERS_END_ZERO );
+      assertEquals( "0", getFieldValue() );
+   }
+
+   @Test
+   public void negativeInt_noNegativeZero() {
+      initField( "negativeInt_noDoubleZero", FieldType.NEGATIVE_INT, true );
+      keypress( "-0" );
+      assertEquals( "-", getFieldValue() );
+   }
+
+   @Test
+   public void negativeInt_noNegativeSignAfterDigit() {
+      initField( "negativeInt_noNegativeSignAfterDigit", FieldType.NEGATIVE_INT, true );
+      keypress( "-12-3" );
+      assertEquals( "-123", getFieldValue() );
+   }
+
+   @Test
+   public void negativeInt_noFloatingPoint() {
+      initField( "negativeInt_noFloatingPoint", FieldType.NEGATIVE_INT, true );
+      keypress( "-1.23" );
+      assertEquals( "-123", getFieldValue() );
+   }
+*/
+   // float
+
+   @Test
+   public void float_positive_intIsValid() {
+      initField( "float_positive_intIsValid", FieldType.FLOAT, true );
+      keypress( Characters.NUMBERS_END_ZERO );
+      assertEquals( Characters.NUMBERS_END_ZERO, getFieldValue() );
+   }
+
+   @Test
+   public void float_positive() {
+      initField( "float_positive", FieldType.FLOAT, true );
+      // number like 123.456
+      keypress( Characters.ALPHANUMERIC_SPACE + "." + Characters.NUMBERS_END_ZERO );
+      assertEquals( Characters.NUMBERS_END_ZERO + "." + Characters.NUMBERS_END_ZERO, getFieldValue() );
+   }
+
+   @Test
+   public void float_positive_zero() {
+      initField( "float_positive_zero", FieldType.FLOAT, true );
+      keypress( "0" );
+      assertEquals( "0", getFieldValue() );
+   }
+
+   @Test
+   public void float_positive_noLeadingDoubleZero() {
+      initField( "float_positive_noLeadingDoubleZero", FieldType.FLOAT, true );
+      keypress( "00.0" );
+      assertEquals( "0.0", getFieldValue() );
+   }
+
+   @Test
+   public void float_positive_bunchOfZeros() {
+      initField( "float_positive_bunchOfZeros", FieldType.FLOAT, true );
+      keypress( "0.00000" );
+      assertEquals( "0.00000", getFieldValue() );
+   }
+
+   @Test
+   public void float_negative() {
+      final String val = "-" + Characters.NUMBERS_END_ZERO + "." + Characters.NUMBERS_END_ZERO;
+
+      initField( "float_negative", FieldType.FLOAT, true );
+      keypress( val );
+      assertEquals( val, getFieldValue() );
+   }
+
+   @Test
+   public void float_negative_intIsValid() {
+      initField( "float_negative_intIsValid", FieldType.FLOAT, true );
+      // number like -123.456
+      keypress( "-" + Characters.NUMBERS_END_ZERO );
+      assertEquals( "-" + Characters.NUMBERS_END_ZERO, getFieldValue() );
+   }
+
+   @Test
+   public void float_negative_noLeadingDoubleZero() {
+      initField( "float_negative_noLeadingDoubleZero", FieldType.FLOAT, true );
+      keypress( "-00.0" );
+      assertEquals( "-0.0", getFieldValue() );
+   }
+
+   @Test
+   public void float_negative_bunchOfZeros() {
+      initField( "float_negative_bunchOfZeros", FieldType.FLOAT, true );
+      keypress( "-0.00000" );
+      assertEquals( "-0.00000", getFieldValue() );
+   }
+
+   @Test
+   public void float_inputInProgress_negativeSign() {
+      initField( "float_inputInProgress_negativeSign", FieldType.FLOAT, true );
+      keypress( "-" );
+
+      // While input is in progress, negative sign is valid because it might not be the end of the input
+
+      assertEquals( "-", getFieldValue() );
+      assertFalse( inputIgnoredEventFired() );
+      assertFalse( validationFailedEventFired() );
+
+      body.click();
+
+      // Once the input is completed, negative sign is invalid
+
+      assertFalse( inputIgnoredEventFired() );
+      assertTrue( validationFailedEventFired() );
+   }
+
+   @Test
+   public void float_inputInProgress_negativeSignZero() {
+      initField( "float_inputInProgress_negativeSignZero", FieldType.FLOAT, true );
+      keypress( "-0" );
+      assertEquals( "-0", getFieldValue() );
+
+      // While input is in progress, -0 is valid because it might not be the end of the input
+
+      assertEquals( "-0", getFieldValue() );
+      assertFalse( inputIgnoredEventFired() );
+      assertFalse( validationFailedEventFired() );
+
+      body.click();
+
+      // Once the input is completed, -0 is invalid
+
+      assertFalse( inputIgnoredEventFired() );
+      assertTrue( validationFailedEventFired() );
+   }
+
+   @Test
+   public void float_inputInProgress_negativeSignDot() {
+      initField( "float_inputInProgress_negativeSignDot", FieldType.FLOAT, true );
+      keypress( "-." );
+
+      // While input is in progress, -. is valid because it might not be the end of the input
+
+      assertEquals( "-.", getFieldValue() );
+      assertFalse( inputIgnoredEventFired() );
+      assertFalse( validationFailedEventFired() );
+
+      body.click();
+
+      // Once the input is completed, -. is invalid
+
+      assertFalse( inputIgnoredEventFired() );
+      assertTrue( validationFailedEventFired() );
+   }
+
+   @Test
+   public void float_inputInProgress_negativeSignZeroDot() {
+      initField( "float_inputInProgress_negativeSignZeroDot", FieldType.FLOAT, true );
+      keypress( "-0." );
+
+      // While input is in progress, -0. is valid because it might not be the end of the input
+
+      assertEquals( "-0.", getFieldValue() );
+      assertFalse( inputIgnoredEventFired() );
+      assertFalse( validationFailedEventFired() );
+
+      body.click();
+
+      // Once the input is completed, -0. is invalid
+
+      assertFalse( inputIgnoredEventFired() );
+      assertTrue( validationFailedEventFired() );
+   }
+
+   @Test
+   public void float_inputInProgress_negativeSignZeroDotZero() {
+      initField( "float_inputInProgress_negativeSignZeroDotZero", FieldType.FLOAT, true );
+      keypress( "-0.0" );
+
+      // While input is in progress, -0.0 is valid because it might not be the end of the input
+
+      assertEquals( "-0.0", getFieldValue() );
+      assertFalse( inputIgnoredEventFired() );
+      assertFalse( validationFailedEventFired() );
+
+      body.click();
+
+      // Once the input is completed, -0.0 is invalid
+
+      assertFalse( inputIgnoredEventFired() );
+      assertTrue( validationFailedEventFired() );
+   }
+
+   @Test
+   public void float_negative_noDoubleNegative() {
+      initField( "float_noDoubleNegative", FieldType.FLOAT, true );
+      keypress( "--" );
+      assertEquals( "-", getFieldValue() );
+   }
+
+   @Test
+   public void float_negative_noNegativeSignAfterFirstChar() {
+      initField( "float_negative_noNegativeSignAfterFirstChar", FieldType.FLOAT, true );
+      keypress( "3-" );
+      assertEquals( "3", getFieldValue() );
+   }
 
    // Helpers below this line
 
@@ -290,16 +606,15 @@ public abstract class AbstractTest {
     *
     * <p>
     * The script makes a backup of the current value when it detects an input (and before it has been inserted into the
-    * field), and rolls back to that value if validation fails.The result is that if a keypress comes in before the script
-    * has finished evaluating the previous one, it takes a backup of the field with the not-yet-validated, and thus
-    * possibly invalid, data in it.
+    * field), and rolls back to that value if validation fails.  The result is that if a keypress comes in before the
+    * script has finished evaluating the previous one, it takes a backup of the field with the not-yet-validated, and
+    * thus possibly invalid, data in it.
     * </p>
     *
     * <p>
     * It should be noted that this condition cannot be triggered by mashing keys or by holding a key down.  This only
-    * happens under the artificial condition of Selenium apparently slamming input into the field without a delay
-    * between the keystrokes.  It also only happens when IE is the browser being automated.  This issue should never be
-    * observed in the real world.
+    * happens under the artificial scenario of Selenium apparently slamming input into the field without a delay between
+    * the keystrokes.  Additionally, this is limited to IE.  This issue should never be observed in the real world.
     * </p>
     */
    private void keypress( final String s ) {
@@ -320,6 +635,7 @@ public abstract class AbstractTest {
    }
 
    private void initField( final String testName, final FieldType fieldType, final boolean ignoreInvalidInput ) {
+      if( testName == null ) throw new IllegalArgumentException( "testName is null" );
       if( fieldType == null ) throw new IllegalArgumentException( "fieldType is null" );
 
       final String command = String.format( "initField(\"%s\", \"%s\", %b);", testName, fieldType.toString(), ignoreInvalidInput );
@@ -341,5 +657,28 @@ public abstract class AbstractTest {
 
    private boolean validationSuccessEventFired() {
       return (Boolean) ((JavascriptExecutor) driver).executeScript( "return didValidationSuccessEventFire();" );
+   }
+
+   private static File createLogDirectory() throws IOException {
+      final SimpleDateFormat dateFormat = new SimpleDateFormat( "yyyy-MM-dd__HH-mm-ss" );
+      final String path = "build/reports/tests/browser_logs/" + dateFormat.format( new Date() );
+      final File dir = new File( path );
+
+      if( !dir.mkdirs() ) {
+         throw new IOException( "Could not create log directory " + path );
+      }
+
+      return dir;
+   }
+
+   private static void writeLog() throws IOException {
+      final BufferedWriter writer = new BufferedWriter( new FileWriter(logDirectory.getPath() + "/" + lastClass.getSimpleName() + ".log") );
+
+      try {
+      writer.write( driver.findElement(By.id("log")).getText() );
+      writer.flush();
+      } finally {
+         writer.close();
+      }
    }
 }

@@ -9,7 +9,7 @@ ResrictedTextField is a jQuery plugin which enforces data formats on HTML text b
 ## Features
 
 * Prevent invalid keystrokes or catch a validation failure event to handle it as you wish
-* Comes with 23 built-in types
+* Has 23 built-in types
 * Extendible:  define your own types
 * Money types automatically format on blur to end in a decimal point and two digits
 

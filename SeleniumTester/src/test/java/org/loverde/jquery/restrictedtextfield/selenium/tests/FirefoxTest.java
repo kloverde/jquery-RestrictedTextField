@@ -12,6 +12,9 @@
 
 package org.loverde.jquery.restrictedtextfield.selenium.tests;
 
+import org.loverde.jquery.restrictedtextfield.selenium.Event;
+import org.loverde.jquery.restrictedtextfield.selenium.FieldType;
+
 
 /**
  * This class' purpose is to re-run {@linkplain AbstractTest} under
@@ -20,7 +23,13 @@ package org.loverde.jquery.restrictedtextfield.selenium.tests;
  */
 public class FirefoxTest extends AbstractTest {
 
-   public FirefoxTest() throws Exception {
-      super();
+   public FirefoxTest( final FieldType fieldType,
+                       final String    testName,
+                       final boolean   ignoreInvalidInput,
+                       final String    input,
+                       final String    expectedValue,
+                       final Event     expectedEventOnBlur ) throws Exception {
+
+      super( fieldType, testName, ignoreInvalidInput, input, expectedValue, expectedEventOnBlur );
    }
 }

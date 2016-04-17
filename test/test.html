@@ -82,6 +82,14 @@
             log( "tearDown\n" );
          }
 
+         function resetEventFlags() {
+            log( "resetting event flags for blur validation" );
+
+            inputIgnoredEvent = false;
+            validationFailedEvent = false;
+            validationSuccessEvent = false;
+         }
+
          function initField( testName, fieldType, ignore ) {
             log( "test:  " + testName );
             log( "initField:  fieldType[" + fieldType + "], ignore[" + ignore + "]" );

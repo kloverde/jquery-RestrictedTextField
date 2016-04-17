@@ -1,5 +1,5 @@
 /*
- * RestrictedTextField
+ * RestrictedTextField v1.1
  * https://www.github.com/kloverde/jquery-RestrictedTextField
  *
  * This software is licensed under the 3-clause BSD license.
@@ -56,9 +56,10 @@
       }
 
       function init() {
-         // This first block of variables is a collection of regular expressions for incomplete (but valid so far) input.
+         // This first block of variables is a collection of regular expressions for incomplete input.
+         // Input that's still being typed can fail 
          var negativeInt   = /^-$/,
-             posNegFloat   = /^-?\.?$|^-?0$|^-?\d*\.$/,
+             posNegFloat   = /^-?0?\.?$|^-?\d*\.\d*$/,
              positiveFloat = /^[\.\d]$|^\.$|^\d*\.$/,
              negativeFloat = /^0\.?$|^-\.?$|^-\d*\.$/;
 
@@ -68,27 +69,28 @@
 
          var dest = $.fn.restrictedTextField.types = $.fn.restrictedTextField.types || [];
 
-         _addType( dest, "alpha",                  /^[a-zA-Z]*$/                    , null );  // Uppercase and lowercase letters
-         _addType( dest, "upperAlpha",             /^[A-Z]*$/                       , null );  // Uppercase letters
-         _addType( dest, "lowerAlpha",             /^[a-z]*$/                       , null );  // Lowercase letters
-         _addType( dest, "alphaSpace",             /^[a-zA-Z\ ]*$/                  , null );  // Uppercase letters, lowercase letters, space
-         _addType( dest, "upperAlphaSpace",        /^[A-Z\ ]*$/                     , null );  // Uppercase letters and space
-         _addType( dest, "lowerAlphaSpace",        /^[a-z\ ]*$/                     , null );  // Lowercase letters and space
-         _addType( dest, "alphanumeric",           /^[a-zA-Z\d]*$/                  , null );  // Uppercase letters, lowercase letters, digits 0-9
-         _addType( dest, "upperAlphanumeric",      /^[A-Z\d]*$/                     , null );  // Uppercase letters and digits 0-9
-         _addType( dest, "lowerAlphanumeric",      /^[a-z\d]*$/                     , null );  // Lowercase letters and digits 0-9
-         _addType( dest, "alphanumericSpace",      /^[a-zA-Z\d\ ]*$/                , null );  // Uppercase letters, lowercase letters, digits 0-9, space
-         _addType( dest, "upperAlphanumericSpace", /^[A-Z\d\ ]*$/                   , null );  // Uppercase letters, digits 0-9, space
-         _addType( dest, "lowerAlphanumericSpace", /^[a-z\d\ ]*$/                   , null );  // Lowercase letters, digits 0-9, space
-         _addType( dest, "int",                    /^0$|^-?[1-9]\d*$/               , negativeInt );    // Positive and negative integers
-         _addType( dest, "positiveInt",            /^0$|^[1-9]\d*$/                 , null );           // Positive integers
-         _addType( dest, "negativeInt",            /^0$|^-[1-9]\d*$/                , negativeInt );    // Negative integers
-         _addType( dest, "float",                  /^0$|^-?0?\.\d+$|^-?[1-9]\d*\.\d+$|^-?[1-9]+\d*$/  , posNegFloat );    // 0/positive/negative floating-point numbers, with or without a value to the left of the decimal point; positive and negative integers
-         _addType( dest, "positiveFloat",          /^\d*\.?\d+$/                    , positiveFloat );  // Positive floating-point numbers and positive integers
-         _addType( dest, "negativeFloat",          /^-\d*\.?\d+$/                   , negativeFloat );  // Negative floating-point numbers and negative integers
-         _addType( dest, "money",                  /^-?\d*\.?\d{1,2}$/              , posNegFloat );    // Positive and negative floating-point numbers with one or two numbers after the decimal point, plus positive and negative integers
-         _addType( dest, "positiveMoney",          /^\d*\.?\d{1,2}$/                , positiveFloat );  // Positive floating-point numbers with one or two numbers after the decimal point, and positive integers
-         _addType( dest, "negativeMoney",          /^-\d*\.?\d{1,2}$/               , negativeFloat );  // Negative floating-point numbers with one or two numbers after the decimal point, plus negative integers
+         _addType( dest, "alpha",                   /^[a-zA-Z]*$/            , null );  // Uppercase and lowercase letters
+         _addType( dest, "upperAlpha",              /^[A-Z]*$/               , null );  // Uppercase letters
+         _addType( dest, "lowerAlpha",              /^[a-z]*$/               , null );  // Lowercase letters
+         _addType( dest, "alphaSpace",              /^[a-zA-Z\ ]*$/          , null );  // Uppercase letters, lowercase letters, space
+         _addType( dest, "upperAlphaSpace",         /^[A-Z\ ]*$/             , null );  // Uppercase letters and space
+         _addType( dest, "lowerAlphaSpace",         /^[a-z\ ]*$/             , null );  // Lowercase letters and space
+         _addType( dest, "alphanumeric",            /^[a-zA-Z\d]*$/          , null );  // Uppercase letters, lowercase letters, digits 0-9
+         _addType( dest, "upperAlphanumeric",       /^[A-Z\d]*$/             , null );  // Uppercase letters and digits 0-9
+         _addType( dest, "lowerAlphanumeric",       /^[a-z\d]*$/             , null );  // Lowercase letters and digits 0-9
+         _addType( dest, "alphanumericSpace",       /^[a-zA-Z\d\ ]*$/        , null );  // Uppercase letters, lowercase letters, digits 0-9, space
+         _addType( dest, "upperAlphanumericSpace",  /^[A-Z\d\ ]*$/           , null );  // Uppercase letters, digits 0-9, space
+         _addType( dest, "lowerAlphanumericSpace",  /^[a-z\d\ ]*$/           , null );  // Lowercase letters, digits 0-9, space
+         _addType( dest, "int",                     /^0$|^-?[1-9]\d*$/       , negativeInt );    // 0, positive integers, negative integers
+         _addType( dest, "positiveInt",             /^0$|^[1-9]\d*$/         , null );           // 0, positive integers
+         _addType( dest, "negativeInt",             /^0$|^-[1-9]\d*$/        , negativeInt );    // 0, negative integers
+         _addType( dest, "float",                   /^-?\d*\.?\d+$/          , posNegFloat );    // 0, .0, 0.0, /positive/negative floating-point numbers, with or without a value to the left of the decimal point; positive and negative integers
+         _addType( dest, "positiveFloat",           /^\d*\.?\d+$/            , positiveFloat );  // Positive floating-point numbers and positive integers
+         _addType( dest, "negativeFloat",           /^-\d*\.?\d+$/           , negativeFloat );  // Negative floating-point numbers and negative integers
+         _addType( dest, "strictFloat",             /^0$|^0?\.(0|\d*[1-9])$|^-0?\.(\d*[1-9])$|^-?[1-9]\d*\.\d+$|^-?[1-9]+\d*$/  , posNegFloat );    // 0, .0, 0.0, /positive/negative floating-point numbers, with or without a value to the left of the decimal point; positive and negative integers
+         _addType( dest, "money",                   /^-?\d*\.?\d{1,2}$/      , posNegFloat );    // Positive and negative floating-point numbers with one or two numbers after the decimal point, plus positive and negative integers
+         _addType( dest, "positiveMoney",           /^\d*\.?\d{1,2}$/        , positiveFloat );  // Positive floating-point numbers with one or two numbers after the decimal point, and positive integers
+         _addType( dest, "negativeMoney",           /^-\d*\.?\d{1,2}$/       , negativeFloat );  // Negative floating-point numbers with one or two numbers after the decimal point, plus negative integers
 
          // Positive floating-point numbers with one or two numbers after the decimal point;
          // Positive integers;

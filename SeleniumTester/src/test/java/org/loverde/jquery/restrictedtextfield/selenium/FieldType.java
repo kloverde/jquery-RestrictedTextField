@@ -32,6 +32,7 @@ public enum FieldType {
    FLOAT( "float" ),
    POSITIVE_FLOAT( "positiveFloat" ),
    NEGATIVE_FLOAT( "negativeFloat" ),
+   STRICT_FLOAT( "strictFloat" ),
    MONEY( "money" ),
    POSITIVE_MONEY( "positiveMoney" ),
    NEGATIVE_MONEY( "negativeMoney" );

@@ -15,9 +15,9 @@ package org.loverde.jquery.restrictedtextfield.selenium;
 
 public class Characters {
 
-   public static final String ALPHA = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz",
-                              UPPER_ALPHA = "ABCDEFGHIJKLMNOPQRSTUVWXYZ",
+   public static final String UPPER_ALPHA = "ABCDEFGHIJKLMNOPQRSTUVWXYZ",
                               LOWER_ALPHA = "abcdefghijklmnopqrstuvwxyz",
+                              ALPHA = UPPER_ALPHA + LOWER_ALPHA,
 
                               ALPHA_SPACE = ALPHA + " ",
                               UPPER_ALPHA_SPACE = UPPER_ALPHA + " ",
@@ -35,7 +35,9 @@ public class Characters {
                               UPPER_ALPHANUMERIC_SPACE = UPPER_ALPHANUMERIC + " ",
                               LOWER_ALPHANUMERIC_SPACE = LOWER_ALPHANUMERIC + " ",
 
-                              SYMBOLS = "`~!@#$%^&*()-_=+]}[{;:'\"/?.>,<",
+                              SYMBOLS_EXCEPT_MINUS = "`~!@#$%^&*()_=+]}[{;:'\"/?.>,<",
+                              SYMBOLS = SYMBOLS_EXCEPT_MINUS + "-",
 
-                              ALL = ALPHANUMERIC_SPACE + SYMBOLS;
+                              ALL = ALPHANUMERIC_SPACE + SYMBOLS,
+                              ALL_EXCEPT_MINUS = ALPHANUMERIC_SPACE + SYMBOLS_EXCEPT_MINUS;
 }

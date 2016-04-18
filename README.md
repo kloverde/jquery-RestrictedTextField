@@ -9,7 +9,7 @@ ResrictedTextField is a jQuery plugin which enforces data formats on HTML text b
 ## Features
 
 * Prevent invalid keystrokes or catch a validation failure event to handle it as you wish
-* Has 23 built-in types
+* Has 27 built-in types
 * Extendible:  define your own types
 * Money types automatically format on blur to end in a decimal point and two digits
 
@@ -31,14 +31,18 @@ ResrictedTextField is a jQuery plugin which enforces data formats on HTML text b
 13.  Integers
 14.  Positive integers
 15.  Negative integers
-16.  Floats
-17.  Positive floats
-18.  Negative floats
-19.  Money
-20.  Positive money
-21.  Negative money
-22.  Accounting money notation (negatives expressed by wrapping the value in parentheses)
-23.  Negative accounting money
+16.  Strict integers
+17.  Strict positive integers
+18.  String negative integers
+19.  Floats
+20.  Positive floats
+21.  Negative floats
+22.  Strict floats
+23.  Money
+24.  Positive money
+25.  Negative money
+26.  Accounting money notation (negatives expressed by wrapping the value in parentheses)
+27.  Negative accounting money
 
 
 ## Configuration

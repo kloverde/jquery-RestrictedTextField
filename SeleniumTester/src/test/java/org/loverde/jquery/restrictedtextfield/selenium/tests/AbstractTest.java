@@ -106,6 +106,9 @@ public abstract class AbstractTest {
       // [x][4] : Expected final value of text field
       // [x][5] : Expected event triggered on blur
       final Object[][] d = new Object[][] {
+
+         // First set:  ignore invalid input
+
          { FieldType.ALPHA,                    "ignore_alpha_all",                   true,  Characters.ALL,  Characters.ALPHA,        Event.VALIDATION_SUCCESS },
          { FieldType.UPPER_ALPHA,              "ignore_upperAlpha_all",              true,  Characters.ALL,  Characters.UPPER_ALPHA,  Event.VALIDATION_SUCCESS },
          { FieldType.LOWER_ALPHA,              "ignore_lowerAlpha_all",              true,  Characters.ALL,  Characters.LOWER_ALPHA,  Event.VALIDATION_SUCCESS },
@@ -122,35 +125,60 @@ public abstract class AbstractTest {
          { FieldType.UPPER_ALPHANUMERIC_SPACE, "ignore_upperAlphanumericSpace_all",  true,  Characters.ALL,  Characters.UPPER_ALPHANUMERIC_SPACE,  Event.VALIDATION_SUCCESS },
          { FieldType.LOWER_ALPHANUMERIC_SPACE, "ignore_lowerAlphanumericSpace_all",  true,  Characters.ALL,  Characters.LOWER_ALPHANUMERIC_SPACE,  Event.VALIDATION_SUCCESS },
 
-         { FieldType.INT,           "ignore_integer_all",                      true,  Characters.ALL,  Characters.NUMBERS_END_ZERO,  Event.VALIDATION_SUCCESS },
-         { FieldType.INT,           "ignore_integer_noDoubleZero",             true,  "00",    "0",     Event.VALIDATION_SUCCESS },
-         { FieldType.INT,           "ignore_integer_positive_noLeadingZero",   true,  "01",    "0",     Event.VALIDATION_SUCCESS },
-         { FieldType.INT,           "ignore_integer_nevative_noNegativeZero",  true,  "-0",    "-",     Event.VALIDATION_FAILED },
-         { FieldType.INT,           "ignore_integer_nevative",                 true,  "-123",  "-123",  Event.VALIDATION_SUCCESS },
-         { FieldType.INT,           "ignore_integer_noDoubleNegative",         true,  "--1",   "-1",    Event.VALIDATION_SUCCESS },
-         { FieldType.INT,           "ignore_integer_noFloatingPoint",          true,  "1.23",  "123",   Event.VALIDATION_SUCCESS },
+         { FieldType.INT,                  "ignore_int_all",                         true,  Characters.ALL,  Characters.NUMBERS_END_ZERO,  Event.VALIDATION_SUCCESS },
+         { FieldType.INT,                  "ignore_int_multipleZero",                true,  "000",   "000",    Event.VALIDATION_SUCCESS },
+         { FieldType.INT,                  "ignore_int_positive_leadingZero",        true,  "001",   "001",   Event.VALIDATION_SUCCESS },
+         { FieldType.INT,                  "ignore_int_negative_negativeZero",       true,  "-0",    "-0",    Event.VALIDATION_SUCCESS },
+         { FieldType.INT,                  "ignore_int_negative",                    true,  "-123",  "-123",  Event.VALIDATION_SUCCESS },
+         { FieldType.INT,                  "ignore_int_doubleNegative",              true,  "--1",   "-1",    Event.VALIDATION_SUCCESS },
+         { FieldType.INT,                  "ignore_int_floatingPoint",               true,  "1.23",  "123",   Event.VALIDATION_SUCCESS },
 
-         { FieldType.POSITIVE_INT,  "ignore_positiveInt",                  true,  Characters.ALL_EXCEPT_MINUS,  Characters.NUMBERS_END_ZERO,  Event.VALIDATION_SUCCESS },
-         { FieldType.POSITIVE_INT,  "ignore_positiveInt_noDoubleZero",     true,  "00",     "0",    Event.VALIDATION_SUCCESS },
-         { FieldType.POSITIVE_INT,  "ignore_positiveInt_noLeadingZero",    true,  "01",     "0",    Event.VALIDATION_SUCCESS },
-         { FieldType.POSITIVE_INT,  "ignore_positiveInt_noNegative",       true,  "-1",     "1",    Event.VALIDATION_SUCCESS },
-         { FieldType.POSITIVE_INT,  "ignore_positiveInt_noFloatingPoint",  true,  "-1.23",  "123",  Event.VALIDATION_SUCCESS },
+         { FieldType.POSITIVE_INT,         "ignore_positiveInt",                     true,  Characters.ALL_EXCEPT_MINUS,  Characters.NUMBERS_END_ZERO,  Event.VALIDATION_SUCCESS },
+         { FieldType.POSITIVE_INT,         "ignore_positiveInt_multipleZero",        true,  "000",    "000",   Event.VALIDATION_SUCCESS },
+         { FieldType.POSITIVE_INT,         "ignore_positiveInt_leadingZero",         true,  "001",    "001",  Event.VALIDATION_SUCCESS },
+         { FieldType.POSITIVE_INT,         "ignore_positiveInt_negative",            true,  "-1",     "1",    Event.VALIDATION_SUCCESS },
+         { FieldType.POSITIVE_INT,         "ignore_positiveInt_floatingPoint",       true,  "1.23",   "123",  Event.VALIDATION_SUCCESS },
 
-         { FieldType.NEGATIVE_INT,  "ignore_negativeInt",                  true,  "-" + Characters.ALPHANUMERIC,  "-" + Characters.NUMBERS_END_ZERO,  Event.VALIDATION_SUCCESS },
-         { FieldType.NEGATIVE_INT,  "ignore_negativeInt_noPositives",      true,  Characters.NUMBERS_END_ZERO,    "0",   Event.VALIDATION_SUCCESS },
-         { FieldType.NEGATIVE_INT,  "ignore_negativeInt_noNegativeZero",   true,  "-0",     "-",     Event.VALIDATION_FAILED },
-         { FieldType.NEGATIVE_INT,  "ignore_negativeInt_noNegativeZero",   true,  "-12-3",  "-123",  Event.VALIDATION_SUCCESS },
-         { FieldType.NEGATIVE_INT,  "ignore_negativeInt_noNegativeZero",   true,  "-1.23",  "-123",  Event.VALIDATION_SUCCESS },
+         { FieldType.NEGATIVE_INT,         "ignore_negativeInt",                     true,  "-" + Characters.ALPHANUMERIC,  "-" + Characters.NUMBERS_END_ZERO,  Event.VALIDATION_SUCCESS },
+         { FieldType.NEGATIVE_INT,         "ignore_negativeInt_positives",           true,  Characters.NUMBERS_END_ZERO,    "0",                                Event.VALIDATION_SUCCESS },
+         { FieldType.NEGATIVE_INT,         "ignore_negativeInt_negativeZero",        true,  "-0",     "-0",    Event.VALIDATION_SUCCESS },
+         { FieldType.NEGATIVE_INT,         "ignore_negativeInt_doubleDash1",         true,  "--123",  "-123",  Event.VALIDATION_SUCCESS },
+         { FieldType.NEGATIVE_INT,         "ignore_negativeInt_doubleDash2",         true,  "-12-3",  "-123",  Event.VALIDATION_SUCCESS },
+         { FieldType.NEGATIVE_INT,         "ignore_negativeInt_floatingPoint",       true,  "-1.23",  "-123",  Event.VALIDATION_SUCCESS },
+
+         { FieldType.STRICT_INT,           "ignore_strictInt_all",                      true,  Characters.ALL,  Characters.NUMBERS_END_ZERO,  Event.VALIDATION_SUCCESS },
+         { FieldType.STRICT_INT,           "ignore_strictInt_multipleZero",             true,  "000",   "0",     Event.VALIDATION_SUCCESS },
+         { FieldType.STRICT_INT,           "ignore_strictInt_positive_leadingZero",     true,  "001",   "0",     Event.VALIDATION_SUCCESS },
+         { FieldType.STRICT_INT,           "ignore_strictInt_negative_negativeZero",    true,  "-0",    "-",     Event.VALIDATION_FAILED },
+         { FieldType.STRICT_INT,           "ignore_strictInt_negative",                 true,  "-123",  "-123",  Event.VALIDATION_SUCCESS },
+         { FieldType.STRICT_INT,           "ignore_strictInt_doubleNegative",           true,  "--1",   "-1",    Event.VALIDATION_SUCCESS },
+         { FieldType.STRICT_INT,           "ignore_strictInt_floatingPoint",            true,  "1.23",  "123",   Event.VALIDATION_SUCCESS },
+
+         { FieldType.STRICT_POSITIVE_INT,  "ignore_strictPositiveInt",                  true,  Characters.ALL_EXCEPT_MINUS,  Characters.NUMBERS_END_ZERO,  Event.VALIDATION_SUCCESS },
+         { FieldType.STRICT_POSITIVE_INT,  "ignore_strictPositiveInt_multipleZero",     true,  "000",    "0",    Event.VALIDATION_SUCCESS },
+         { FieldType.STRICT_POSITIVE_INT,  "ignore_strictPositiveInt_leadingZero",      true,  "001",    "0",    Event.VALIDATION_SUCCESS },
+         { FieldType.STRICT_POSITIVE_INT,  "ignore_strictPositiveInt_negative",         true,  "-1",     "1",    Event.VALIDATION_SUCCESS },
+         { FieldType.STRICT_POSITIVE_INT,  "ignore_strictPositiveInt_floatingPoint",    true,  "1.23",   "123",  Event.VALIDATION_SUCCESS },
+
+         { FieldType.STRICT_NEGATIVE_INT,  "ignore_strictNegativeInt",                  true,  "-" + Characters.ALPHANUMERIC,  "-" + Characters.NUMBERS_END_ZERO,  Event.VALIDATION_SUCCESS },
+         { FieldType.STRICT_NEGATIVE_INT,  "ignore_strictNegativeInt_positives",        true,  Characters.NUMBERS_END_ZERO,    "0",   Event.VALIDATION_SUCCESS },
+         { FieldType.STRICT_NEGATIVE_INT,  "ignore_strictNegativeInt_zero",             true,  "0",      "0",     Event.VALIDATION_SUCCESS },
+         { FieldType.STRICT_NEGATIVE_INT,  "ignore_strictNegativeInt_negativeZero",     true,  "-0",     "-",     Event.VALIDATION_FAILED },
+         { FieldType.STRICT_NEGATIVE_INT,  "ignore_strictNegativeInt_doubleDash1",      true,  "--123",  "-123",  Event.VALIDATION_SUCCESS },
+         { FieldType.STRICT_NEGATIVE_INT,  "ignore_strictNegativeInt_doubleDash2",      true,  "-12-3",  "-123",  Event.VALIDATION_SUCCESS },
+         { FieldType.STRICT_NEGATIVE_INT,  "ignore_strictNegativeInt_noFloatingPoint",  true,  "-1.23",  "-123",  Event.VALIDATION_SUCCESS },
 
          { FieldType.STRICT_FLOAT,  "ignore_strictFloat_all",                  true,  Characters.ALL_EXCEPT_MINUS,  Characters.NUMBERS_END_ZERO + ".",  Event.VALIDATION_FAILED },
          { FieldType.STRICT_FLOAT,  "ignore_strictFloat_posInt",               true,  "123",           "123",           Event.VALIDATION_SUCCESS },
          { FieldType.STRICT_FLOAT,  "ignore_strictFloat_negInt",               true,  "-123",          "-123",          Event.VALIDATION_SUCCESS },
          { FieldType.STRICT_FLOAT,  "ignore_strictFloat_posFloat",             true,  "1023.456789",   "1023.456789",   Event.VALIDATION_SUCCESS },
          { FieldType.STRICT_FLOAT,  "ignore_strictFloat_negFloat",             true,  "-1023.456789",  "-1023.456789",  Event.VALIDATION_SUCCESS },
-         { FieldType.STRICT_FLOAT,  "ignore_strictFloat_zero",                 true,  "0",             "0",             Event.VALIDATION_SUCCESS },
+         { FieldType.STRICT_FLOAT,  "ignore_strictFloat_zero1",                true,  "0",             "0",             Event.VALIDATION_SUCCESS },
+         { FieldType.STRICT_FLOAT,  "ignore_strictFloat_zero2",                true,  "0.0",           "0.0",           Event.VALIDATION_SUCCESS },
          { FieldType.STRICT_FLOAT,  "ignore_strictFloat_leadingDoubleZero1",   true,  "00",            "0",             Event.VALIDATION_SUCCESS },
          { FieldType.STRICT_FLOAT,  "ignore_strictFloat_leadingDoubleZero2",   true,  "00.0",          "0.0",           Event.VALIDATION_SUCCESS },
-         { FieldType.STRICT_FLOAT,  "ignore_strictFloat_extraTrailingZero",    true,  "0.00",          "0.00",          Event.VALIDATION_FAILED },
+         { FieldType.STRICT_FLOAT,  "ignore_strictFloat_extraTrailingZero1",   true,  "0.00",          "0.00",          Event.VALIDATION_FAILED },
+         { FieldType.STRICT_FLOAT,  "ignore_strictFloat_extraTrailingZero2",   true,  "12.3450",       "12.3450",       Event.VALIDATION_FAILED },
          { FieldType.STRICT_FLOAT,  "ignore_strictFloat_leadingDoubleZeros3",  true,  "-00.0",         "-0.0",          Event.VALIDATION_FAILED },
          { FieldType.STRICT_FLOAT,  "ignore_strictFloat_negativeZero1",        true,  "-0",            "-0",            Event.VALIDATION_FAILED },
          { FieldType.STRICT_FLOAT,  "ignore_strictFloat_negativeZero2",        true,  "-0.000000",     "-0.000000",     Event.VALIDATION_FAILED },
@@ -165,8 +193,157 @@ public abstract class AbstractTest {
          { FieldType.STRICT_FLOAT,  "ignore_strictFloat_dashInWrongPlace4",    true,  "1.2-",          "1.2",           Event.VALIDATION_SUCCESS },
          { FieldType.STRICT_FLOAT,  "ignore_strictFloat_doubleDot1",           true,  "..",            ".",             Event.VALIDATION_FAILED },
          { FieldType.STRICT_FLOAT,  "ignore_strictFloat_doubleDot2",           true,  "1..2",          "1.2",           Event.VALIDATION_SUCCESS },
-         { FieldType.STRICT_FLOAT,  "ignore_strictFloat_dotsEverywhere",       true,  ".1.2.",         ".12",           Event.VALIDATION_SUCCESS }
+         { FieldType.STRICT_FLOAT,  "ignore_strictFloat_dotsEverywhere",       true,  ".1.2.",         ".12",           Event.VALIDATION_SUCCESS },
+
+         // Second set:  don't ignore invalid input
+
+         { FieldType.ALPHA,         "noIgnore_alpha_invalid1",              false,  "!",                     "!",                     Event.VALIDATION_FAILED },
+         { FieldType.ALPHA,         "noIgnore_alpha_invalid2",              false,  "1",                     "1",                     Event.VALIDATION_FAILED },
+         { FieldType.ALPHA,         "noIgnore_alpha_invalid3",              false,  " ",                     " ",                     Event.VALIDATION_FAILED },
+         { FieldType.ALPHA,         "noIgnore_alpha_valid1",                false,  Characters.UPPER_ALPHA,  Characters.UPPER_ALPHA,  Event.VALIDATION_SUCCESS },
+         { FieldType.ALPHA,         "noIgnore_alpha_valid2",                false,  Characters.LOWER_ALPHA,  Characters.LOWER_ALPHA,  Event.VALIDATION_SUCCESS },
+         { FieldType.ALPHA,         "noIgnore_alpha_valid3",                false,  Characters.ALPHA,        Characters.ALPHA,        Event.VALIDATION_SUCCESS },
+
+         { FieldType.UPPER_ALPHA,   "noIgnore_upperAlpha_invalid1",         false,  "@",                     "@",                     Event.VALIDATION_FAILED },
+         { FieldType.UPPER_ALPHA,   "noIgnore_upperAlpha_invalid2",         false,  "2",                     "2",                     Event.VALIDATION_FAILED },
+         { FieldType.UPPER_ALPHA,   "noIgnore_upperAlpha_invalid3",         false,  " ",                     " ",                     Event.VALIDATION_FAILED },
+         { FieldType.UPPER_ALPHA,   "noIgnore_upperAlpha_invalid4",         false,  "a",                     "a",                     Event.VALIDATION_FAILED },
+         { FieldType.UPPER_ALPHA,   "noIgnore_upperAlpha_valid",            false,  Characters.UPPER_ALPHA,  Characters.UPPER_ALPHA,  Event.VALIDATION_SUCCESS },
+
+         { FieldType.LOWER_ALPHA,   "noIgnore_lowerAlpha_invalid1",         false,  "#",                     "#",                     Event.VALIDATION_FAILED },
+         { FieldType.LOWER_ALPHA,   "noIgnore_lowerAlpha_invalid2",         false,  "3",                     "3",                     Event.VALIDATION_FAILED },
+         { FieldType.LOWER_ALPHA,   "noIgnore_lowerAlpha_invalid3",         false,  " ",                     " ",                     Event.VALIDATION_FAILED },
+         { FieldType.LOWER_ALPHA,   "noIgnore_lowerAlpha_invalid4",         false,  Characters.UPPER_ALPHA,  Characters.UPPER_ALPHA,  Event.VALIDATION_FAILED },
+         { FieldType.LOWER_ALPHA,   "noIgnore_lowerAlpha_valid",            false,  Characters.LOWER_ALPHA,  Characters.LOWER_ALPHA,  Event.VALIDATION_SUCCESS },
+
+         { FieldType.ALPHA_SPACE,   "noIgnore_alphaSpace_invalid1",         false,  "%",                     "%",                     Event.VALIDATION_FAILED },
+         { FieldType.ALPHA_SPACE,   "noIgnore_alphaSpace_invalid2",         false,  "5",                     "5",                     Event.VALIDATION_FAILED },
+         { FieldType.ALPHA_SPACE,   "noIgnore_alphaSpace_valid",            false,  Characters.ALPHA_SPACE,  Characters.ALPHA_SPACE,  Event.VALIDATION_SUCCESS },
+
+         { FieldType.UPPER_ALPHA_SPACE,   "noIgnore_upperAlphaSpace_invalid1",    false,  "^",                            "^",                           Event.VALIDATION_FAILED },
+         { FieldType.UPPER_ALPHA_SPACE,   "noIgnore_upperAlphaSpace_invalid2",    false,  "6",                            "6",                           Event.VALIDATION_FAILED },
+         { FieldType.UPPER_ALPHA_SPACE,   "noIgnore_upperAlphaSpace_invalid3",    false,  "b",                            "b",                           Event.VALIDATION_FAILED },
+         { FieldType.UPPER_ALPHA_SPACE,   "noIgnore_upperAlphaSpace_valid",       false,  Characters.UPPER_ALPHA_SPACE,   Characters.UPPER_ALPHA_SPACE,  Event.VALIDATION_SUCCESS },
+
+         { FieldType.LOWER_ALPHA_SPACE,   "noIgnore_lowerAlphaSpace_invalid1",    false,  "&",                            "&",                           Event.VALIDATION_FAILED },
+         { FieldType.LOWER_ALPHA_SPACE,   "noIgnore_lowerAlphaSpace_invalid2",    false,  "7",                            "7",                           Event.VALIDATION_FAILED },
+         { FieldType.LOWER_ALPHA_SPACE,   "noIgnore_lowerAlphaSpace_invalid3",    false,  "C",                            "C",                           Event.VALIDATION_FAILED },
+         { FieldType.LOWER_ALPHA_SPACE,   "noIgnore_lowerAlphaSpace_valid",       false,  Characters.LOWER_ALPHA_SPACE,   Characters.LOWER_ALPHA_SPACE,  Event.VALIDATION_SUCCESS },
+
+         { FieldType.ALPHANUMERIC,        "noIgnore_alphanumeric_invalid1",       false,  "*",                            "*",                           Event.VALIDATION_FAILED },
+         { FieldType.ALPHANUMERIC,        "noIgnore_alphanumeric_valid",          false,  Characters.ALPHANUMERIC,        Characters.ALPHANUMERIC,       Event.VALIDATION_SUCCESS },
+
+         { FieldType.UPPER_ALPHANUMERIC,  "noIgnore_upperAlphanumeric_invalid1",  false,  "d",                            "d",                            Event.VALIDATION_FAILED },
+         { FieldType.UPPER_ALPHANUMERIC,  "noIgnore_upperAlphanumeric_invalid2",  false,  "/",                            "/",                            Event.VALIDATION_FAILED },
+         { FieldType.UPPER_ALPHANUMERIC,  "noIgnore_upperAlphanumeric_valid",     false,  Characters.UPPER_ALPHANUMERIC,  Characters.UPPER_ALPHANUMERIC,  Event.VALIDATION_SUCCESS },
+
+         { FieldType.LOWER_ALPHANUMERIC,  "noIgnore_lowerAlphanumeric_invalid1",  false,  "E",                            "E",                            Event.VALIDATION_FAILED },
+         { FieldType.LOWER_ALPHANUMERIC,  "noIgnore_lowerAlphanumeric_invalid2",  false,  "?",                            "?",                            Event.VALIDATION_FAILED },
+         { FieldType.LOWER_ALPHANUMERIC,  "noIgnore_lowerAlphanumeric_valid",     false,  Characters.LOWER_ALPHANUMERIC,  Characters.LOWER_ALPHANUMERIC,  Event.VALIDATION_SUCCESS },
+
+         { FieldType.ALPHANUMERIC_SPACE,  "noIgnore_alphanumericSpace_invalid1",  false,  ";",                            ";",                            Event.VALIDATION_FAILED },
+         { FieldType.ALPHANUMERIC_SPACE,  "noIgnore_alphanumericSpace_all",       false,  Characters.ALPHANUMERIC_SPACE,  Characters.ALPHANUMERIC_SPACE,  Event.VALIDATION_SUCCESS },
+
+         { FieldType.UPPER_ALPHANUMERIC_SPACE,  "noIgnore_upperAlphanumericSpace_invalid1",  false,  "f",                 "f",                            Event.VALIDATION_FAILED },
+         { FieldType.UPPER_ALPHANUMERIC_SPACE,  "noIgnore_upperAlphanumericSpace_invalid2",  false,  ":",                 ":",                            Event.VALIDATION_FAILED },
+         { FieldType.UPPER_ALPHANUMERIC_SPACE,  "noIgnore_upperAlphanumericSpace_valid",     false,  Characters.UPPER_ALPHANUMERIC_SPACE,  Characters.UPPER_ALPHANUMERIC_SPACE,  Event.VALIDATION_SUCCESS },
+
+         { FieldType.LOWER_ALPHANUMERIC_SPACE,  "noIgnore_lowerAlphanumericSpace_invalid1",  false,  "G",                 "G",                            Event.VALIDATION_FAILED },
+         { FieldType.LOWER_ALPHANUMERIC_SPACE,  "noIgnore_lowerAlphanumericSpace_invalid2",  false,  "'",                 "'",                            Event.VALIDATION_FAILED },
+         { FieldType.LOWER_ALPHANUMERIC_SPACE,  "noIgnore_lowerAlphanumericSpace_valid",     false,  Characters.LOWER_ALPHANUMERIC_SPACE,  Characters.LOWER_ALPHANUMERIC_SPACE,  Event.VALIDATION_SUCCESS },
+
+         { FieldType.INT,                  "noIgnore_int",                             false,  Characters.NUMBERS_END_ZERO,  Characters.NUMBERS_END_ZERO,  Event.VALIDATION_SUCCESS },
+         { FieldType.INT,                  "noIgnore_int_multipleZero",                false,  "000",   "000",   Event.VALIDATION_SUCCESS },
+         { FieldType.INT,                  "noIgnore_int_positive_leadingZero",        false,  "001",   "001",   Event.VALIDATION_SUCCESS },
+         { FieldType.INT,                  "noIgnore_int_negative_negativeZero",       false,  "-0",    "-0",    Event.VALIDATION_SUCCESS },
+         { FieldType.INT,                  "noIgnore_int_negative",                    false,  "-123",  "-123",  Event.VALIDATION_SUCCESS },
+         { FieldType.INT,                  "noIgnore_int_doubleNegative",              false,  "--1",   "--1",   Event.VALIDATION_FAILED },
+         { FieldType.INT,                  "noIgnore_int_floatingPoint",               false,  "1.23",  "1.23",  Event.VALIDATION_FAILED },
+         { FieldType.INT,                  "noIgnore_int_letter",                      false,  "h",     "h",     Event.VALIDATION_FAILED },
+
+         { FieldType.POSITIVE_INT,         "noIgnore_positiveInt",                     false,  Characters.NUMBERS_END_ZERO,  Characters.NUMBERS_END_ZERO,  Event.VALIDATION_SUCCESS },
+         { FieldType.POSITIVE_INT,         "noIgnore_positiveInt_multipleZero",        false,  "000",    "000",    Event.VALIDATION_SUCCESS },
+         { FieldType.POSITIVE_INT,         "noIgnore_positiveInt_leadingZero",         false,  "001",    "001",    Event.VALIDATION_SUCCESS },
+         { FieldType.POSITIVE_INT,         "noIgnore_positiveInt_negative",            false,  "-1",     "-1",     Event.VALIDATION_FAILED },
+         { FieldType.POSITIVE_INT,         "noIgnore_positiveInt_floatingPoint",       false,  "1.23",   "1.23",   Event.VALIDATION_FAILED },
+         { FieldType.POSITIVE_INT,         "noIgnore_positiveInt_letter",              false,  "i",      "i",      Event.VALIDATION_FAILED },
+
+         { FieldType.NEGATIVE_INT,         "noIgnore_negativeInt",                     false,  "-" + Characters.NUMBERS_END_ZERO,  "-" + Characters.NUMBERS_END_ZERO,  Event.VALIDATION_SUCCESS },
+         { FieldType.NEGATIVE_INT,         "noIgnore_negativeInt_multipleZero1",       false,  "000",    "000",    Event.VALIDATION_SUCCESS },
+         { FieldType.NEGATIVE_INT,         "noIgnore_negativeInt_multipleZero2",       false,  "-000",   "-000",   Event.VALIDATION_SUCCESS },
+         { FieldType.NEGATIVE_INT,         "noIgnore_negativeInt_positive",            false,  "1",      "1",      Event.VALIDATION_FAILED },
+         { FieldType.NEGATIVE_INT,         "noIgnore_negativeInt_negativeZero",        false,  "-0",     "-0",     Event.VALIDATION_SUCCESS },
+         { FieldType.NEGATIVE_INT,         "noIgnore_negativeInt_doubleDash1",         false,  "--123",  "--123",  Event.VALIDATION_FAILED },
+         { FieldType.NEGATIVE_INT,         "noIgnore_negativeInt_doubleDash2",         false,  "-12-3",  "-12-3",  Event.VALIDATION_FAILED },
+         { FieldType.NEGATIVE_INT,         "noIgnore_negativeInt_floatingPoint",       false,  "-1.23",  "-1.23",  Event.VALIDATION_FAILED },
+         { FieldType.NEGATIVE_INT,         "noIgnore_negativeInt_letter",              false,  "j",      "j",      Event.VALIDATION_FAILED },
+
+         { FieldType.STRICT_INT,           "noIgnore_strictInt_positive",                 false,  Characters.NUMBERS_END_ZERO,       Characters.NUMBERS_END_ZERO,        Event.VALIDATION_SUCCESS },
+         { FieldType.STRICT_INT,           "noIgnore_strictInt_negative",                 false,  "-" + Characters.NUMBERS_END_ZERO, "-" + Characters.NUMBERS_END_ZERO,  Event.VALIDATION_SUCCESS },
+         { FieldType.STRICT_INT,           "noIgnore_strictInt_letter",                   false,  "k",                               "k",                                Event.VALIDATION_FAILED },
+         { FieldType.STRICT_INT,           "noIgnore_strictInt_doubleZero",               false,  "00",                              "00",                               Event.VALIDATION_FAILED },
+         { FieldType.STRICT_INT,           "noIgnore_strictInt_positive_leadingZero",     false,  "01",                              "01",                               Event.VALIDATION_FAILED },
+         { FieldType.STRICT_INT,           "noIgnore_strictInt_negative_negativeZero",    false,  "-0",                              "-0",                               Event.VALIDATION_FAILED },
+         { FieldType.STRICT_INT,           "noIgnore_strictInt_doubleNegative",           false,  "--1",                             "--1",                              Event.VALIDATION_FAILED },
+         { FieldType.STRICT_INT,           "noIgnore_strictInt_floatingPoint",            false,  "1.23",                            "1.23",                             Event.VALIDATION_FAILED },
+
+         { FieldType.STRICT_POSITIVE_INT,  "noIgnore_strictPositiveInt_positive",         false,  Characters.NUMBERS_END_ZERO,  Characters.NUMBERS_END_ZERO,  Event.VALIDATION_SUCCESS },
+         { FieldType.STRICT_POSITIVE_INT,  "noIgnore_strictPositiveInt_negative",         false,  "-1",                         "-1",                         Event.VALIDATION_FAILED },
+         { FieldType.STRICT_POSITIVE_INT,  "noIgnore_strictPositiveInt_letter",           false,  "l",                          "l",                          Event.VALIDATION_FAILED },
+         { FieldType.STRICT_POSITIVE_INT,  "noIgnore_strictPositiveInt_doubleZero",       false,  "00",                         "00",                         Event.VALIDATION_FAILED },
+         { FieldType.STRICT_POSITIVE_INT,  "noIgnore_strictPositiveInt_leadingZero",      false,  "01",                         "01",                         Event.VALIDATION_FAILED },
+         { FieldType.STRICT_POSITIVE_INT,  "noIgnore_strictPositiveInt_negativeZero",     false,  "-0",                         "-0",                         Event.VALIDATION_FAILED },
+         { FieldType.STRICT_POSITIVE_INT,  "noIgnore_strictPositiveInt_floatingPoint",    false,  "1.23",                       "1.23",                       Event.VALIDATION_FAILED },
+
+         { FieldType.STRICT_NEGATIVE_INT,  "noIgnore_strictNegativeInt_negative",         false,  "-" + Characters.NUMBERS_END_ZERO,  "-" + Characters.NUMBERS_END_ZERO,  Event.VALIDATION_SUCCESS },
+         { FieldType.STRICT_NEGATIVE_INT,  "noIgnore_strictNegativeInt_positive",         false,  "1",                                "1",                                Event.VALIDATION_FAILED },
+         { FieldType.STRICT_NEGATIVE_INT,  "noIgnore_strictNegativeInt_letter",           false,  "m",                                "m",                                Event.VALIDATION_FAILED },
+         { FieldType.STRICT_NEGATIVE_INT,  "noIgnore_strictNegativeInt_doubleZero",       false,  "00",                               "00",                               Event.VALIDATION_FAILED },
+         { FieldType.STRICT_NEGATIVE_INT,  "noIgnore_strictNegativeInt_leadingZero",      false,  "-01",                              "-01",                              Event.VALIDATION_FAILED },
+         { FieldType.STRICT_NEGATIVE_INT,  "noIgnore_strictNegativeInt_negativeZero",     false,  "-0",                               "-0",                               Event.VALIDATION_FAILED },
+         { FieldType.STRICT_NEGATIVE_INT,  "noIgnore_strictNegativeInt_floatingPoint",    false,  "-1.23",                            "-1.23",                            Event.VALIDATION_FAILED },
+         { FieldType.STRICT_NEGATIVE_INT,  "noIgnore_strictNegativeInt_doubleDash1",      false,  "--123",                            "--123",                            Event.VALIDATION_FAILED },
+         { FieldType.STRICT_NEGATIVE_INT,  "noIgnore_strictNegativeInt_doubleDash2",      false,  "-12-3",                            "-12-3",                            Event.VALIDATION_FAILED },
+
+         { FieldType.STRICT_FLOAT,  "noIgnore_strictFloat_bad",                  false,  "1.2a",          "1.2a",          Event.VALIDATION_FAILED },
+         { FieldType.STRICT_FLOAT,  "noIgnore_strictFloat_posInt",               false,  "123",           "123",           Event.VALIDATION_SUCCESS },
+         { FieldType.STRICT_FLOAT,  "noIgnore_strictFloat_negInt",               false,  "-123",          "-123",          Event.VALIDATION_SUCCESS },
+         { FieldType.STRICT_FLOAT,  "noIgnore_strictFloat_posFloat",             false,  "1023.456789",   "1023.456789",   Event.VALIDATION_SUCCESS },
+         { FieldType.STRICT_FLOAT,  "noIgnore_strictFloat_negFloat",             false,  "-1023.456789",  "-1023.456789",  Event.VALIDATION_SUCCESS },
+         { FieldType.STRICT_FLOAT,  "noIgnore_strictFloat_zero1",                false,  "0",             "0",             Event.VALIDATION_SUCCESS },
+         { FieldType.STRICT_FLOAT,  "noIgnore_strictFloat_zero2",                false,  "0.0",           "0.0",           Event.VALIDATION_SUCCESS },
+         { FieldType.STRICT_FLOAT,  "noIgnore_strictFloat_leadingDoubleZero1",   false,  "00",            "00",            Event.VALIDATION_FAILED },
+         { FieldType.STRICT_FLOAT,  "noIgnore_strictFloat_leadingDoubleZero2",   false,  "00.0",          "00.0",          Event.VALIDATION_FAILED },
+         { FieldType.STRICT_FLOAT,  "noIgnore_strictFloat_extraTrailingZero1",   false,  "0.00",          "0.00",          Event.VALIDATION_FAILED },
+         { FieldType.STRICT_FLOAT,  "noIgnore_strictFloat_extraTrailingZero2",   false,  "12.3450",       "12.3450",       Event.VALIDATION_FAILED },
+         { FieldType.STRICT_FLOAT,  "noIgnore_strictFloat_leadingDoubleZeros3",  false,  "-00.0",         "-00.0",         Event.VALIDATION_FAILED },
+         { FieldType.STRICT_FLOAT,  "noIgnore_strictFloat_negativeZero1",        false,  "-0",            "-0",            Event.VALIDATION_FAILED },
+         { FieldType.STRICT_FLOAT,  "noIgnore_strictFloat_negativeZero2",        false,  "-0.000000",     "-0.000000",     Event.VALIDATION_FAILED },
+         { FieldType.STRICT_FLOAT,  "noIgnore_strictFloat_negativeZero3",        false,  "-0.0",          "-0.0",          Event.VALIDATION_FAILED },
+         { FieldType.STRICT_FLOAT,  "noIgnore_strictFloat_dash",                 false,  "-",             "-",             Event.VALIDATION_FAILED },
+         { FieldType.STRICT_FLOAT,  "noIgnore_strictFloat_doubleDash",           false,  "--",            "--",            Event.VALIDATION_FAILED },
+         { FieldType.STRICT_FLOAT,  "noIgnore_strictFloat_dashDot",              false,  "-.",            "-.",            Event.VALIDATION_FAILED },
+         { FieldType.STRICT_FLOAT,  "noIgnore_strictFloat_endInDot",             false,  "-1.",           "-1.",           Event.VALIDATION_FAILED },
+         { FieldType.STRICT_FLOAT,  "noIgnore_strictFloat_dashInWrongPlace1",    false,  "1-.2",          "1-.2",          Event.VALIDATION_FAILED },
+         { FieldType.STRICT_FLOAT,  "noIgnore_strictFloat_dashInWrongPlace2",    false,  "1.-2",          "1.-2",          Event.VALIDATION_FAILED },
+         { FieldType.STRICT_FLOAT,  "noIgnore_strictFloat_dashInWrongPlace3",    false,  "1.-2",          "1.-2",          Event.VALIDATION_FAILED },
+         { FieldType.STRICT_FLOAT,  "noIgnore_strictFloat_dashInWrongPlace4",    false,  "1.2-",          "1.2-",          Event.VALIDATION_FAILED },
+         { FieldType.STRICT_FLOAT,  "noIgnore_strictFloat_doubleDot1",           false,  "..",            "..",            Event.VALIDATION_FAILED },
+         { FieldType.STRICT_FLOAT,  "noIgnore_strictFloat_doubleDot2",           false,  "1..2",          "1..2",          Event.VALIDATION_FAILED },
+         { FieldType.STRICT_FLOAT,  "noIgnore_strictFloat_dotsEverywhere",       false,  ".1.2.",         ".1.2.",         Event.VALIDATION_FAILED }
       };
+
+      for( int i = 0; i < d.length; i++ ) {
+         final String name = (String) d[i][1];
+
+         for( int j = i + 1; j < d.length; j++ ) {
+            final String name2 = (String) d[j][1];
+
+            if( name.equalsIgnoreCase(name2) ) {
+               throw new IllegalArgumentException( "Duplicate test name (case-insensitive): " + name );
+            }
+         }
+      }
 
       data = Arrays.asList( d );
    }
@@ -256,8 +433,7 @@ public abstract class AbstractTest {
 
    @Test
    public void test() {
-      initField( testName, fieldType, ignoreInvalidInput );
-
+      initField();
       keypress( input );
 
       validatePreBlur();
@@ -289,14 +465,6 @@ public abstract class AbstractTest {
          }
       } else {
          assertFalse( inputIgnoredEventFired() );
-
-         if( !input.equalsIgnoreCase(actualValue) ) {
-            assertTrue( validationFailedEventFired() );
-            assertFalse( validationSuccessEventFired() );
-         } else {
-            assertFalse( validationFailedEventFired() );
-            assertTrue( validationSuccessEventFired() );
-         }
       }
    }
 
@@ -320,7 +488,7 @@ public abstract class AbstractTest {
 
    // Helpers below this line
 
-   /**
+   /*
     * <p>
     * Rather than sending the entire string into sendKeys, we have to call it one character at a time to prevent the script
     * from accepting invalid input.  By design, jquery-restrictedtextfield.js allows a character into the field before
@@ -355,7 +523,7 @@ public abstract class AbstractTest {
       }
    }
 
-   private void initField( final String testName, final FieldType fieldType, final boolean ignoreInvalidInput ) {
+   private void initField() {
       if( testName == null ) throw new IllegalArgumentException( "testName is null" );
       if( fieldType == null ) throw new IllegalArgumentException( "fieldType is null" );
 
@@ -385,8 +553,7 @@ public abstract class AbstractTest {
    }
 
    private static File createLogDirectory() throws IOException {
-      final SimpleDateFormat dateFormat = new SimpleDateFormat( "yyyy-MM-dd__HH-mm-ss" );
-      final String path = "build/reports/tests/browser_logs/" + dateFormat.format( new Date() );
+      final String path = "build/reports/tests/browser_logs";
       final File dir = new File( path );
 
       if( !dir.mkdirs() ) {

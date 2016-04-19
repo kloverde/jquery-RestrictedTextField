@@ -105,6 +105,9 @@
             $( "#txtInt" ).restrictedTextField( { type: "int", logger: log } );
             $( "#txtPosInt" ).restrictedTextField( { type: "positiveInt", logger: log } );
             $( "#txtNegInt" ).restrictedTextField( { type: "negativeInt", logger: log } );
+            $( "#txtStrictInt" ).restrictedTextField( { type: "strictInt", logger: log } );
+            $( "#txtStrictPosInt" ).restrictedTextField( { type: "strictPositiveInt", logger: log } );
+            $( "#txtStrictNegInt" ).restrictedTextField( { type: "strictNegativeInt", logger: log } );
             $( "#txtFloat" ).restrictedTextField( { type: "float", logger: log } );
             $( "#txtPosFloat" ).restrictedTextField( { type: "positiveFloat", logger: log } );
             $( "#txtNegFloat" ).restrictedTextField( { type: "negativeFloat", logger: log } );
@@ -235,6 +238,21 @@
       <div>
          <h4>Negative integers</h4>
          <input type="text" id="txtNegInt"/>
+      </div>
+
+      <div>
+         <h4>Strict positive/negative integers</h4>
+         <input type="text" id="txtStrictInt"/>
+      </div>
+
+      <div>
+         <h4>Strict positive integers</h4>
+         <input type="text" id="txtStrictPosInt"/>
+      </div>
+
+      <div>
+         <h4>Strict negative integers</h4>
+         <input type="text" id="txtStrictNegInt"/>
       </div>
 
       <div>

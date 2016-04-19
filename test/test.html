@@ -58,15 +58,38 @@
             text-align: left;
             overflow: scroll;
          }
+
+         #exitModal {
+            position: absolute;
+            display: none;
+            text-align: center;
+            padding: 40px 15px 40px 15px;
+            background-color: #D9F5FF;
+            border: 1px solid #000;
+         }
+
+         #exitModal h1, #exitModal h2 {
+            padding: 0;
+         }
+
+         #exitModal h2 {
+            padding-top: 20px !important;
+         }
       </style>
 
-      <script type="text/javascript" src="/test/jquery.js"></script>
-      <script type="text/javascript" src="/src/jquery.restrictedtextfield.js"></script>
+      <script type="text/javascript" src="../test/jquery.js"></script>
+      <script type="text/javascript" src="../src/jquery.restrictedtextfield.js"></script>
 
       <script type="text/javascript">
          var inputIgnoredEvent,
              validationFailedEvent,
              validationSuccessEvent;
+
+         $( document ).ready( function() {
+            $( window ).on( "resize", function() {
+               centerExitModal();
+            } );
+         } );
 
          function setUp() {
             log( "setUp" );
@@ -142,6 +165,24 @@
 
             log.prop( "scrollTop", log.prop("scrollHeight") );
          }
+
+         function showExitModal() {
+            centerExitModal();
+            $( "#exitModal" ).show();
+         }
+
+         function centerExitModal() {
+           var modal = $( "#exitModal" );
+
+           var modalHeight = modal.height(),
+               modalWidth  = modal.width();
+
+           var centerX  = $( window ).width() / 2,
+               centerY  = $( window ).height() / 2;
+
+           modal.css( "top", (centerY - (modalHeight / 2)) + "px" );
+           modal.css( "left", (centerX - (modalWidth / 2)) + "px" );
+         }
       </script>
    </head>
    <body>
@@ -152,6 +193,11 @@
 
          <div id="fieldContainer" class="center"></div>
          <pre id="log"></pre>
+      </div>
+
+      <div id="exitModal">
+         <h1>Test complete.  Saving browser log...</h1>
+         <h2>The browser window will close automatically when done.</h2>
       </div>
    </body>
 </html>

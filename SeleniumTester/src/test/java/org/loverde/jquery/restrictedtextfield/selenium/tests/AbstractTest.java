@@ -734,6 +734,8 @@ public abstract class AbstractTest {
    private static void writeLog() throws IOException {
       final BufferedWriter writer = new BufferedWriter( new FileWriter(logDirectory.getPath() + "/" + lastClass.getSimpleName() + ".log") );
 
+      ((JavascriptExecutor) driver).executeScript( "showExitModal();" );
+
       try {
       writer.write( driver.findElement(By.id("log")).getText() );
       writer.flush();

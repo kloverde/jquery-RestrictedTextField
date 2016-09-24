@@ -1,5 +1,5 @@
-RestrictedTextField v1.1
-=========================
+RestrictedTextField v1.1 (UPCOMING RELEASE)
+===========================================
 
 See LICENSE for this software's licensing terms.
 
@@ -33,7 +33,7 @@ ResrictedTextField is a jQuery plugin which enforces data formats on HTML text b
 15.  Negative integers
 16.  Strict integers
 17.  Strict positive integers
-18.  String negative integers
+18.  Strict negative integers
 19.  Floats
 20.  Positive floats
 21.  Negative floats

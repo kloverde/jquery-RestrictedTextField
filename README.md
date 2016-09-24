@@ -105,7 +105,7 @@ Many other versions of Firefox and Chrome, whether older or newer than what's li
   * [Java SDK](http://www.oracle.com/technetwork/java/javase/index.html) version 8 or later
   * [BuildScripts](https://github.com/kloverde/BuildScripts)
 2.  Modify the `buildScriptsDir` property in `SeleniumTester/gradle.properties` to reflect the location of BuildScripts on your filesystem
-3.  If you're testing in IE or Chrome, download the appropriate browser driver for your system at [seleniumhq.org](http://www.seleniumhq.org).  Once you've downloaded the drivers, update `ieDriverPath` and `chromeDriverPath` in `SeleniumTester/gradle.properties` with their paths.
+3.  Download the appropriate browser drivers for your system at [seleniumhq.org](http://www.seleniumhq.org).  Once you've downloaded them, update `geckoDriverPath`, `ieDriverPath` and `chromeDriverPath` in `SeleniumTester/gradle.properties` with their paths.
 4.  If you're testing in IE, set Protected Mode to the same value in all zones (it doesn't matter whether it's set to enabled or disabled, just that it's the same for all).  See [here](http://jimevansmusic.blogspot.com/2012/08/youre-doing-it-wrong-protected-mode-and.html) for more information.  If that page disappears from the Web, see [the Wayback Machine's copy](http://web.archive.org/web/20151026094711/http://jimevansmusic.blogspot.com/2012/08/youre-doing-it-wrong-protected-mode-and.html).
 5.  Set your browsers' zoom levels to 100%.  If you don't, Selenium will throw an exception, at least for IE.
 6.  Update the `browsers` property in `SeleniumTester/gradle.properties` to reflect which browsers you'll be testing with.  This is explained further by documentation found in the properties file.

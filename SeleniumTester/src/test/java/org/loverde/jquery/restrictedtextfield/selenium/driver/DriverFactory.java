@@ -1,13 +1,34 @@
 /*
- * RestrictedTextField
+ * RestrictedTextField v1.1
  * https://www.github.com/kloverde/jquery-RestrictedTextField
  *
- * This software is licensed under the 3-clause BSD license.
- *
- * Copyright (c) 2016 Kurtis LoVerde
- * All rights reserved
+ * Copyright (c) 2016, Kurtis LoVerde
+ * All rights reserved.
  *
  * Donations:  https://paypal.me/KurtisLoVerde/10
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ *
+ *     1. Redistributions of source code must retain the above copyright
+ *        notice, this list of conditions and the following disclaimer.
+ *     2. Redistributions in binary form must reproduce the above copyright
+ *        notice, this list of conditions and the following disclaimer in the
+ *        documentation and/or other materials provided with the distribution.
+ *     3. Neither the name of the copyright holder nor the names of its
+ *        contributors may be used to endorse or promote products derived from
+ *        this software without specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+ * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+ * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+ * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+ * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+ * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+ * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 package org.loverde.jquery.restrictedtextfield.selenium.driver;
@@ -17,56 +38,75 @@ import java.util.logging.Level;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
-import org.openqa.selenium.firefox.FirefoxProfile;
 import org.openqa.selenium.ie.InternetExplorerDriver;
+import org.openqa.selenium.remote.DesiredCapabilities;
+import org.openqa.selenium.remote.RemoteWebDriver;
 
 
-public class DriverFactory extends FirefoxDriver {
+public class DriverFactory {
 
    /**
-    * Firefox keeps breaking Selenium by making changes to things.  You have to set
-    * options in the profile in order for WebDriver.get() to work.  It seems to be
-    * common wisdom that your Firefox installation should lag behind a few versions
-    * if using it with Selenium.
+    * Beginning with Firefox 48, you have to use the Marionette/Gecko driver.
+    * Firefox testing for RestrictedTextField assumes that you are using
+    * Firefox 48 or later.  Older versions have not been tested and are not
+    * supported for automated testing purposes, although RestrictedTextField
+    * itself is supported for older versions.
     */
-   public static final FirefoxDriver newFirefoxDriver() {
+   public static final WebDriver newFirefoxDriver() {
       final FirefoxDriver driver;
-      final FirefoxProfile profile = new FirefoxProfile();
+      final DesiredCapabilities capabilities = DesiredCapabilities.firefox();
 
-      profile.setPreference( "browser.startup.homepage_override.mstone", "ignore" );
-      profile.setPreference( "startup.homepage_welcome_url.additional",  "about:blank" );
-      //profile.setPreference( "xpinstall.signatures.required", false );
-      //profile.setPreference( "toolkit.telemetry.reportingpolicy.firstRun", false );
+      setCommonCapabilities( capabilities );
+      capabilities.setCapability( "marionette", true );
 
-      driver = new FirefoxDriver( profile );
+      System.out.println( "Instantiating Firefox driver" );
 
-      driver.setLogLevel( Level.ALL );
+      driver = new FirefoxDriver( capabilities );
       setCommonDriverProps( driver );
+
+      System.out.println( "Firefox driver is " + driver );
 
       return driver;
    }
 
    public static final InternetExplorerDriver newIeDriver() {
-      final InternetExplorerDriver driver = new InternetExplorerDriver();
+      final InternetExplorerDriver driver;
+      final DesiredCapabilities capabilities = DesiredCapabilities.internetExplorer();
 
-      driver.setLogLevel( Level.ALL );
+      setCommonCapabilities( capabilities );
+
+      System.out.println( "Instantiating IE driver" );
+
+      driver = new InternetExplorerDriver( capabilities );
       setCommonDriverProps( driver );
+
+      System.out.println( "IE driver is " + driver );
 
       return driver;
    }
 
    public static final ChromeDriver newChromeDriver() {
-      final ChromeDriver driver = new ChromeDriver();
+      final ChromeDriver driver;
+      final DesiredCapabilities capabilities = DesiredCapabilities.chrome();
 
-      driver.setLogLevel( Level.ALL );
+      setCommonCapabilities( capabilities );
+
+      System.out.println( "Instantiating Chrome driver" );
+
+      driver = new ChromeDriver( capabilities );
       setCommonDriverProps( driver );
+
+      System.out.println( "Chrome driver is " + driver );
 
       return driver;
    }
 
-   private static void setCommonDriverProps( final WebDriver driver ) {
-      // setLogLevel isn't in the interface... I guess there's a reason for that
+   private static void setCommonCapabilities( final DesiredCapabilities capabilities ) {
+      capabilities.setJavascriptEnabled( true );
+   }
 
+   private static void setCommonDriverProps( final RemoteWebDriver driver ) {
+      driver.setLogLevel( Level.ALL );
       driver.manage().window().maximize();
    }
 }

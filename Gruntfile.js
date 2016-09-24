@@ -22,7 +22,7 @@ module.exports = function(grunt) {
       exec: {
          "gradle-test": {
             cmd: function() {
-               return "cd SeleniumTester && gradle clean test";
+               return "cd SeleniumTester && gradle clean test --stacktrace";
             }
          }
       },
@@ -48,7 +48,7 @@ module.exports = function(grunt) {
          dev: {
             options: {
                autostop: false,
-               downloadUrl: "https://selenium-release.storage.googleapis.com/2.53/selenium-server-standalone-2.53.0.jar",
+               downloadUrl: "https://selenium-release.storage.googleapis.com/3.0-beta2/selenium-server-standalone-3.0.0-beta2.jar",
                serverOptions: {},
                systemProperties: {}
             }

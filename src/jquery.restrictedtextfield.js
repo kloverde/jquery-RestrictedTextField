@@ -2,13 +2,35 @@
  * RestrictedTextField v1.1
  * https://www.github.com/kloverde/jquery-RestrictedTextField
  *
- * This software is licensed under the 3-clause BSD license.
- *
- * Copyright (c) 2016 Kurtis LoVerde
- * All rights reserved
+ * Copyright (c) 2016, Kurtis LoVerde
+ * All rights reserved.
  *
  * Donations:  https://paypal.me/KurtisLoVerde/10
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ *
+ *     1. Redistributions of source code must retain the above copyright
+ *        notice, this list of conditions and the following disclaimer.
+ *     2. Redistributions in binary form must reproduce the above copyright
+ *        notice, this list of conditions and the following disclaimer in the
+ *        documentation and/or other materials provided with the distribution.
+ *     3. Neither the name of the copyright holder nor the names of its
+ *        contributors may be used to endorse or promote products derived from
+ *        this software without specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+ * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+ * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+ * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+ * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+ * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+ * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+
 (function( $ ) {
    "use strict";
 
@@ -25,10 +47,10 @@
        *
        * @param fullRegex    - RegExp object.  This regular expression describes what a valid value looks like when the user is finished
        *                       entering data, NOT what valid input looks like as it's being entered.  If your type is complex, like a
-       *                       phone number for example, you need to provide a value for partialRegex to ensure that your user will be
+       *                       phone number, for example, you need to provide a value for partialRegex to ensure that the user will be
        *                       able to continue to type into the field.  If partialRegex is not defined or is null, the text field will
-       *                       be validated against this regular expression on every keystroke.  Notwithstanding any of the foregoing,
-       *                       this regular expression is also used to validate the text field on blur. 
+       *                       be validated against this fullRegex on every keystroke.  Notwithstanding any of the foregoing, this
+       *                       regular expression is also used to validate the text field on blur. 
        *
        * @param partialRegex - RegExp object.  This regular expression describes what a valid value looks like while the user is entering
        *                       it, NOT what valid input looks like after the user has finished.  If you provide a value for this, this
@@ -60,8 +82,8 @@
 
          var negativeInt   = /^-$/,
              posNegFloat   = /^-?0?\.?$|^-?\d*\.\d*$/,
-             positiveFloat = /^[\.\d]$|^\.$|^\d*\.$/,
-             negativeFloat = /^0*\.?$|^-\.?$|^-\d*\.$/;
+             positiveFloat = /^\d*\.\d*$/,
+             negativeFloat = /^-?0*\.?$|^-\.?$|^-\d*\.$/;
 
          if( $.fn.restrictedTextField.types === undefined || $.fn.restrictedTextField.types === null ) {
             $.fn.restrictedTextField.types = [];
@@ -89,8 +111,10 @@
          _addType( dest, "strictNegativeInt",       /^0$|^-[1-9]\d*$/        , negativeInt );
          _addType( dest, "float",                   /^-?\d*\.?\d+$/          , posNegFloat );    // 0, .0, 0.0, /positive/negative floating-point numbers, with or without a value to the left of the decimal point; positive and negative integers
          _addType( dest, "positiveFloat",           /^\d*\.?\d+$/            , positiveFloat );  // Positive floating-point numbers and positive integers
-         _addType( dest, "negativeFloat",           /^0*\.?0+$|^-\d*\.?\d+$/ , negativeFloat );  // Negative floating-point numbers and negative integers
-         _addType( dest, "strictFloat",             /^0$|^0?\.(0|\d*[1-9])$|^-0?\.(\d*[1-9])$|^-?[1-9]\d*\.(\d*[1-9])$|^-?[1-9]+\d*$/  , posNegFloat );    // 0, .0, 0.0, /positive/negative floating-point numbers, with or without a value to the left of the decimal point; positive and negative integers
+         _addType( dest, "negativeFloat",           /^-?0+$|^-?0*\.?0+$|^-\d*\.?\d+$/ , negativeFloat );  // Negative floating-point numbers and negative integers
+         _addType( dest, "strictFloat",             /^\d$|^\d?\.(0|\d*[1-9])$|^-0?\.(\d*[1-9])$|^-?[1-9]\d*\.(\d*[1-9])$|^-?[1-9]+\d*$/  , posNegFloat );
+         _addType( dest, "strictPositiveFloat",     /^0$|^0?\.(0|\d*[1-9])$|^[1-9]\d*\.(\d*[1-9])$|^[1-9]+\d*$/  , positiveFloat );
+         _addType( dest, "strictNegativeFloat",     /^0(\.0)?$|^-0?\.(\d*[1-9])$|^-?[1-9]\d*\.(\d*[1-9])$|^-?[1-9]+\d*$/  , negativeFloat );
          _addType( dest, "money",                   /^-?\d*\.?\d{1,2}$/      , posNegFloat );    // Positive and negative floating-point numbers with one or two numbers after the decimal point, plus positive and negative integers
          _addType( dest, "positiveMoney",           /^\d*\.?\d{1,2}$/        , positiveFloat );  // Positive floating-point numbers with one or two numbers after the decimal point, and positive integers
          _addType( dest, "negativeMoney",           /^-\d*\.?\d{1,2}$/       , negativeFloat );  // Negative floating-point numbers with one or two numbers after the decimal point, plus negative integers
@@ -146,11 +170,18 @@
                }
 
                if( passesFullRegex ) {
-                  responseEvent = EVENT_VALIDATION_SUCCESS;
-               } else if( passesPartialRegex ) {
+                  log( "passes full regex" );
                   responseEvent = EVENT_VALIDATION_SUCCESS;
                } else {
-                  responseEvent = EVENT_VALIDATION_FAILED;
+                  log( "fails full regex" );
+
+                  if( passesPartialRegex ) {
+                     log( "passes partial regex" );
+                     responseEvent = EVENT_VALIDATION_SUCCESS;
+                  } else {
+                     log( "fails partial regex" );
+                     responseEvent = EVENT_VALIDATION_FAILED;
+                  }
                }
 
                if( !passesPartialRegex && !passesFullRegex ) {
@@ -185,7 +216,7 @@
             if( isNothing(domField.value) ) return;
 
             var t = settings.type;
-            
+
             if( t === "money" || t === "positiveMoney" || t === "negativeMoney" || t === "accountingMoney" || t ==="negativeAccountingMoney" ) {
                var len         = domField.value.length;
                var openParen   = domField.value[0] === "(" ? "(" : "";
@@ -199,14 +230,14 @@
                   integerPart = domField.value.substring( openParen === "" ? 0 : 1, decimalIdx );
                   decimalPart = domField.value.substring( decimalIdx + 1, closeParen === "" ? len : len - 1 );
                }
-               
+
                domField.value = openParen + integerPart + "." + decimalPart + (decimalPart.length === 1 ? "0" : "") + closeParen;
             }
          }
       } );
 
       function log( msg ) {
-         if( settings.logger ) {
+         if( settings.logger && typeof settings.logger === "function" ) {
             settings.logger( "jquery.restrictedtextfield.js:  " + msg );
          }
       }

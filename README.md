@@ -9,7 +9,7 @@ ResrictedTextField is a jQuery plugin which enforces data formats on HTML text b
 ## Features
 
 * Prevent invalid keystrokes or catch a validation failure event to handle it as you wish
-* Has 27 built-in types
+* Has 29 built-in types
 * Extendible:  define your own types
 * Money types automatically format on blur to end in a decimal point and two digits
 
@@ -38,6 +38,8 @@ ResrictedTextField is a jQuery plugin which enforces data formats on HTML text b
 20.  Positive floats
 21.  Negative floats
 22.  Strict floats
+23.  Strict positive floats
+24.  Strict negative floats
 23.  Money
 24.  Positive money
 25.  Negative money
@@ -62,7 +64,7 @@ These events are fired based on the state of the text field.
 | ------------------| ----------------------------------------------------------------|
 | inputIgnored      | Fires when an invalid keystroke is ignored.  `preventInvalidInput` must be enabled for this event to fire. |
 | validationFailed  | Fires when an invalid keystroke is made when `preventInvalidInput` is disabled.  Also fires if validation performed on blur() fails. |
-| validationSuccess | Fires when the user removes invalid data when `preventInvalidInput` is disabled.  Also fires if validation performed on blur() passes. |
+| validationSuccess | Fires when the user removes invalid data when `preventInvalidInput` is disabled.  Also fires if validation performed on blur() succeeds. |
 
 
 #### Example
@@ -82,6 +84,8 @@ See the included HTML file for a complete demo.
 
 # Browser Compatibility
 
+Many other versions of Firefox and Chrome, whether older or newer than what's listed here, are certainly compatible.
+
 * Firefox 45.0.1:  Compatible
 * Chrome 49.0.2623.108 m:  Compatible
 * Edge:  Compatible
@@ -98,22 +102,26 @@ See the included HTML file for a complete demo.
 1.  Install the following build dependencies:
   * [Node.js](https://nodejs.org/en)
   * [Gradle](http://gradle.org)
-  * [Java SDK](http://www.oracle.com/technetwork/java/javase/index.html) version 7 or later
+  * [Java SDK](http://www.oracle.com/technetwork/java/javase/index.html) version 8 or later
   * [BuildScripts](https://github.com/kloverde/BuildScripts)
 2.  Modify the `buildScriptsDir` property in `SeleniumTester/gradle.properties` to reflect the location of BuildScripts on your filesystem
-3.  If you are testing in IE or Chrome, download the appropriate browser driver for your system at [seleniumhq.org](http://www.seleniumhq.org).  Once you've downloaded the drivers, update `ieDriverPath` and `chromeDriverPath` in `SeleniumTester/gradle.properties` with their paths.
-4.  Update the `browsers` property in `SeleniumTester/gradle.properties` to reflect which browsers you'll be testing with.  This is explained further by documentation found in the properties file.
-5.  Now, from a command prompt:
+3.  If you're testing in IE or Chrome, download the appropriate browser driver for your system at [seleniumhq.org](http://www.seleniumhq.org).  Once you've downloaded the drivers, update `ieDriverPath` and `chromeDriverPath` in `SeleniumTester/gradle.properties` with their paths.
+4.  If you're testing in IE, set Protected Mode to the same value in all zones (it doesn't matter whether it's set to enabled or disabled, just that it's the same for all).  See [here](http://jimevansmusic.blogspot.com/2012/08/youre-doing-it-wrong-protected-mode-and.html) for more information.  If that page disappears from the Web, see [the Wayback Machine's copy](http://web.archive.org/web/20151026094711/http://jimevansmusic.blogspot.com/2012/08/youre-doing-it-wrong-protected-mode-and.html).
+5.  Set your browsers' zoom levels to 100%.  If you don't, Selenium will throw an exception, at least for IE.
+6.  Update the `browsers` property in `SeleniumTester/gradle.properties` to reflect which browsers you'll be testing with.  This is explained further by documentation found in the properties file.
+7.  Now, from a command prompt:
   1.  `cd` to the project root (`jquery-RestrictedTextField`)
   2.  Type `npm install`
-  3.  Type `grunt test`
+  3.  Type `npm test`
 
 
-####NOTES:
+#### UNIT TESTS NOTES:
 
-* #### The Selenium 64-bit IE driver has been utterly unusable since at least 2013, which, at the time I wrote this sentence, means it's been three years.  See [here](https://github.com/seleniumhq/selenium-google-code-issue-archive/issues/5116).  So, if you're testing on a 64-bit version of Windows with IE 10 or IE 11, use the 32-bit driver.
+* #### The Selenium project's 64-bit IE driver is broken for IE 10 and 11, and according to a Selenium contributor, is unfixable.  See [here](https://github.com/seleniumhq/selenium-google-code-issue-archive/issues/5116) and [here](http://jimevansmusic.blogspot.com/2014/09/screenshots-sendkeys-and-sixty-four.html).  If you're testing on a 64-bit version of Windows with IE 10 or 11, use the 32-bit driver instead.  Its performance is still poor, but is far better than the 64-bit driver.
 
-* #### If you're using Windows and if you haven't used Selenium before, Windows Firewall will pop up an alert asking whether to allow the driver to listen for connections.  You need to grant this permission.  During this time, one or more of the unit tests may fail.  If this happens, re-run the tests after the permission has been granted.
+* #### If you're using Windows and if you haven't used Selenium before, Windows Firewall will pop up an alert asking whether to allow the driver server to listen for connections.  You need to grant this permission.  During this time, one or more of the unit tests will fail.  Simply re-run the tests after the permission has been granted.
+
+* #### If you're running the unit tests in Firefox, you must use Firefox 48 or later.  Starting with Firefox 48, Selenium is required to use the Marionette/Gecko driver, and my code is written to initialize that particular driver.  Although RestrictedTextField itself is supported on older Firefox releases, the unit tests are not.
 
 
 ## Thanks

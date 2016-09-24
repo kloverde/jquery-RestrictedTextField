@@ -1,13 +1,34 @@
 /*
- * RestrictedTextField
+ * RestrictedTextField v1.1
  * https://www.github.com/kloverde/jquery-RestrictedTextField
  *
- * This software is licensed under the 3-clause BSD license.
- *
- * Copyright (c) 2016 Kurtis LoVerde
- * All rights reserved
+ * Copyright (c) 2016, Kurtis LoVerde
+ * All rights reserved.
  *
  * Donations:  https://paypal.me/KurtisLoVerde/10
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ *
+ *     1. Redistributions of source code must retain the above copyright
+ *        notice, this list of conditions and the following disclaimer.
+ *     2. Redistributions in binary form must reproduce the above copyright
+ *        notice, this list of conditions and the following disclaimer in the
+ *        documentation and/or other materials provided with the distribution.
+ *     3. Neither the name of the copyright holder nor the names of its
+ *        contributors may be used to endorse or promote products derived from
+ *        this software without specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+ * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+ * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+ * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+ * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+ * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+ * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 package org.loverde.jquery.restrictedtextfield.selenium.tests;
@@ -15,22 +36,16 @@ package org.loverde.jquery.restrictedtextfield.selenium.tests;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
 
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.lang.invoke.MethodHandles;
-import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Date;
 import java.util.List;
 import java.util.Properties;
-
-import javax.swing.InputVerifier;
 
 import org.junit.After;
 import org.junit.AfterClass;
@@ -73,19 +88,14 @@ public abstract class AbstractTest {
    private static final String PROPERTIES_FILENAME = "gradle.properties";
 
    public static final String APP_PROP_IE_DRIVER_PATH        = "ieDriverPath",
+                              APP_PROP_GECKO_DRIVER_PATH     = "geckoDriverPath",
                               APP_PROP_CHROME_DRIVER_PATH    = "chromeDriverPath",
-                              APP_PROP_URL                   = "url",
+                              APP_PROP_URL                   = "url";
 
-                              SYSTEM_PROP_IE_DRIVER_PATH     = "webdriver.ie.driver",
-                              SYSTEM_PROP_CHROME_DRIVER_PATH = "webdriver.chrome.driver";
-
-   private static String iePath,
-                         chromePath;
 
    private static WebDriver driver;
 
-   private WebElement field,
-                      body;
+   private WebElement field, body;
 
    private static Class<?> lastClass;
    private static File logDirectory;
@@ -192,6 +202,7 @@ public abstract class AbstractTest {
          { FieldType.FLOAT,  "ignore_float_dashInWrongPlace1",    true,  "1-.2",          "1.2",           Event.VALIDATION_SUCCESS },
          { FieldType.FLOAT,  "ignore_float_dashInWrongPlace2",    true,  "1.-2",          "1.2",           Event.VALIDATION_SUCCESS },
          { FieldType.FLOAT,  "ignore_float_dashInWrongPlace3",    true,  "1.2-",          "1.2",           Event.VALIDATION_SUCCESS },
+         { FieldType.FLOAT,  "ignore_float_dashInWrongPlace4",    true,  "1.-0",          "1.0",           Event.VALIDATION_SUCCESS },
          { FieldType.FLOAT,  "ignore_float_doubleDot1",           true,  "..",            ".",             Event.VALIDATION_FAILED },
          { FieldType.FLOAT,  "ignore_float_doubleDot2",           true,  "1..2",          "1.2",           Event.VALIDATION_SUCCESS },
          { FieldType.FLOAT,  "ignore_float_dotsEverywhere",       true,  ".1.2.",         ".12",           Event.VALIDATION_SUCCESS },
@@ -220,6 +231,7 @@ public abstract class AbstractTest {
          { FieldType.POSITIVE_FLOAT,  "ignore_positiveFloat_dashInWrongPlace1",    true,  "1-.2",          "1.2",           Event.VALIDATION_SUCCESS },
          { FieldType.POSITIVE_FLOAT,  "ignore_positiveFloat_dashInWrongPlace2",    true,  "1.-2",          "1.2",           Event.VALIDATION_SUCCESS },
          { FieldType.POSITIVE_FLOAT,  "ignore_positiveFloat_dashInWrongPlace3",    true,  "1.2-",          "1.2",           Event.VALIDATION_SUCCESS },
+         { FieldType.POSITIVE_FLOAT,  "ignore_positiveFloat_dashInWrongPlace4",    true,  "1.-0",          "1.0",           Event.VALIDATION_SUCCESS },
          { FieldType.POSITIVE_FLOAT,  "ignore_positiveFloat_doubleDot1",           true,  "..",            ".",             Event.VALIDATION_FAILED },
          { FieldType.POSITIVE_FLOAT,  "ignore_positiveFloat_doubleDot2",           true,  "1..2",          "1.2",           Event.VALIDATION_SUCCESS },
          { FieldType.POSITIVE_FLOAT,  "ignore_positiveFloat_dotsEverywhere",       true,  ".1.2.",         ".12",           Event.VALIDATION_SUCCESS },
@@ -248,6 +260,7 @@ public abstract class AbstractTest {
          { FieldType.NEGATIVE_FLOAT,  "ignore_negativeFloat_dashInWrongPlace1",    true,  "1-.2",          "-.2",           Event.VALIDATION_SUCCESS },
          { FieldType.NEGATIVE_FLOAT,  "ignore_negativeFloat_dashInWrongPlace2",    true,  "1.-2",          ".",             Event.VALIDATION_FAILED },
          { FieldType.NEGATIVE_FLOAT,  "ignore_negativeFloat_dashInWrongPlace3",    true,  "1.2-",          ".",             Event.VALIDATION_FAILED },
+         { FieldType.NEGATIVE_FLOAT,  "ignore_negativeFloat_dashInWrongPlace4",    true,  "1.-0",          ".0",            Event.VALIDATION_SUCCESS },
          { FieldType.NEGATIVE_FLOAT,  "ignore_negativeFloat_doubleDot1",           true,  "..",            ".",             Event.VALIDATION_FAILED },
          { FieldType.NEGATIVE_FLOAT,  "ignore_negativeFloat_doubleDot2",           true,  "1..2",          ".",             Event.VALIDATION_FAILED },
          { FieldType.NEGATIVE_FLOAT,  "ignore_negativeFloat_dotsEverywhere",       true,  ".1.2.",         ".",             Event.VALIDATION_FAILED },
@@ -275,11 +288,35 @@ public abstract class AbstractTest {
          { FieldType.STRICT_FLOAT,  "ignore_strictFloat_dashInWrongPlace1",    true,  "1-.2",          "1.2",           Event.VALIDATION_SUCCESS },
          { FieldType.STRICT_FLOAT,  "ignore_strictFloat_dashInWrongPlace2",    true,  "1.-2",          "1.2",           Event.VALIDATION_SUCCESS },
          { FieldType.STRICT_FLOAT,  "ignore_strictFloat_dashInWrongPlace3",    true,  "1.2-",          "1.2",           Event.VALIDATION_SUCCESS },
+         { FieldType.STRICT_FLOAT,  "ignore_strictFloat_dashInWrongPlace4",    true,  "1.-0",          "1.0",           Event.VALIDATION_SUCCESS },
          { FieldType.STRICT_FLOAT,  "ignore_strictFloat_doubleDot1",           true,  "..",            ".",             Event.VALIDATION_FAILED },
          { FieldType.STRICT_FLOAT,  "ignore_strictFloat_doubleDot2",           true,  "1..2",          "1.2",           Event.VALIDATION_SUCCESS },
          { FieldType.STRICT_FLOAT,  "ignore_strictFloat_dotsEverywhere",       true,  ".1.2.",         ".12",           Event.VALIDATION_SUCCESS },
          { FieldType.STRICT_FLOAT,  "ignore_strictFloat_letter1",              true,  "a",             "",              Event.VALIDATION_SUCCESS },
          { FieldType.STRICT_FLOAT,  "ignore_strictFloat_letter2",              true,  "1.a",           "1.",            Event.VALIDATION_FAILED },
+
+         { FieldType.STRICT_POSITIVE_FLOAT,  "ignore_strictPositiveFloat_all",                  true,  Characters.NUMBERS_END_ZERO + "." + Characters.NUMBERS_START_ZERO,
+                                                                                                       Characters.NUMBERS_END_ZERO + "." + Characters.NUMBERS_START_ZERO,  Event.VALIDATION_SUCCESS },
+         { FieldType.STRICT_POSITIVE_FLOAT,  "ignore_strictPositiveFloat_posInt",               true,  "123",           "123",           Event.VALIDATION_SUCCESS },
+         { FieldType.STRICT_POSITIVE_FLOAT,  "ignore_strictPositiveFloat_negInt",               true,  "-123",          "123",           Event.VALIDATION_SUCCESS },
+         { FieldType.STRICT_POSITIVE_FLOAT,  "ignore_strictPositiveFloat_negFloat",             true,  "-1023.456789",  "1023.456789",   Event.VALIDATION_SUCCESS },
+         { FieldType.STRICT_POSITIVE_FLOAT,  "ignore_strictPositiveFloat_zero1",                true,  "0",             "0",             Event.VALIDATION_SUCCESS },
+         { FieldType.STRICT_POSITIVE_FLOAT,  "ignore_strictPositiveFloat_zero2",                true,  "0.0",           "0.0",           Event.VALIDATION_SUCCESS },
+         { FieldType.STRICT_POSITIVE_FLOAT,  "ignore_strictPositiveFloat_zero3",                true,  ".0",            ".0",            Event.VALIDATION_SUCCESS },
+         { FieldType.STRICT_POSITIVE_FLOAT,  "ignore_strictPositiveFloat_leadingZero1",         true,  "00",            "0",             Event.VALIDATION_SUCCESS },
+         { FieldType.STRICT_POSITIVE_FLOAT,  "ignore_strictPositiveFloat_leadingZero2",         true,  "00.0",          "0.0",           Event.VALIDATION_SUCCESS },
+         { FieldType.STRICT_POSITIVE_FLOAT,  "ignore_strictPositiveFloat_leadingZero3",         true,  "0123.456",      "0.456",         Event.VALIDATION_SUCCESS },
+         { FieldType.STRICT_POSITIVE_FLOAT,  "ignore_strictPositiveFloat_extraTrailingZero1",   true,  "0.00",          "0.00",          Event.VALIDATION_FAILED },
+         { FieldType.STRICT_POSITIVE_FLOAT,  "ignore_strictPositiveFloat_extraTrailingZero2",   true,  "12.3450",       "12.3450",       Event.VALIDATION_FAILED },
+         { FieldType.STRICT_POSITIVE_FLOAT,  "ignore_strictPositiveFloat_leadingDoubleZeros3",  true,  "-00.0",         "0.0",           Event.VALIDATION_SUCCESS },
+         { FieldType.STRICT_POSITIVE_FLOAT,  "ignore_strictPositiveFloat_negativeZero",         true,  "-0.000000",     "0.000000",      Event.VALIDATION_FAILED },
+         { FieldType.STRICT_POSITIVE_FLOAT,  "ignore_strictPositiveFloat_dash",                 true,  "-",             "",              Event.VALIDATION_SUCCESS },
+         { FieldType.STRICT_POSITIVE_FLOAT,  "ignore_strictPositiveFloat_dashDot",              true,  ".",             ".",             Event.VALIDATION_FAILED },
+         { FieldType.STRICT_POSITIVE_FLOAT,  "ignore_strictPositiveFloat_doubleDot1",           true,  "..",            ".",             Event.VALIDATION_FAILED },
+         { FieldType.STRICT_POSITIVE_FLOAT,  "ignore_strictPositiveFloat_doubleDot2",           true,  "1..2",          "1.2",           Event.VALIDATION_SUCCESS },
+         { FieldType.STRICT_POSITIVE_FLOAT,  "ignore_strictPositiveFloat_dotsEverywhere",       true,  ".1.2.",         ".12",           Event.VALIDATION_SUCCESS },
+         { FieldType.STRICT_POSITIVE_FLOAT,  "ignore_strictPositiveFloat_letter1",              true,  "a",             "",              Event.VALIDATION_SUCCESS },
+         { FieldType.STRICT_POSITIVE_FLOAT,  "ignore_strictPositiveFloat_letter2",              true,  "1.a",           "1.",            Event.VALIDATION_FAILED },
 
          // Second set:  don't ignore invalid input
 
@@ -536,23 +573,43 @@ public abstract class AbstractTest {
       this.expectedValue = expectedValue;
       this.expectedEventOnBlur = expectedEventOnBlur;
 
-      if( !StringUtil.isNothing(iePath) ) {
-         System.setProperty( SYSTEM_PROP_IE_DRIVER_PATH, new File(iePath).getAbsolutePath() );
-      }
-
-      if( !StringUtil.isNothing(chromePath) ) {
-         System.setProperty( SYSTEM_PROP_CHROME_DRIVER_PATH, new File(chromePath).getAbsolutePath() );
-      }
-
       if( clazz != lastClass ) {
          driver = null;
+         lastClass = clazz;
 
          if( clazz == InternetExplorerTest.class ) {
+            System.out.println( "Getting IE driver" );
+
             driver = DriverFactory.newIeDriver();
+
+            if( driver == null ) {
+               System.out.println( "IE driver is null" );
+               throw new IllegalStateException( "IE driver is null" );
+            } else {
+               System.out.println( "Got IE driver" );
+            }
          } else if( clazz == FirefoxTest.class ) {
+            System.out.println( "Getting Firefox driver" );
+
             driver = DriverFactory.newFirefoxDriver();
+
+            if( driver == null ) {
+               System.out.println( "Firefox driver is null" );
+               throw new IllegalStateException( "Firefox driver is null" );
+            } else {
+               System.out.println( "Got Firefox driver" );
+            }
          } else if( clazz == ChromeTest.class ) {
+            System.out.println( "Getting Chrome driver" );
+
             driver = DriverFactory.newChromeDriver();
+
+            if( driver == null ) {
+               System.out.println( "Chrome driver is null" );
+               throw new IllegalStateException( "Chrome driver is null" );
+            } else {
+               System.out.println( "Got Chrome driver" );
+            }
          }
 
          if( driver == null ) {
@@ -560,7 +617,6 @@ public abstract class AbstractTest {
          }
 
          driver.get( props.getProperty(APP_PROP_URL) );
-         lastClass = clazz;
       }
    }
 
@@ -569,11 +625,25 @@ public abstract class AbstractTest {
       props = new Properties();
       props.load( new FileInputStream(PROPERTIES_FILENAME) );
 
-      iePath = props.getProperty( APP_PROP_IE_DRIVER_PATH );
-      chromePath = props.getProperty( APP_PROP_CHROME_DRIVER_PATH );
+      final String iePath = props.getProperty( APP_PROP_IE_DRIVER_PATH );
+      final String geckoPath = props.getProperty( APP_PROP_GECKO_DRIVER_PATH );
+      final String chromePath = props.getProperty( APP_PROP_CHROME_DRIVER_PATH );
+
+      if( !StringUtil.isNothing(iePath) ) {
+         System.setProperty( "webdriver.ie.driver", new File(iePath).getAbsolutePath() );
+      }
+
+      if( !StringUtil.isNothing(geckoPath) ) {
+         System.setProperty( "webdriver.gecko.driver", new File(geckoPath).getAbsolutePath() );
+      }
+
+      if( !StringUtil.isNothing(chromePath) ) {
+         System.setProperty( "webdriver.chrome.driver", new File(chromePath).getAbsolutePath() );
+      }
 
       if( logDirectory == null ) {
          logDirectory = createLogDirectory();
+         System.out.println("Web browser log directory is " + logDirectory);
       }
    }
 
@@ -656,11 +726,11 @@ public abstract class AbstractTest {
 
    // Helpers below this line
 
-   /*
+   /**
     * <p>
     * Rather than sending the entire string into sendKeys, we have to call it one character at a time to prevent the script
     * from accepting invalid input.  By design, jquery-restrictedtextfield.js allows a character into the field before
-    * validating it and, if necessary, rolling it back.  The script does this by listening for the "input" event, which is
+    * validating it, and, if necessary, rolling it back.  The script does this by listening for the "input" event, which is
     * after everything has happened.  The correct way of doing this would have been to listen to keydown or keypress and
     * call event.preventDefault() if validation failed.  This couldn't be done, since event.keyCode cannot reliably be
     * translated to an ASCII character.  Browsers sometimes report a proprietary value for it.  The only reliable way to
@@ -704,7 +774,17 @@ public abstract class AbstractTest {
    }
 
    private String getFieldValue() {
-      final String value = field.getAttribute( "value" );
+      // Unlike other drivers, the Marionette/Gecko driver only returns the value of the "value" attribute
+      // in the HTML tag, rather than returning the value of the field.  Obviously that's a problem for
+      // the purposes of this application.  That's not how the previous Firefox driver, FirefoxDriver,
+      // worked.  GetText() is no help, either.  This behavior was last verified with Gecko driver
+      // v0.10.0-win64 on September 10, 2016.
+      //
+      // final String value = field.getAttribute( "value" );   <--- always null in Firefox
+
+      // Workaround:  Get the value using JavaScript
+
+      final String value = (String) ((JavascriptExecutor) driver).executeScript( "return document.getElementById('field').value;" );
       return value != null ? value : "";
    }
 
@@ -724,7 +804,7 @@ public abstract class AbstractTest {
       final String path = "build/reports/tests/browser_logs";
       final File dir = new File( path );
 
-      if( !dir.mkdirs() ) {
+      if( !dir.exists() && !dir.mkdirs() ) {
          throw new IOException( "Could not create log directory " + path );
       }
 
@@ -734,13 +814,15 @@ public abstract class AbstractTest {
    private static void writeLog() throws IOException {
       final BufferedWriter writer = new BufferedWriter( new FileWriter(logDirectory.getPath() + "/" + lastClass.getSimpleName() + ".log") );
 
-      ((JavascriptExecutor) driver).executeScript( "showExitModal();" );
+      if( driver != null && writer != null ) {
+         ((JavascriptExecutor) driver).executeScript( "showExitModal();" );
 
-      try {
-      writer.write( driver.findElement(By.id("log")).getText() );
-      writer.flush();
-      } finally {
-         writer.close();
+         try {
+         writer.write( driver.findElement(By.id("log")).getText() );
+         writer.flush();
+         } finally {
+            writer.close();
+         }
       }
    }
 }

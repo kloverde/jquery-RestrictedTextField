@@ -5,11 +5,14 @@ apply from: buildScriptsDir + "/build_java_lib.gradle"
 
 dependencies {
    testCompile "junit:junit:4.12"
-   testCompile "org.seleniumhq.selenium:selenium-server:2.53.0"
+   testCompile "org.seleniumhq.selenium:selenium-server:3.0.0-beta2"
 }
 
 test {
-   testLogging.showStandardStreams = true;
+   // Uncomment these lines if the tests fail to run.  They're commented
+   // by default to avoid being drowned in Marionette/Gecko messages.
+   //testLogging.showStandardStreams = true;
+   //logging.captureStandardOutput LogLevel.INFO
 
    exclude "**/*Test.class"
    include "**/SeleniumTestSuite.class"

@@ -79,7 +79,7 @@ $( "#field" ).restrictedTextField( {
 } );
 ```
 
-See the included HTML file for a complete demo.
+See `demo/demo.html` for complete examples.
 
 
 # Browser Compatibility

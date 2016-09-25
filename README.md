@@ -50,15 +50,15 @@ ResrictedTextField is a jQuery plugin which enforces data formats on HTML text b
 
 ### Float types:
 
-Integers are valid
-Zero is valid (0, 0.0, .0, 0000.000, etc.)
-Zero can be negative
+* Integers are valid
+* Zero is valid (0, 0.0, .0, 0000.000, etc.)
+* Zero can be negative
 
 ### Strict float types:
 
-Values must be floating-point
-Zero is valid (0.0, .0, 0000.000, etc.)
-Zero cannot be negative
+* Values must be floating-point
+* Zero is valid (0.0, .0, 0000.000, etc.)
+* Zero cannot be negative
 
 ## Configuration
 

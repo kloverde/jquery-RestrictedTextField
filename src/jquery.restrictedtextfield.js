@@ -81,9 +81,9 @@
          // This first block of variables is a collection of regular expressions for incomplete input.
 
          var negativeInt   = /^-$/,
-             posNegFloat   = /^-?0?\.?$|^-?\d*\.\d*$/,
-             positiveFloat = /^\d*\.\d*$/,
-             negativeFloat = /^-?0*\.?$|^-\.?$|^-\d*\.$/;
+             posNegFloat   = /^-?\d*\.?\d*$/,
+             positiveFloat = /^\d*\.?\d*$/,
+             negativeFloat = /^0*\.?$|^-\d*\.?\d*$/;
 
          if( $.fn.restrictedTextField.types === undefined || $.fn.restrictedTextField.types === null ) {
             $.fn.restrictedTextField.types = [];
@@ -112,9 +112,9 @@
          _addType( dest, "float",                   /^-?\d*\.?\d+$/          , posNegFloat );    // 0, .0, 0.0, /positive/negative floating-point numbers, with or without a value to the left of the decimal point; positive and negative integers
          _addType( dest, "positiveFloat",           /^\d*\.?\d+$/            , positiveFloat );  // Positive floating-point numbers and positive integers
          _addType( dest, "negativeFloat",           /^-?0+$|^-?0*\.?0+$|^-\d*\.?\d+$/ , negativeFloat );  // Negative floating-point numbers and negative integers
-         _addType( dest, "strictFloat",             /^\d$|^\d?\.(0|\d*[1-9])$|^-0?\.(\d*[1-9])$|^-?[1-9]\d*\.(\d*[1-9])$|^-?[1-9]+\d*$/  , posNegFloat );
-         _addType( dest, "strictPositiveFloat",     /^0$|^0?\.(0|\d*[1-9])$|^[1-9]\d*\.(\d*[1-9])$|^[1-9]+\d*$/  , positiveFloat );
-         _addType( dest, "strictNegativeFloat",     /^0(\.0)?$|^-0?\.(\d*[1-9])$|^-?[1-9]\d*\.(\d*[1-9])$|^-?[1-9]+\d*$/  , negativeFloat );
+         _addType( dest, "strictFloat",             /^0*\.0+$|^-?0*\.\d*[1-9]$|^-?\d*\.\d*[1-9]\d*$|^-?0*[1-9]\d*?\d*\.\d+$/  , posNegFloat );
+         _addType( dest, "strictPositiveFloat",     /^0*\.0+$|^0*\.\d*[1-9]$|^\d*\.\d*[1-9]\d*$|^\d*[1-9]*\d*\.\d+$/        , positiveFloat );
+         _addType( dest, "strictNegativeFloat",     /^0*\.0+$|^-0*\.\d*[1-9]$|^-\d*\.\d*[1-9]\d*$|^-[^0]\d*?\d*\.\d+$/     , negativeFloat );
          _addType( dest, "money",                   /^-?\d*\.?\d{1,2}$/      , posNegFloat );    // Positive and negative floating-point numbers with one or two numbers after the decimal point, plus positive and negative integers
          _addType( dest, "positiveMoney",           /^\d*\.?\d{1,2}$/        , positiveFloat );  // Positive floating-point numbers with one or two numbers after the decimal point, and positive integers
          _addType( dest, "negativeMoney",           /^-\d*\.?\d{1,2}$/       , negativeFloat );  // Negative floating-point numbers with one or two numbers after the decimal point, plus negative integers

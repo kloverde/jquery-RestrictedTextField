@@ -46,6 +46,19 @@ ResrictedTextField is a jQuery plugin which enforces data formats on HTML text b
 28.  Accounting money notation (negatives expressed by wrapping the value in parentheses)
 29.  Negative accounting money
 
+## What's the difference between float & strict float?
+
+### Float types:
+
+Integers are valid
+Zero is valid (0, 0.0, .0, 0000.000, etc.)
+Zero can be negative
+
+### Strict float types:
+
+Values must be floating-point
+Zero is valid (0.0, .0, 0000.000, etc.)
+Zero cannot be negative
 
 ## Configuration
 

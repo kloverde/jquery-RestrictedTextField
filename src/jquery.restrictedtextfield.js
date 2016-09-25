@@ -231,7 +231,25 @@
                   decimalPart = domField.value.substring( decimalIdx + 1, closeParen === "" ? len : len - 1 );
                }
 
+               integerPart = trimLeadingZero( integerPart );
                domField.value = openParen + integerPart + "." + decimalPart + (decimalPart.length === 1 ? "0" : "") + closeParen;
+            }
+
+            function trimLeadingZero( str ) {
+               var trim = "";
+               var startAt = -1;
+
+               for( var i = 0; i < str.length; i++ ) {
+                  if( str[i] !== "0" ) {
+                     break;
+                  }
+
+                  startAt = i;
+               }
+
+               trim = startAt >= 0 ? str.substring( startAt + 1 ) : str;
+
+               return trim;
             }
          }
       } );

@@ -46,7 +46,16 @@ ResrictedTextField is a jQuery plugin which uses regular expressions to validate
 28.  Accounting money notation (negatives expressed by wrapping the value in parentheses)
 29.  Negative accounting money
 
-## What's the difference between float & strict float?
+
+## What's the difference between integer/strict integer, float/strict float?
+
+### Integer types:
+
+* Zero can be negative
+
+### Strict integer types:
+
+* Zero cannot be negative
 
 ### Float types:
 
@@ -59,6 +68,7 @@ ResrictedTextField is a jQuery plugin which uses regular expressions to validate
 * Values must be floating-point
 * Zero is valid (0.0, .0, 0000.000, etc.)
 * Zero cannot be negative
+
 
 ## Configuration
 

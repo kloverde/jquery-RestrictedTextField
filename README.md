@@ -3,7 +3,7 @@ RestrictedTextField v1.1 (FUTURE RELEASE)
 
 See LICENSE for this software's licensing terms.
 
-ResrictedTextField is a jQuery plugin which enforces data formats on HTML text boxes.  Data which doesn't match the declared format is rejected.
+ResrictedTextField is a jQuery plugin which uses regular expressions to validate HTML text fields.  It allows you to reject invalid keystrokes or to allow them into the field.  Fields are always validated on blur.
 
 
 ## Features

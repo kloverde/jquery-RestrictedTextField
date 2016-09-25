@@ -78,12 +78,15 @@
       }
 
       function init() {
-         // This first block of variables is a collection of regular expressions for incomplete input.
+         var partialNegativeInt   = /^-\d*$/,
 
-         var negativeInt   = /^-\d*$/,
-             posNegFloat   = /^-?\d*\.?\d*$/,
-             positiveFloat = /^\d*\.?\d*$/,
-             negativeFloat = /^0*\.?$|^-\d*\.?\d*$/;
+             partialPosNegFloat   = /^-?\d*\.?\d*$/,
+             partialPositiveFloat = /^\d*\.?\d*$/,
+             partialNegativeFloat = /^0*\.?$|^-\d*\.?\d*$/,
+
+             partialPosNegMoney   = /^-?\d*\.?\d{0,1}$/,
+             partialPositiveMoney = /^\d*\.?\d{0,1}$/,
+             partialNegativeMoney = /^0*\.?$|^-\d*\.?\d{0,1}$/;
 
          if( $.fn.restrictedTextField.types === undefined || $.fn.restrictedTextField.types === null ) {
             $.fn.restrictedTextField.types = [];
@@ -103,21 +106,21 @@
          _addType( dest, "alphanumericSpace",       /^[a-zA-Z\d\ ]*$/        , null );
          _addType( dest, "upperAlphanumericSpace",  /^[A-Z\d\ ]*$/           , null );
          _addType( dest, "lowerAlphanumericSpace",  /^[a-z\d\ ]*$/           , null );
-         _addType( dest, "int",                     /^-?\d*$/                , negativeInt );
+         _addType( dest, "int",                     /^-?\d*$/                , partialNegativeInt );
          _addType( dest, "positiveInt",             /^\d*$/                  , null );
-         _addType( dest, "negativeInt",             /^0*$|^-\d*$/            , negativeInt );
-         _addType( dest, "strictInt",               /^0*$|^-?0*[1-9]\d*$/    , negativeInt );
+         _addType( dest, "negativeInt",             /^0*$|^-\d*$/            , partialNegativeInt );
+         _addType( dest, "strictInt",               /^0*$|^-?0*[1-9]\d*$/    , partialNegativeInt );
          _addType( dest, "strictPositiveInt",       /^0*$|^0*[1-9]\d*$/      , null );
-         _addType( dest, "strictNegativeInt",       /^0*$|^-0*[1-9]\d*$/     , negativeInt );
-         _addType( dest, "float",                   /^-?\d*\.?\d+$/          , posNegFloat );
-         _addType( dest, "positiveFloat",           /^\d*\.?\d+$/            , positiveFloat );
-         _addType( dest, "negativeFloat",           /^-?0+$|^-?0*\.?0+$|^-\d*\.?\d+$/ , negativeFloat );
-         _addType( dest, "strictFloat",             /^0*\.0+$|^-?0*\.\d*[1-9]$|^-?\d*\.\d*[1-9]\d*$|^-?0*[1-9]\d*?\d*\.\d+$/  , posNegFloat );
-         _addType( dest, "strictPositiveFloat",     /^0*\.0+$|^0*\.\d*[1-9]$|^\d*\.\d*[1-9]\d*$|^\d*[1-9]*\d*\.\d+$/     , positiveFloat );
-         _addType( dest, "strictNegativeFloat",     /^0*\.0+$|^-0*\.\d*[1-9]$|^-\d*\.\d*[1-9]\d*$|^-[^0]\d*?\d*\.\d+$/   , negativeFloat );
-         _addType( dest, "money",                   /^-?\d*\.?\d{1,2}$/      , posNegFloat );
-         _addType( dest, "positiveMoney",           /^\d*\.?\d{1,2}$/        , positiveFloat );
-         _addType( dest, "negativeMoney",           /^-\d*\.?\d{1,2}$/       , negativeFloat );
+         _addType( dest, "strictNegativeInt",       /^0*$|^-0*[1-9]\d*$/     , partialNegativeInt );
+         _addType( dest, "float",                   /^-?\d*\.?\d+$/          , partialPosNegFloat );
+         _addType( dest, "positiveFloat",           /^\d*\.?\d+$/            , partialPositiveFloat );
+         _addType( dest, "negativeFloat",           /^-?0+$|^-?0*\.?0+$|^-\d*\.?\d+$/ , partialNegativeFloat );
+         _addType( dest, "strictFloat",             /^0*\.0+$|^-?0*\.\d*[1-9]$|^-?\d*\.\d*[1-9]\d*$|^-?0*[1-9]\d*?\d*\.\d+$/  , partialPosNegFloat );
+         _addType( dest, "strictPositiveFloat",     /^0*\.0+$|^0*\.\d*[1-9]$|^\d*\.\d*[1-9]\d*$|^\d*[1-9]*\d*\.\d+$/     , partialPositiveFloat );
+         _addType( dest, "strictNegativeFloat",     /^0*\.0+$|^-0*\.\d*[1-9]$|^-\d*\.\d*[1-9]\d*$|^-[^0]\d*?\d*\.\d+$/   , partialNegativeFloat );
+         _addType( dest, "money",                   /^-?\d*\.?\d{2}$/      , partialPosNegMoney );
+         _addType( dest, "positiveMoney",           /^\d*\.?\d{2}$/        , partialPositiveMoney );
+         _addType( dest, "negativeMoney",           /^-\d*\.?\d{2}$/       , partialNegativeMoney );
 
          // Positive floating-point numbers with one or two numbers after the decimal point;
          // Positive integers;

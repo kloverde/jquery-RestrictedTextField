@@ -118,7 +118,7 @@ Many other versions of Firefox and Chrome, whether older or newer than what's li
 * IE 8:  INCOMPATIBLE
 
 
-# Running Unit Tests
+# Running the Unit Tests
 
 [Selenium](http://www.seleniumhq.org) is used for unit testing in order to generate true keypresses in a text field.  A JavaScript-based framework (such as QUnit, etc.) would have made life simpler, but synthetic JavaScript events don't carry out the actual actions associated with them.  In other words, simulating a keypress fires the correct events, but doesn't result in actual text being written to a text field.  This is a security restriction of JavaScript.  As a result, this project uses Selenium and JUnit.
 

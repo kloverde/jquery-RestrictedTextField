@@ -125,7 +125,7 @@ Many other versions of Firefox and Chrome, whether older or newer than what's li
 1.  Install the following build dependencies:
   * [Node.js](https://nodejs.org/en)
   * [Gradle](http://gradle.org)
-  * [Java SDK](http://www.oracle.com/technetwork/java/javase/index.html) version 8 or later
+  * [Java JDK](http://www.oracle.com/technetwork/java/javase/index.html) version 8 or later
   * [BuildScripts](https://github.com/kloverde/BuildScripts)
 2.  Modify the `buildScriptsDir` property in `SeleniumTester/gradle.properties` to reflect the location of BuildScripts on your filesystem
 3.  Download the appropriate browser drivers for your system at [seleniumhq.org](http://www.seleniumhq.org).  Once you've downloaded them, update `geckoDriverPath`, `ieDriverPath` and `chromeDriverPath` in `SeleniumTester/gradle.properties` with their paths.

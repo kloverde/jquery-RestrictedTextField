@@ -136,6 +136,10 @@
             validationSuccessEvent = false;
          }
 
+         function blur() {
+            $( "#field" ).blur();
+         }
+
          function initField( testName, fieldType, ignore ) {
             log( "test:  " + testName );
             log( "initField:  fieldType[" + fieldType + "], ignore[" + ignore + "]" );

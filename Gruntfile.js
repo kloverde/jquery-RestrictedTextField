@@ -39,6 +39,19 @@ module.exports = function(grunt) {
             ext: "html",
             runInBackground: true,
             openBrowser : false
+         },
+
+         // This configuration is not used by the build process.  It keeps the server running so that you can run SeleniumTester in a debugger.
+         "debug": {
+            root: ".",
+            port: 8000,
+            host: "127.0.0.1",
+            cache: 0,
+            showDir: true,
+            autoIndex: true,
+            ext: "html",
+            runInBackground: false,
+            openBrowser : false            
          }
       },
 

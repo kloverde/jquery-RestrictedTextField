@@ -48,9 +48,10 @@ public class ChromeTest extends AbstractTest {
                       final String    testName,
                       final boolean   ignoreInvalidInput,
                       final String    input,
-                      final String    expectedValue,
+                      final String    expectedValueBeforeBlur,
+                      final String    expectedValueAfterBlur,
                       final Event     expectedEventOnBlur ) throws Exception {
 
-      super( fieldType, testName, ignoreInvalidInput, input, expectedValue, expectedEventOnBlur );
+      super( fieldType, testName, ignoreInvalidInput, input, expectedValueBeforeBlur, expectedValueAfterBlur, expectedEventOnBlur );
    }
 }

@@ -1,12 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-	<classpathentry kind="src" path="SeleniumTester/src/test/java"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
+	<!--
+	The libraries comprising RestrictedTextField-dep are:
+
 	<classpathentry kind="lib" path="C:/Users/Kurt/.gradle/caches/modules-2/files-2.1/org.seleniumhq.selenium/selenium-api/3.0.0-beta2/eeabe210b567a9c8d2cd6dc06afbc27f9535b295/selenium-api-3.0.0-beta2.jar"/>
 	<classpathentry kind="lib" path="C:/Users/Kurt/.gradle/caches/modules-2/files-2.1/org.seleniumhq.selenium/selenium-chrome-driver/3.0.0-beta2/7823aeb0f74befe16e9085df9cc0fec8854b3a29/selenium-chrome-driver-3.0.0-beta2.jar"/>
 	<classpathentry kind="lib" path="C:/Users/Kurt/.gradle/caches/modules-2/files-2.1/org.seleniumhq.selenium/selenium-ie-driver/3.0.0-beta2/1c84b5284ecaa10ef29be3964f97ddbefc0f570e/selenium-ie-driver-3.0.0-beta2.jar"/>
 	<classpathentry kind="lib" path="C:/Users/Kurt/.gradle/caches/modules-2/files-2.1/org.seleniumhq.selenium/selenium-remote-driver/3.0.0-beta2/b22420f99e3a8f46d3360458f0c0caada70c9dcc/selenium-remote-driver-3.0.0-beta2.jar"/>
 	<classpathentry kind="lib" path="C:/Users/Kurt/.gradle/caches/modules-2/files-2.1/org.seleniumhq.selenium/selenium-firefox-driver/3.0.0-beta2/3dc4e75326809ad1baaf177ae3ff3de6579c36b1/selenium-firefox-driver-3.0.0-beta2.jar"/>
+
+	<classpathentry kind="lib" path="C:/Users/Kurt/.gradle/caches/modules-2/files-2.1/com.google.guava/guava/19.0/6ce200f6b23222af3d8abb6b6459e6c44f4bb0e9/guava-19.0.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Kurt/.gradle/caches/modules-2/files-2.1/org.apache.httpcomponents/httpclient/4.5.2/733db77aa8d9b2d68015189df76ab06304406e50/httpclient-4.5.2.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Kurt/.gradle/caches/modules-2/files-2.1/org.apache.httpcomponents/httpcore/4.4.4/b31526a230871fbe285fbcbe2813f9c0839ae9b0/httpcore-4.4.4.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Kurt/.gradle/caches/modules-2/files-2.1/commons-logging/commons-logging/1.2/4bfc12adfe4842bf07b657f0369c4cb522955686/commons-logging-1.2.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Kurt/.gradle/caches/modules-2/files-2.1/com.google.code.gson/gson/2.3.1/ecb6e1f8e4b0e84c4b886c2f14a1500caf309757/gson-2.3.1.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Kurt/.gradle/caches/modules-2/files-2.1/org.apache.commons/commons-exec/1.3/8dfb9facd0830a27b1b5f29f84593f0aeee7773b/commons-exec-1.3.jar"/>
+	-->
+
+	<classpathentry kind="src" path="SeleniumTester/src/test/java"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/RestrictedTextField-dep"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

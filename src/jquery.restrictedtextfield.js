@@ -121,14 +121,8 @@
          _addType( dest, "money",                   /^-?\d+\.\d{2}$/         , partialPosNegMoney );
          _addType( dest, "positiveMoney",           /^\d+\.\d{2}$/           , partialPositiveMoney );
          _addType( dest, "negativeMoney",           /^0\.00$|^-\d+\.\d{2}$/  , partialNegativeMoney );
-
-         // Positive floating-point numbers with one or two numbers after the decimal point;
-         // Positive integers;
-         // Negative floating-point numbers with one or two numbers after the decimal point, where sign is denoted by
-         // wrapping the value in parentheses rather than using a minus sign (sometimes referred to as "accounting notation")
-         _addType( dest, "accountingMoney", /^\d*\.?\d{1,2}$|^\(\d*\.?\d{1,2}\)$/  ,  /^[\.\d]$|^\.$|^\d*\.$|^\(\d*\.?$|^\(\d*\.\d{1,2}?$/ );
-
-         _addType( dest, "negativeAccountingMoney", /^\(\d*\.?\d{2}\)$/  ,  /^\(\d*\.?$|^\(\d*\.\d{1,2}?$/ );  // The negative-only version of accountingMoney
+         _addType( dest, "accountingMoney",         /^\d*\.?\d{1,2}$|^\(\d*\.?\d{1,2}\)$/  ,  /^[\.\d]$|^\.$|^\d*\.$|^\(\d*\.?$|^\(\d*\.\d{1,2}?$/ );
+         _addType( dest, "negativeAccountingMoney", /^\(\d*\.?\d{2}\)$/                    ,  /^\(\d*\.?$|^\(\d*\.\d{1,2}?$/ );
       }
 
       var regexes = $.fn.restrictedTextField.types[ settings.type ];
@@ -202,14 +196,25 @@
          } );
 
          jqThis.on( "blur", function() {
+            var type = settings.type;
+            var passesFullRegex = false;
             var responseEvent = EVENT_VALIDATION_FAILED;
 
-            if( settings.type === "money" || settings.type === "positiveMoney" || settings.type === "negativeMoney" ||
-                settings.type === "accountingMoney" || settings.type ==="negativeAccountingMoney" ) {
-               formatMoney( this );
-            }
+            if( ((type === "money" || type === "positiveMoney" || type === "negativeMoney") && !isNaN(this.value)) ||
+                ((type === "accountingMoney" || type ==="negativeAccountingMoney") && !isNaN(this.value.replace(/^\((.*)\)$/, "$1"))) ) {
+               var formatted = formatMoney( this.value );
 
-            if( this.value.length === 0 || regexes.fullRegex.test(this.value) ) {
+               passesFullRegex = regexes.fullRegex.test( formatted );
+   
+               if( passesFullRegex ) {
+                  this.value = formatted;
+                  log( "blur:  formatted " + settings.type + " field to " + formatted );
+               }
+            } else {
+               passesFullRegex = regexes.fullRegex.test( this.value );
+            }
+            
+            if( this.value.length === 0 || passesFullRegex ) {
                responseEvent = EVENT_VALIDATION_SUCCESS;
             }
 
@@ -218,45 +223,40 @@
             jqThis.trigger( responseEvent );
          } );
 
-         function formatMoney( domField ) {
-            if( isNothing(domField.value) ) return;
+         function formatMoney( value ) {
+            if( isNothing(value) ) return value;
 
-            if( (/^-?\d*\.\d\d?$/).test(domField.value) ||
-                (/^\(\d*\.?\d{1,2}\)$/).test(domField.value) ||
-                $.fn.restrictedTextField.types["int"].fullRegex.test(domField.value) ) {
+            var formatted = value;
 
-               var formatted = domField.value;
+            value = trimLeadingZero( value );
 
-               domField.value = trimLeadingZero( domField.value );
+            var len         = value.length;
+            var sign        = value[0] === "-" ? "-" : "";
+            var openParen   = value[0] === "(" ? "(" : "";
+            var closeParen  = value[ len - 1 ] === ")" ? ")" : ""; 
+            var decimalIdx  = value.indexOf( "." );
+            var integerPart = value.substring( openParen === "" && sign === "" ? 0 : 1,
+                                               decimalIdx > 0 ? decimalIdx -1 : (closeParen === ")" ? len - 1 : len) );
+            var decimalPart = "00";
 
-               var len         = domField.value.length;
-               var sign        = domField.value[0] === "-" ? "-" : "";
-               var openParen   = domField.value[0] === "(" ? "(" : "";
-               var closeParen  = domField.value[ len - 1 ] === ")" ? ")" : ""; 
-               var decimalIdx  = domField.value.indexOf( "." );
-               var integerPart = domField.value.substring( openParen === "" && sign === "" ? 0 : 1,
-                                                           decimalIdx > 0 ? decimalIdx -1 : (closeParen === ")" ? len - 1 : len) );
-               var decimalPart = "00";
-
-               if( decimalIdx > -1 ) {
-                  integerPart = domField.value.substring( openParen === "" && sign === "" ? 0 : 1, decimalIdx );
-                  decimalPart = domField.value.substring( decimalIdx + 1, closeParen === "" ? len : len - 1 );
-               }
-
-               if( (integerPart === "" || parseInt(integerPart) === 0) && (parseInt(decimalPart) === 0) ) {
-                  formatted = "0.00"
-               } else {
-                  formatted = openParen
-                            + sign
-                            + (integerPart === "" ? "0" : integerPart)
-                            + "."
-                            + decimalPart
-                            + (decimalPart.length === 1 ? "0" : "")
-                            + closeParen;
-               }
-
-               domField.value = formatted;
+            if( decimalIdx > -1 ) {
+               integerPart = value.substring( openParen === "" && sign === "" ? 0 : 1, decimalIdx );
+               decimalPart = value.substring( decimalIdx + 1, closeParen === "" ? len : len - 1 );
             }
+
+            if( (integerPart === "" || parseInt(integerPart) === 0) && (parseInt(decimalPart) === 0) ) {
+               formatted = "0.00"
+            } else {
+               formatted = openParen
+                         + sign
+                         + (integerPart === "" ? "0" : integerPart)
+                         + "."
+                         + decimalPart
+                         + (decimalPart.length === 1 ? "0" : "")
+                         + closeParen;
+            }
+
+            return formatted;
 
             function trimLeadingZero( str ) {
                return str.replace( /^(-?)0*(\d+\.\d+)/, "$1$2" );

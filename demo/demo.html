@@ -159,7 +159,7 @@
                jqThis.removeClass( "inputIgnored" );
                jqThis.addClass( "invalid" );
             } )
-            .on( "validationSuccess", function() {
+            .on( "validationSuccess", function(event) {
                var jqThis = $( this );
 
                jqThis.removeClass( "inputIgnored" );

@@ -88,7 +88,7 @@
           EVENT_VALIDATION_SUCCESS = "validationSuccess";
 
       if( this.prop("tagName").toLowerCase() !== "input" ) {
-         throw "RestrictedTextField can only be invoked on an input tag";
+         throw "RestrictedTextField can only be invoked on an input element";
       }
 
       if( $.fn.restrictedTextField.types === undefined || $.fn.restrictedTextField.types === null ) {

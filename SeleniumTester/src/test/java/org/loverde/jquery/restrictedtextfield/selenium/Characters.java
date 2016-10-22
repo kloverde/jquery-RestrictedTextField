@@ -56,6 +56,7 @@ public class Characters {
                               UPPER_ALPHANUMERIC_SPACE = UPPER_ALPHANUMERIC + " ",
                               LOWER_ALPHANUMERIC_SPACE = LOWER_ALPHANUMERIC + " ",
 
+                              SYMBOLS_EXCEPT_PARENS = "`~!@#$%^&*-_=+]}[{;:'\"/?.>,<",
                               SYMBOLS_EXCEPT_MINUS = "`~!@#$%^&*()_=+]}[{;:'\"/?.>,<",
                               SYMBOLS = SYMBOLS_EXCEPT_MINUS + "-",
 

@@ -61,7 +61,9 @@ public enum FieldType {
    STRICT_NEGATIVE_FLOAT( "strictNegativeFloat" ),
    MONEY( "money" ),
    POSITIVE_MONEY( "positiveMoney" ),
-   NEGATIVE_MONEY( "negativeMoney" );
+   NEGATIVE_MONEY( "negativeMoney" ),
+   ACCOUNTING_MONEY( "accountingMoney" ),
+   NEGATIVE_ACCOUNTING_MONEY( "negativeAccountingMoney" );
 
    private String type;
 

@@ -122,7 +122,7 @@ public abstract class AbstractTest {
       final Object[][] d = new Object[][] {
 
          // First set:  ignore invalid input
-/*
+
          { FieldType.ALPHA,                    "ignore_alpha_all",                     true,  Characters.ALL,  Characters.ALPHA,        Characters.ALPHA,         Event.VALIDATION_SUCCESS },
          { FieldType.ALPHA,                    "ignore_alpha_blank",                   true,  "",              "",                      "",                       Event.VALIDATION_SUCCESS },
 
@@ -394,7 +394,7 @@ public abstract class AbstractTest {
          { FieldType.STRICT_NEGATIVE_FLOAT,  "ignore_strictNegativeFloat_doubleDot2",            true,   "-1..2",         "-1.2",          "-1.2",       Event.VALIDATION_SUCCESS },
          { FieldType.STRICT_NEGATIVE_FLOAT,  "ignore_strictNegativeFloat_dotsEverywhere",        true,   "-.1.2.",        "-.12",          "-.12",       Event.VALIDATION_SUCCESS },
          { FieldType.STRICT_NEGATIVE_FLOAT,  "ignore_strictNegativeFloat_letter1",               true,   "1.a",           ".",             ".",          Event.VALIDATION_FAILED },
-*/
+
          { FieldType.MONEY,   "ignore_money_all",                   true,   Characters.ALL_EXCEPT_MINUS + ".01",
                                                                             Characters.NUMBERS_END_ZERO + ".01",
                                                                             Characters.NUMBERS_END_ZERO + ".01",    Event.VALIDATION_SUCCESS },
@@ -549,7 +549,7 @@ public abstract class AbstractTest {
          { FieldType.NEGATIVE_ACCOUNTING_MONEY,   "ignore_negativeAccountingMoney_nonDigit2",             true,   "(1.a",        "(1.",        "(1.",       Event.VALIDATION_FAILED },
 
          // Second set:  don't ignore invalid input
-/*
+
          { FieldType.ALPHA,         "noIgnore_alpha_invalid1",        false,   "!",   "!",   "!", Event.VALIDATION_FAILED },
          { FieldType.ALPHA,         "noIgnore_alpha_invalid2",        false,   "1",   "1",   "1", Event.VALIDATION_FAILED },
          { FieldType.ALPHA,         "noIgnore_alpha_invalid3",        false,   " ",   " ",   " ", Event.VALIDATION_FAILED },
@@ -836,7 +836,7 @@ public abstract class AbstractTest {
          { FieldType.STRICT_NEGATIVE_FLOAT,   "noIgnore_strictNegativeFloat_doubleDot1",            false,   "..",         "..",         "..",         Event.VALIDATION_FAILED },
          { FieldType.STRICT_NEGATIVE_FLOAT,   "noIgnore_strictNegativeFloat_doubleDot2",            false,   "1..2",       "1..2",       "1..2",       Event.VALIDATION_FAILED },
          { FieldType.STRICT_NEGATIVE_FLOAT,   "noIgnore_strictNegativeFloat_dotsEverywhere",        false,   ".1.2.",      ".1.2.",      ".1.2.",      Event.VALIDATION_FAILED },
-*/
+
          { FieldType.MONEY,   "noIgnore_money_all",                   false,   Characters.ALL_EXCEPT_MINUS + ".01",
                                                                                Characters.ALL_EXCEPT_MINUS + ".01",
                                                                                Characters.ALL_EXCEPT_MINUS + ".01",   Event.VALIDATION_FAILED },

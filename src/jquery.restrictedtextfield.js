@@ -139,8 +139,8 @@
          _addType( dest, "money",                   /^-?\d+\.\d{2}$/         , partialPosNegMoney );
          _addType( dest, "positiveMoney",           /^\d+\.\d{2}$/           , partialPositiveMoney );
          _addType( dest, "negativeMoney",           /^0\.00$|^-\d+\.\d{2}$/  , partialNegativeMoney );
-         _addType( dest, "accountingMoney",         /^\d*\.?\d{2}$|^\(\d*\.?\d{2}\)$/  ,  /^\(?0*\.?(0{1,2})?$|^[\.\d]$|^\.$|^\d*\.\d{0,2}$|^\(\d*\.?$|^\(\d*\.\d{1,2}?\)?$/ );
-         _addType( dest, "negativeAccountingMoney", /^0\.00$|^\(\d*\.?\d{2}\)$/        ,  /^\(?0*\.?(0{1,2})?$|^\(\d*\.?$|^\((\d*\.\d{1,2}?)\)?$/ );
+         _addType( dest, "accountingMoney",         /^\d*\.?\d{2}$|^\(\d*\.?\d{2}\)$/  ,  /^\(?0*\.?0{0,2}$|^[\.\d]$|^\.$|^\d*\.\d{0,2}$|^\(\d*\.?$|^\(\d*\.\d{1,2}?\)?$/ );
+         _addType( dest, "negativeAccountingMoney", /^0\.00$|^\(\d*\.?\d{2}\)$/        ,  /^\(?0*\.?0{0,2}$|^\(\d*\.?$|^\((\d*\.\d{1,2}?)\)?$/ );
       }
 
       var regexes = $.fn.restrictedTextField.types[ settings.type ];

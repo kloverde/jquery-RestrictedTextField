@@ -1096,10 +1096,19 @@ public abstract class AbstractTest {
 
    @AfterClass
    public static void stopSelenium() throws IOException {
-      writeLog();
+      try {
+         if( driver != null ) {
+            driver.quit();
+         }
 
-      if( driver != null ) {
-         driver.quit();
+         log.flush();
+      } finally {
+         try {
+            log.close();
+         } catch( final IOException ioe ) {
+            System.err.println( ioe.getMessage() );
+            ioe.printStackTrace();
+         }
       }
    }
 
@@ -1122,6 +1131,7 @@ public abstract class AbstractTest {
       resetEventFlags();
       blur();
       validatePostBlur();
+      writeLog();
    }
 
    private void blur() {
@@ -1259,13 +1269,12 @@ public abstract class AbstractTest {
 
    private static void writeLog() throws IOException {
       if( driver != null && log != null ) {
-         ((JavascriptExecutor) driver).executeScript( "showExitModal();" );
-
          try {
-         log.write( driver.findElement(By.id("log")).getText() );
-         log.flush();
-         } finally {
-            log.close();
+            log.write( driver.findElement(By.id("log")).getText() );
+            log.flush();
+         } catch( final IOException ioe ) {
+            System.err.println( ioe.getMessage() );
+            ioe.printStackTrace();
          }
       }
    }

@@ -81,23 +81,6 @@
             text-align: left;
             overflow: scroll;
          }
-
-         #exitModal {
-            position: absolute;
-            display: none;
-            text-align: center;
-            padding: 40px 15px 40px 15px;
-            background-color: #D9F5FF;
-            border: 1px solid #000;
-         }
-
-         #exitModal h1, #exitModal h2 {
-            padding: 0;
-         }
-
-         #exitModal h2 {
-            padding-top: 20px !important;
-         }
       </style>
 
       <script type="text/javascript" src="../test/jquery.js"></script>
@@ -115,6 +98,8 @@
          } );
 
          function setUp() {
+            $( "#log" ).html( "" );
+
             log( "setUp" );
 
             $( "#fieldContainer" ).html( "<input type='text' id='field'/>" );
@@ -221,11 +206,6 @@
 
          <div id="fieldContainer" class="center"></div>
          <pre id="log"></pre>
-      </div>
-
-      <div id="exitModal">
-         <h1>Test complete.  Saving browser log...</h1>
-         <h2>The browser window will close automatically when done.</h2>
       </div>
    </body>
 </html>

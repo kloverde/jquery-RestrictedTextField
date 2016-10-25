@@ -1,5 +1,5 @@
-RestrictedTextField v1.1
-========================
+RestrictedTextField v1.1 (UPCOMING RELEASE)
+===========================================
 
 See LICENSE for this software's licensing terms.
 

@@ -146,7 +146,7 @@ This library has only been tested on desktop browsers.  Mobile testing might hap
 
 * #### If you're running the unit tests in Firefox, you must use Firefox 48 or later.  Starting with Firefox 48, Selenium is required to use the Marionette/Gecko driver, and my code is written to initialize that particular driver.  Although RestrictedTextField itself is supported on older Firefox releases, the unit tests are not.
 
-* #### The following has not been observed since the tests were upgraded to use Selenium v3.0.1, but might still occur:  arbitrary tests might sometimes fail to execute in Chrome.  If you see a test failure in the JUnit report but don't see the test name in ChromeTest.log, you'll know that this happened.  If it does, you'll need to run the tests again.
+* #### Arbitrary tests might sometimes fail to execute in Chrome.  If you see a test failure in the JUnit report but don't see the test name in ChromeTest.log, you'll know that this happened.  If it does, you'll need to run the tests again.  The suspected cause of the issue is the Chrome driver or Selenium's interaction with it.
 
 * #### It's critical that you do not interact with the machine in any way while tests are running.  Being that this library is event-driven, any action that could cause an event to be fired unexpectedly could cause tests to fail.  This includes human actions, but also includes applications popping up notifications or asserting themselves in other ways.  To the extent possible, you should take steps to minimize this possibility.
 

@@ -105,9 +105,9 @@ $( "#field" ).restrictedTextField( {
 See `demo/demo.html` for complete examples.
 
 
-# Browser Compatibility
+# Desktop Browser Compatibility
 
-Many other versions of Firefox and Chrome, whether older or newer than what's listed here, are certainly compatible.
+This library has only been tested on desktop browsers.  Mobile testing might happen in the future.  As for desktop browsers, many other versions of Firefox and Chrome, whether older or newer than what's listed here, are certainly compatible.  Browsers not listed here might work fine, but have not been tested.
 
 * Firefox 45.0.1:  Compatible
 * Chrome 49.0.2623.108 m:  Compatible

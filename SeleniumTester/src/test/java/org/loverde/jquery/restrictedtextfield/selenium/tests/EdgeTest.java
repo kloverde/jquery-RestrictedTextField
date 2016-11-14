@@ -33,55 +33,25 @@
 
 package org.loverde.jquery.restrictedtextfield.selenium.tests;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Properties;
-import java.util.Set;
-
-import junit.framework.JUnit4TestAdapter;
-import junit.framework.TestSuite;
-
-import org.junit.runner.RunWith;
-import org.junit.runners.AllTests;
+import org.loverde.jquery.restrictedtextfield.selenium.Event;
+import org.loverde.jquery.restrictedtextfield.selenium.FieldType;
 
 
-@RunWith( AllTests.class )
-public class SeleniumTestSuite {
+/**
+ * This class' purpose is to re-run {@linkplain AbstractTest} under
+ * a unique name so that in a multi-browser test scenario, you know
+ * which browser a test failed in.
+ */
+public class EdgeTest extends AbstractTest {
 
-   private static final Map<String, Class<? extends AbstractTest>> classMap;
+   public EdgeTest( final FieldType fieldType,
+                    final String    testName,
+                    final boolean   ignoreInvalidInput,
+                    final String    input,
+                    final String    expectedValueBeforeBlur,
+                    final String    expectedValueAfterBlur,
+                    final Event     expectedEventOnBlur ) throws Exception {
 
-   static {
-      classMap = new HashMap<String, Class<? extends AbstractTest>>();
-
-      classMap.put( "chrome", ChromeTest.class );
-      classMap.put( "edge", EdgeTest.class );
-      classMap.put( "firefox", FirefoxTest.class );
-      classMap.put( "ie", InternetExplorerTest.class );
-   }
-
-   public static TestSuite suite() throws FileNotFoundException, IOException {
-      final Properties props = new Properties();
-      final Set<Class<? extends AbstractTest>> tests = new HashSet<Class<? extends AbstractTest>>();
-      final TestSuite suite = new TestSuite();
-
-      props.load( new FileInputStream("gradle.properties") );
-
-      for( final String browser : props.getProperty("browsers").split(",") ) {
-         final Class<? extends AbstractTest> clazz = classMap.get( browser.trim() );
-
-         if( clazz != null ) {
-            tests.add( clazz );
-         }
-      }
-
-      for( final Class<? extends AbstractTest> c : tests ) {
-         suite.addTest( new JUnit4TestAdapter(c) );
-      }
-
-      return suite;
+      super( fieldType, testName, ignoreInvalidInput, input, expectedValueBeforeBlur, expectedValueAfterBlur, expectedEventOnBlur );
    }
 }

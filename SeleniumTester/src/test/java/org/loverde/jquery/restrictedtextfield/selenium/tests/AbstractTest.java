@@ -88,7 +88,8 @@ public abstract class AbstractTest {
 
    private static final String PROPERTIES_FILENAME = "gradle.properties";
 
-   public static final String APP_PROP_IE_DRIVER_PATH        = "ieDriverPath",
+   public static final String APP_PROP_EDGE_DRIVER_PATH      = "edgeDriverPath",
+                              APP_PROP_IE_DRIVER_PATH        = "ieDriverPath",
                               APP_PROP_GECKO_DRIVER_PATH     = "geckoDriverPath",
                               APP_PROP_CHROME_DRIVER_PATH    = "chromeDriverPath",
                               APP_PROP_URL                   = "url";
@@ -1018,13 +1019,37 @@ public abstract class AbstractTest {
       this.expectedValueAfterBlur  = expectedValueAfterBlur;
       this.expectedEventOnBlur = expectedEventOnBlur;
 
+      props = new Properties();
+      props.load( new FileInputStream(PROPERTIES_FILENAME) );
+
       if( clazz != lastClass ) {
          driver = null;
          lastClass = clazz;
 
          log = new BufferedWriter( new FileWriter(logDirectory.getPath() + "/" + lastClass.getSimpleName() + ".log") );
 
-         if( clazz == InternetExplorerTest.class ) {
+         if( clazz == EdgeTest.class ) {
+            final String edgePath = props.getProperty( APP_PROP_EDGE_DRIVER_PATH );
+
+            if( !StringUtil.isNothing(edgePath) ) {
+               System.setProperty( "webdriver.edge.driver", new File(edgePath).getAbsolutePath() );
+            }
+
+            driver = DriverFactory.newEdgeDriver();
+
+            if( driver == null ) {
+               System.out.println( "Edge driver is null" );
+               throw new IllegalStateException( "Edge driver is null" );
+            } else {
+               System.out.println( "Got Edge driver" );
+            }
+         } else if( clazz == InternetExplorerTest.class ) {
+            final String iePath = props.getProperty( APP_PROP_IE_DRIVER_PATH );
+
+            if( !StringUtil.isNothing(iePath) ) {
+               System.setProperty( "webdriver.ie.driver", new File(iePath).getAbsolutePath() );
+            }
+
             System.out.println( "Getting IE driver" );
 
             driver = DriverFactory.newIeDriver();
@@ -1036,6 +1061,12 @@ public abstract class AbstractTest {
                System.out.println( "Got IE driver" );
             }
          } else if( clazz == FirefoxTest.class ) {
+            final String geckoPath = props.getProperty( APP_PROP_GECKO_DRIVER_PATH );
+
+            if( !StringUtil.isNothing(geckoPath) ) {
+               System.setProperty( "webdriver.gecko.driver", new File(geckoPath).getAbsolutePath() );
+            }
+
             System.out.println( "Getting Firefox driver" );
 
             driver = DriverFactory.newFirefoxDriver();
@@ -1047,6 +1078,12 @@ public abstract class AbstractTest {
                System.out.println( "Got Firefox driver" );
             }
          } else if( clazz == ChromeTest.class ) {
+            final String chromePath = props.getProperty( APP_PROP_CHROME_DRIVER_PATH );
+
+            if( !StringUtil.isNothing(chromePath) ) {
+               System.setProperty( "webdriver.chrome.driver", new File(chromePath).getAbsolutePath() );
+            }
+
             System.out.println( "Getting Chrome driver" );
 
             driver = DriverFactory.newChromeDriver();
@@ -1069,25 +1106,6 @@ public abstract class AbstractTest {
 
    @BeforeClass
    public static void init() throws IOException {
-      props = new Properties();
-      props.load( new FileInputStream(PROPERTIES_FILENAME) );
-
-      final String iePath = props.getProperty( APP_PROP_IE_DRIVER_PATH );
-      final String geckoPath = props.getProperty( APP_PROP_GECKO_DRIVER_PATH );
-      final String chromePath = props.getProperty( APP_PROP_CHROME_DRIVER_PATH );
-
-      if( !StringUtil.isNothing(iePath) ) {
-         System.setProperty( "webdriver.ie.driver", new File(iePath).getAbsolutePath() );
-      }
-
-      if( !StringUtil.isNothing(geckoPath) ) {
-         System.setProperty( "webdriver.gecko.driver", new File(geckoPath).getAbsolutePath() );
-      }
-
-      if( !StringUtil.isNothing(chromePath) ) {
-         System.setProperty( "webdriver.chrome.driver", new File(chromePath).getAbsolutePath() );
-      }
-
       if( logDirectory == null ) {
          logDirectory = createLogDirectory();
          System.out.println("Web browser log directory is " + logDirectory);
@@ -1271,6 +1289,7 @@ public abstract class AbstractTest {
       if( driver != null && log != null ) {
          try {
             log.write( driver.findElement(By.id("log")).getText() );
+            log.write( "\n\n" );
             log.flush();
          } catch( final IOException ioe ) {
             System.err.println( ioe.getMessage() );

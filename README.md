@@ -128,7 +128,7 @@ Many other versions of Firefox and Chrome, whether older or newer than what's li
   * [Java JDK](http://www.oracle.com/technetwork/java/javase/index.html) version 8 or later
   * [BuildScripts](https://github.com/kloverde/BuildScripts)
 2.  Modify the `buildScriptsDir` property in `SeleniumTester/gradle.properties` to reflect the location of BuildScripts on your filesystem
-3.  Download the appropriate browser drivers for your system at [seleniumhq.org](http://www.seleniumhq.org).  Once you've downloaded them, update `geckoDriverPath`, `ieDriverPath` and `chromeDriverPath` in `SeleniumTester/gradle.properties` with their paths.
+3.  Download the appropriate browser drivers for your system at [seleniumhq.org](http://www.seleniumhq.org).  Once you've downloaded them, update `geckoDriverPath`, `edgeDriverPath`, `ieDriverPath` and `chromeDriverPath` in `SeleniumTester/gradle.properties` with their paths.
 4.  If you're testing in IE, set Protected Mode to the same value in all zones (it doesn't matter whether it's set to enabled or disabled, just that it's the same for all).  See [here](http://jimevansmusic.blogspot.com/2012/08/youre-doing-it-wrong-protected-mode-and.html) for more information.  If that page disappears from the Web, see [the Wayback Machine's copy](http://web.archive.org/web/20151026094711/http://jimevansmusic.blogspot.com/2012/08/youre-doing-it-wrong-protected-mode-and.html).
 5.  Set your browsers' zoom levels to 100%.  If you don't, Selenium will throw an exception, at least for IE.
 6.  Update the `browsers` property in `SeleniumTester/gradle.properties` to reflect which browsers you'll be testing with.  This is explained further by documentation found in the properties file.
@@ -138,13 +138,19 @@ Many other versions of Firefox and Chrome, whether older or newer than what's li
   3.  Type `npm test`
 
 
-#### UNIT TESTS NOTES:
+#### UNIT TESTS GOTCHAS:
 
-* #### The Selenium project's 64-bit IE driver is broken for IE 10 and 11, and according to a Selenium contributor, is unfixable.  See [here](https://github.com/seleniumhq/selenium-google-code-issue-archive/issues/5116) and [here](http://jimevansmusic.blogspot.com/2014/09/screenshots-sendkeys-and-sixty-four.html).  If you're testing on a 64-bit version of Windows with IE 10 or 11, use the 32-bit driver instead.  Its performance is still poor, but is far better than the 64-bit driver.
+* #### The Selenium project's 64-bit IE driver is broken for IE 10 and 11, and according to a Selenium contributor, is unfixable.  See [here](https://github.com/seleniumhq/selenium-google-code-issue-archive/issues/5116) and [here](http://jimevansmusic.blogspot.com/2014/09/screenshots-sendkeys-and-sixty-four.html).  If you're testing on a 64-bit version of Windows with IE 10 or 11, use the 32-bit driver instead.  Its performance is still quite poor, but is far better than the 64-bit driver.
 
 * #### If you're using Windows and if you haven't used Selenium before, Windows Firewall will pop up an alert asking whether to allow the driver server to listen for connections.  You need to grant this permission.  During this time, one or more of the unit tests will fail.  Simply re-run the tests after the permission has been granted.
 
 * #### If you're running the unit tests in Firefox, you must use Firefox 48 or later.  Starting with Firefox 48, Selenium is required to use the Marionette/Gecko driver, and my code is written to initialize that particular driver.  Although RestrictedTextField itself is supported on older Firefox releases, the unit tests are not.
+
+* #### The following has not been observed since the tests were upgraded to use Selenium v3.0.1, but might still occur:  arbitrary tests might sometimes fail to execute in Chrome.  If you see a test failure in the JUnit report but don't see the test name in ChromeTest.log, you'll know that this happened.  If it does, you'll need to run the tests again.
+
+* #### It's critical that you do not interact with the machine in any way while tests are running.  Being that this library is event-driven, any action that could cause an event to be fired unexpectedly could cause tests to fail.  This includes human actions, but also includes applications popping up notifications or asserting themselves in other ways.  To the extent possible, you should take steps to minimize this possibility.
+
+* #### The tests fail in Edge if Edge doesn't have focus.  Sometimes Edge opens behind another window (for example, the console which you might have used to invoke the tests).
 
 
 ## Thanks

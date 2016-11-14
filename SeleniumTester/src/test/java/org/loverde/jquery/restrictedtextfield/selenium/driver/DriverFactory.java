@@ -37,6 +37,7 @@ import java.util.logging.Level;
 
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.edge.EdgeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.ie.InternetExplorerDriver;
 import org.openqa.selenium.remote.DesiredCapabilities;
@@ -69,6 +70,22 @@ public class DriverFactory {
       return driver;
    }
 
+   public static final EdgeDriver newEdgeDriver() {
+      final EdgeDriver driver;
+      final DesiredCapabilities capabilities = DesiredCapabilities.edge();
+
+      setCommonCapabilities( capabilities );
+
+      System.out.println( "Instantiating Edge driver" );
+
+      driver = new EdgeDriver( capabilities );
+      setCommonDriverProps( driver );
+
+      System.out.println( "Edge driver is " + driver );
+
+      return driver;
+   }
+
    public static final InternetExplorerDriver newIeDriver() {
       final InternetExplorerDriver driver;
       final DesiredCapabilities capabilities = DesiredCapabilities.internetExplorer();
@@ -78,6 +95,7 @@ public class DriverFactory {
       System.out.println( "Instantiating IE driver" );
 
       driver = new InternetExplorerDriver( capabilities );
+      capabilities.setCapability( "requireWindowFocus", true );
       setCommonDriverProps( driver );
 
       System.out.println( "IE driver is " + driver );

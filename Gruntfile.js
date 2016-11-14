@@ -38,7 +38,7 @@ module.exports = function(grunt) {
             autoIndex: true,
             ext: "html",
             runInBackground: true,
-            openBrowser : false
+            openBrowser: false
          },
 
          // This configuration is not used by the build process.  It keeps the server running so that you can run SeleniumTester in a debugger.
@@ -51,7 +51,7 @@ module.exports = function(grunt) {
             autoIndex: true,
             ext: "html",
             runInBackground: false,
-            openBrowser : false            
+            openBrowser: false            
          }
       },
 
@@ -61,7 +61,7 @@ module.exports = function(grunt) {
          dev: {
             options: {
                autostop: false,
-               downloadUrl: "https://selenium-release.storage.googleapis.com/3.0-beta2/selenium-server-standalone-3.0.0-beta2.jar",
+               downloadUrl: "https://selenium-release.storage.googleapis.com/3.0/selenium-server-standalone-3.0.1.jar",
                serverOptions: {},
                systemProperties: {}
             }

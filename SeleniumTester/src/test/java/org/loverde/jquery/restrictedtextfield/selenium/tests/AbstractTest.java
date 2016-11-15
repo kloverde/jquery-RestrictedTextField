@@ -60,7 +60,6 @@ import org.loverde.jquery.restrictedtextfield.selenium.FieldType;
 import org.loverde.jquery.restrictedtextfield.selenium.driver.DriverFactory;
 import org.loverde.jquery.restrictedtextfield.selenium.util.StringUtil;
 import org.openqa.selenium.By;
-import org.openqa.selenium.Capabilities;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -108,8 +107,9 @@ public abstract class AbstractTest {
 
    private static BufferedWriter log = null;
 
-   private static boolean doPeriodicReload = false;
-   private static int testCount = 0, reloadCount = 0;
+   private static int testCount = 0,
+                      reloadCount = 0,
+                      reloadFrequency = 0;
 
 
    @Parameters( name = "{1}" )
@@ -1064,7 +1064,12 @@ public abstract class AbstractTest {
                throw new IllegalStateException( "IE driver is null" );
             } else {
                System.out.println( "Got IE driver" );
-               doPeriodicReload = true;  // All versions of IE leak memory when nodes are removed from the DOM
+
+               // All versions of IE leak memory when nodes are removed from the DOM.
+               // Determine how often to reload the page.
+
+               final String version = (((RemoteWebDriver) driver)).getCapabilities().getVersion();
+               reloadFrequency = version.startsWith( "9" ) ? 1 : 10;
             }
          } else if( clazz == FirefoxTest.class ) {
             final String geckoPath = props.getProperty( APP_PROP_GECKO_DRIVER_PATH );
@@ -1112,7 +1117,6 @@ public abstract class AbstractTest {
 
    @BeforeClass
    public static void init() throws IOException {
-      doPeriodicReload = false;
       testCount = 0;
 
       if( logDirectory == null ) {
@@ -1150,20 +1154,17 @@ public abstract class AbstractTest {
    public void tearDown() throws Exception {
       javascript( "return tearDown();" );
 
-      if( doPeriodicReload ) {
-         if( ++reloadCount >= 10 ) {
-            ieMemoryLeakFix();
+      if( reloadFrequency > 0 ) {
+         if( ++reloadCount >= reloadFrequency ) {
+            reloadPage();
             reloadCount = 0;
          }
       }
    }
 
-   /**
-    * All versions of IE leak memory when removing nodes from the DOM.  This method reloads the page to free it up.
-    */
-   private void ieMemoryLeakFix() throws Exception {
-      log( "IE leak prevention" );
-      javascript( "window.location = window.location;" );  // Sending F5 reloads the page, but memory isn't freed
+   /** All versions of IE leak memory when removing nodes from the DOM.  This method reloads the page to free it up. */
+   private void reloadPage() throws Exception {
+      javascript( "return window.location = window.location;" );  // Sending F5 reloads the page, but memory isn't freed.  This way works.
    }
 
    @Test

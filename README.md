@@ -107,7 +107,7 @@ See `demo/demo.html` for complete examples.
 
 # Desktop Browser Compatibility
 
-This library has only been tested on desktop browsers.  Mobile testing might happen in the future.  As for desktop browsers, many other versions of Firefox and Chrome, whether older or newer than what's listed here, are certainly compatible.  Browsers not listed here might work fine, but have not been tested.
+This plugin has only been tested on desktop browsers.  Mobile testing might happen in the future.  As for desktop browsers, many other versions of Firefox and Chrome, whether older or newer than what's listed here, are certainly compatible.  Browsers not listed here might work fine, but have not been tested.
 
 * Firefox 45.0.1:  Compatible
 * Chrome 49.0.2623.108 m:  Compatible
@@ -148,11 +148,11 @@ This library has only been tested on desktop browsers.  Mobile testing might hap
 
 * #### If you're running the unit tests in Firefox, the last known Gecko driver which worked was v0.10.0.  Sometime after that, something happened in the Gecko driver which messes up the tests' ability to trigger blur events, which results in practically every test failing.  Version 0.11.1 (November, 2016) is confirmed to cause this problem.  No later version of the Gecko driver has been tested.
 
-* #### It's critical that you do not interact with the machine in any way while tests are running.  Being that this library is event-driven, any action that could cause an event to be fired unexpectedly could cause tests to fail.  This includes human actions, but also includes applications popping up notifications or asserting themselves in other ways.  To the extent possible, you should take steps to minimize this possibility.
+* #### It's critical that you do not interact with the machine in any way while tests are running.  Being that this plugin is event-driven, any action that could cause an event to be fired unexpectedly could cause tests to fail.  This includes human actions, but also includes applications popping up notifications or asserting themselves in other ways.  To the extent possible, you should take steps to minimize this possibility.
 
 * #### The tests fail in Edge if Edge doesn't have focus.  Sometimes Edge opens behind another window (for example, the console which you might have used to invoke the tests).
 
 
 ## Thanks
 
-Do you like this library?  Want to toss a few bucks my way to say thanks?  I accept donations at https://paypal.me/KurtisLoVerde/10.  Thank you for your support!
+Do you like this software?  Want to toss a few bucks my way to say thanks?  I accept donations at https://paypal.me/KurtisLoVerde/10.  Thank you for your support!

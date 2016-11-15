@@ -148,8 +148,6 @@ This library has only been tested on desktop browsers.  Mobile testing might hap
 
 * #### If you're running the unit tests in Firefox, the last known Gecko driver which worked was v0.10.0.  Sometime after that, something happened in the Gecko driver which messes up the tests' ability to trigger blur events, which results in practically every test failing.  Version 0.11.1 (November, 2016) is confirmed to cause this problem.  No later version of the Gecko driver has been tested.
 
-* #### Arbitrary tests might sometimes fail to execute in Chrome.  If you see a test failure in the JUnit report but don't see the test name in ChromeTest.log, you'll know that this happened.  If it does, you'll need to run the tests again.  The suspected cause of the issue is the Chrome driver or Selenium's interaction with it.
-
 * #### It's critical that you do not interact with the machine in any way while tests are running.  Being that this library is event-driven, any action that could cause an event to be fired unexpectedly could cause tests to fail.  This includes human actions, but also includes applications popping up notifications or asserting themselves in other ways.  To the extent possible, you should take steps to minimize this possibility.
 
 * #### The tests fail in Edge if Edge doesn't have focus.  Sometimes Edge opens behind another window (for example, the console which you might have used to invoke the tests).

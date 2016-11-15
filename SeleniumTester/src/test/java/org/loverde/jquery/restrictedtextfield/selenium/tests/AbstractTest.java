@@ -109,7 +109,7 @@ public abstract class AbstractTest {
    private static BufferedWriter log = null;
 
    private static boolean doPeriodicReload = false;
-   private static int testCount = 0;
+   private static int testCount = 0, reloadCount = 0;
 
 
    @Parameters( name = "{1}" )
@@ -1120,6 +1120,7 @@ public abstract class AbstractTest {
    @BeforeClass
    public static void init() throws IOException {
       doPeriodicReload = false;
+      testCount = 0;
 
       if( logDirectory == null ) {
          logDirectory = createLogDirectory();
@@ -1147,6 +1148,7 @@ public abstract class AbstractTest {
 
    @Before
    public void setUp() throws Exception {
+      testCount++;
       javascript( "return setUp();" );
       field = driver.findElement( By.id("field") );
    }
@@ -1156,9 +1158,9 @@ public abstract class AbstractTest {
       javascript( "return tearDown();" );
 
       if( doPeriodicReload ) {
-         if( ++testCount >= 10 ) {
+         if( ++reloadCount >= 10 ) {
             ieMemoryLeakFix();
-            testCount = 0;
+            reloadCount = 0;
          }
       }
    }
@@ -1186,6 +1188,7 @@ public abstract class AbstractTest {
    @Test
    public void test() throws Exception {
       initField();
+      writeStatus();
       keypress( input );
       validatePreBlur();
       resetEventFlags();
@@ -1283,6 +1286,10 @@ public abstract class AbstractTest {
 
       final String command = String.format( "return initField(\"%s\", \"%s\", %b);", testName, fieldType.toString(), ignoreInvalidInput );
       javascript( command );
+   }
+
+   private void writeStatus() throws Exception {
+      javascript( String.format("return writeStatus('%s', %d, %d);", testName, testCount, data.size()) );
    }
 
    private void resetEventFlags() throws Exception {

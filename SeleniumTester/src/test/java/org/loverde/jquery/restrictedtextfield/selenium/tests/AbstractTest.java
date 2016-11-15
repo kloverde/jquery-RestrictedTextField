@@ -1353,14 +1353,9 @@ public abstract class AbstractTest {
 
    private static void writeLog() throws IOException {
       if( driver != null && log != null ) {
-         //try {
-            log.write( driver.findElement(By.id("log")).getText() );
-            log.write( "\n\n" );
-            log.flush();
-         /*} catch( final IOException ioe ) {
-            System.err.println( ioe.getMessage() );
-            ioe.printStackTrace();
-         }*/
+         log.write( driver.findElement(By.id("log")).getText() );
+         log.write( "\n\n" );
+         log.flush();
       }
    }
 }

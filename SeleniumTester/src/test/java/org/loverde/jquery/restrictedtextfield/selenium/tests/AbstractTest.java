@@ -60,9 +60,11 @@ import org.loverde.jquery.restrictedtextfield.selenium.FieldType;
 import org.loverde.jquery.restrictedtextfield.selenium.driver.DriverFactory;
 import org.loverde.jquery.restrictedtextfield.selenium.util.StringUtil;
 import org.openqa.selenium.By;
+import org.openqa.selenium.Capabilities;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.remote.RemoteWebDriver;
 import org.junit.runners.Parameterized;
 
 
@@ -105,6 +107,9 @@ public abstract class AbstractTest {
    public static final List<Object[]> data;
 
    private static BufferedWriter log = null;
+
+   private static boolean doPeriodicReload = false;
+   private static int testCount = 0;
 
 
    @Parameters( name = "{1}" )
@@ -1059,6 +1064,14 @@ public abstract class AbstractTest {
                throw new IllegalStateException( "IE driver is null" );
             } else {
                System.out.println( "Got IE driver" );
+
+               final Capabilities capabilities = ((RemoteWebDriver) driver).getCapabilities();
+
+               // IE 8 & 9 is garbage
+
+               if( "8".equals(capabilities.getVersion()) || "9".equals(capabilities.getVersion()) ) {
+                  doPeriodicReload = true;
+               }
             }
          } else if( clazz == FirefoxTest.class ) {
             final String geckoPath = props.getProperty( APP_PROP_GECKO_DRIVER_PATH );
@@ -1106,6 +1119,8 @@ public abstract class AbstractTest {
 
    @BeforeClass
    public static void init() throws IOException {
+      doPeriodicReload = false;
+
       if( logDirectory == null ) {
          logDirectory = createLogDirectory();
          System.out.println("Web browser log directory is " + logDirectory);
@@ -1131,18 +1146,45 @@ public abstract class AbstractTest {
    }
 
    @Before
-   public void setUp() {
-      ((JavascriptExecutor) driver).executeScript( "setUp();" );
+   public void setUp() throws Exception {
+      javascript( "return setUp();" );
       field = driver.findElement( By.id("field") );
    }
 
    @After
-   public void tearDown() {
-      ((JavascriptExecutor) driver).executeScript( "tearDown();" );
+   public void tearDown() throws Exception {
+      javascript( "return tearDown();" );
+
+      if( doPeriodicReload ) {
+         if( ++testCount >= 10 ) {
+            ieMemoryLeakFix();
+            testCount = 0;
+         }
+      }
+   }
+
+   /**
+    * Quoting <a href="http://com.hemiola.com/2009/11/23/memory-leaks-in-ie8">http://com.hemiola.com/2009/11/23/memory-leaks-in-ie8</a>
+    * <em>
+    *    <p>
+    *       The memory used by IE8 to create certain DOM nodes is never freed, even if those DOM nodes are removed from the document (until window.top is unloaded).
+    *       The DOM node types that leak are form, button, input, select, textarea, a, img, and object. Most node types don&apos; leak, such as span, div, p, table, etc.
+    *       This problem only occurs in IE8 (and IE9 and IE10 preview). It does not occur in IE6, IE7, Firefox, or Chrome.
+    *    </p>
+    * </em>
+    *
+    * <p>
+    *    That's a problem for this application because it creates and destroys an input field hundreds of times.  The <pre> used for log messages also leaks.
+    *    This method periodically reloads the page to force a page refresh, and with it a release of memory leaked by Internet Explorer.
+    * </p>
+    */
+   private void ieMemoryLeakFix() throws Exception {
+      log( "IE 8/9 leak prevention" );
+      javascript( "window.location = window.location;" );  // Sending F5 reloads the page, but memory isn't freed
    }
 
    @Test
-   public void test() throws IOException {
+   public void test() throws Exception {
       initField();
       keypress( input );
       validatePreBlur();
@@ -1152,11 +1194,11 @@ public abstract class AbstractTest {
       writeLog();
    }
 
-   private void blur() {
-      ((JavascriptExecutor) driver).executeScript( "blur();" );
+   private void blur() throws Exception {
+      javascript( "return blur();" );
    }
 
-   private void validatePreBlur() throws IOException {
+   private void validatePreBlur() throws Exception {
       final String actualValue = getFieldValue();
 
       assertEquals( expectedValueBeforeBlur, actualValue );
@@ -1180,7 +1222,7 @@ public abstract class AbstractTest {
       }
    }
 
-   private void validatePostBlur() {
+   private void validatePostBlur() throws Exception {
       final String actualValue = getFieldValue();
 
       assertEquals( expectedValueAfterBlur, actualValue );
@@ -1235,19 +1277,19 @@ public abstract class AbstractTest {
       }
    }
 
-   private void initField() {
+   private void initField() throws Exception {
       if( testName == null ) throw new IllegalArgumentException( "testName is null" );
       if( fieldType == null ) throw new IllegalArgumentException( "fieldType is null" );
 
-      final String command = String.format( "initField(\"%s\", \"%s\", %b);", testName, fieldType.toString(), ignoreInvalidInput );
-      ((JavascriptExecutor) driver).executeScript( command );
+      final String command = String.format( "return initField(\"%s\", \"%s\", %b);", testName, fieldType.toString(), ignoreInvalidInput );
+      javascript( command );
    }
 
-   private void resetEventFlags() {
-      ((JavascriptExecutor) driver).executeScript( "resetEventFlags();" );
+   private void resetEventFlags() throws Exception {
+      javascript( "return resetEventFlags();" );
    }
 
-   private String getFieldValue() {
+   private String getFieldValue() throws Exception {
       // Unlike other drivers, the Marionette/Gecko driver only returns the value of the "value" attribute
       // in the HTML tag, rather than returning the value of the field.  Obviously that's a problem for
       // the purposes of this application.  That's not how the previous Firefox driver, FirefoxDriver,
@@ -1258,20 +1300,20 @@ public abstract class AbstractTest {
 
       // Workaround:  Get the value using JavaScript
 
-      final String value = (String) ((JavascriptExecutor) driver).executeScript( "return document.getElementById('field').value;" );
+      final String value = (String) javascript( "return document.getElementById('field').value;" );
       return value != null ? value : "";
    }
 
-   private boolean inputIgnoredEventFired() {
-      return (Boolean) ((JavascriptExecutor) driver).executeScript( "return didInputIgnoredEventFire();" );
+   private boolean inputIgnoredEventFired() throws Exception {
+      return (Boolean) javascript( "return didInputIgnoredEventFire();" );
    }
 
-   private boolean validationFailedEventFired() {
-      return (Boolean) ((JavascriptExecutor) driver).executeScript( "return didValidationFailedEventFire();" );
+   private boolean validationFailedEventFired() throws Exception {
+      return (Boolean) javascript( "return didValidationFailedEventFire();" );
    }
 
-   private boolean validationSuccessEventFired() {
-      return (Boolean) ((JavascriptExecutor) driver).executeScript( "return didValidationSuccessEventFire();" );
+   private boolean validationSuccessEventFired() throws Exception {
+      return (Boolean) javascript( "return didValidationSuccessEventFire();" );
    }
 
    private static File createLogDirectory() throws IOException {
@@ -1285,16 +1327,39 @@ public abstract class AbstractTest {
       return dir;
    }
 
+   private Object javascript( final String js ) throws Exception {
+      Object result = null;
+
+      if( js != null && !js.isEmpty() ) {
+         try {
+            result = ((JavascriptExecutor) driver).executeScript( js );
+         } catch( final Exception e ) {
+            e.printStackTrace();
+            log( e.getMessage() );
+         }
+      }
+
+      return result;
+   }
+
+   private void log( final String msg ) throws IOException {
+      if( driver != null && log != null ) {
+         log.write( msg );
+         log.write( "\n" );
+         log.flush();
+      }
+   }
+
    private static void writeLog() throws IOException {
       if( driver != null && log != null ) {
-         try {
+         //try {
             log.write( driver.findElement(By.id("log")).getText() );
             log.write( "\n\n" );
             log.flush();
-         } catch( final IOException ioe ) {
+         /*} catch( final IOException ioe ) {
             System.err.println( ioe.getMessage() );
             ioe.printStackTrace();
-         }
+         }*/
       }
    }
 }

@@ -99,14 +99,16 @@
 
          function setUp() {
             $( "#log" ).html( "" );
-
             log( "setUp" );
 
-            $( "#fieldContainer" ).html( "<input type='text' id='field'/>" );
+            $( "#field" ).remove();
 
-            inputIgnoredEvent = false;
-            validationFailedEvent = false;
-            validationSuccessEvent = false;
+            $( "<input/>", {
+               id   : "field",
+               type : "text"
+            } ).appendTo( $("#fieldContainer") );
+
+            resetEventFlags();
          }
 
          function tearDown() {
@@ -114,7 +116,7 @@
          }
 
          function resetEventFlags() {
-            log( "resetting event flags for blur validation" );
+            log( "resetting event flags" );
 
             inputIgnoredEvent = false;
             validationFailedEvent = false;

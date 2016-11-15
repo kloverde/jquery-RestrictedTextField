@@ -1064,14 +1064,7 @@ public abstract class AbstractTest {
                throw new IllegalStateException( "IE driver is null" );
             } else {
                System.out.println( "Got IE driver" );
-
-               final Capabilities capabilities = ((RemoteWebDriver) driver).getCapabilities();
-
-               // IE 8 & 9 is garbage
-
-               if( "8".equals(capabilities.getVersion()) || "9".equals(capabilities.getVersion()) ) {
-                  doPeriodicReload = true;
-               }
+               doPeriodicReload = true;  // All versions of IE leak memory when nodes are removed from the DOM
             }
          } else if( clazz == FirefoxTest.class ) {
             final String geckoPath = props.getProperty( APP_PROP_GECKO_DRIVER_PATH );
@@ -1166,22 +1159,10 @@ public abstract class AbstractTest {
    }
 
    /**
-    * Quoting <a href="http://com.hemiola.com/2009/11/23/memory-leaks-in-ie8">http://com.hemiola.com/2009/11/23/memory-leaks-in-ie8</a>
-    * <em>
-    *    <p>
-    *       The memory used by IE8 to create certain DOM nodes is never freed, even if those DOM nodes are removed from the document (until window.top is unloaded).
-    *       The DOM node types that leak are form, button, input, select, textarea, a, img, and object. Most node types don&apos; leak, such as span, div, p, table, etc.
-    *       This problem only occurs in IE8 (and IE9 and IE10 preview). It does not occur in IE6, IE7, Firefox, or Chrome.
-    *    </p>
-    * </em>
-    *
-    * <p>
-    *    That's a problem for this application because it creates and destroys an input field hundreds of times.  The <pre> used for log messages also leaks.
-    *    This method periodically reloads the page to force a page refresh, and with it a release of memory leaked by Internet Explorer.
-    * </p>
+    * All versions of IE leak memory when removing nodes from the DOM.  This method reloads the page to free it up.
     */
    private void ieMemoryLeakFix() throws Exception {
-      log( "IE 8/9 leak prevention" );
+      log( "IE leak prevention" );
       javascript( "window.location = window.location;" );  // Sending F5 reloads the page, but memory isn't freed
    }
 

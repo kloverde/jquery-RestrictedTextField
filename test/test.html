@@ -91,12 +91,6 @@
              validationFailedEvent,
              validationSuccessEvent;
 
-         $( document ).ready( function() {
-            $( window ).on( "resize", function() {
-               centerExitModal();
-            } );
-         } );
-
          function setUp() {
             $( "#log" ).html( "" );
             log( "setUp" );
@@ -178,24 +172,6 @@
             log.append( msg + "\n" );
 
             log.prop( "scrollTop", log.prop("scrollHeight") );
-         }
-
-         function showExitModal() {
-            centerExitModal();
-            $( "#exitModal" ).show();
-         }
-
-         function centerExitModal() {
-           var modal = $( "#exitModal" );
-
-           var modalHeight = modal.height(),
-               modalWidth  = modal.width();
-
-           var centerX = $( window ).width() / 2,
-               centerY = $( window ).height() / 2;
-
-           modal.css( "top", (centerY - (modalHeight / 2)) + "px" );
-           modal.css( "left", (centerX - (modalWidth / 2)) + "px" );
          }
       </script>
    </head>

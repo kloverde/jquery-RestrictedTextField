@@ -1336,6 +1336,7 @@ public abstract class AbstractTest {
          } catch( final Exception e ) {
             e.printStackTrace();
             log( e.getMessage() );
+            throw( e );
          }
       }
 

@@ -142,9 +142,11 @@ This library has only been tested on desktop browsers.  Mobile testing might hap
 
 * #### The Selenium project's 64-bit IE driver is broken for IE 10 and 11, and according to a Selenium contributor, is unfixable.  See [here](https://github.com/seleniumhq/selenium-google-code-issue-archive/issues/5116) and [here](http://jimevansmusic.blogspot.com/2014/09/screenshots-sendkeys-and-sixty-four.html).  If you're testing on a 64-bit version of Windows with IE 10 or 11, use the 32-bit driver instead.  Its performance is still quite poor, but is far better than the 64-bit driver.
 
-* #### If you're using Windows and if you haven't used Selenium before, Windows Firewall will pop up an alert asking whether to allow the driver server to listen for connections.  You need to grant this permission.  During this time, one or more of the unit tests will fail.  Simply re-run the tests after the permission has been granted.
+* #### If you're using Windows and if you haven't used Selenium before, Windows Firewall will pop up an alert asking whether to allow driver servers to listen for connections.  You need to grant these permissions.  During this time, one or more of the unit tests will fail.  Simply re-run the tests after the permission has been granted.
 
 * #### If you're running the unit tests in Firefox, you must use Firefox 48 or later.  Starting with Firefox 48, Selenium is required to use the Marionette/Gecko driver, and my code is written to initialize that particular driver.  Although RestrictedTextField itself is supported on older Firefox releases, the unit tests are not.
+
+* #### If you're running the unit tests in Firefox, the last known Gecko driver which worked was v0.10.0.  Sometime after that, something happened in the Gecko driver which messes up the tests' ability to trigger blur events, which results in practically every test failing.  Version 0.11.1 (November, 2016) is confirmed to cause this problem.  No later version of the Gecko driver has been tested.
 
 * #### Arbitrary tests might sometimes fail to execute in Chrome.  If you see a test failure in the JUnit report but don't see the test name in ChromeTest.log, you'll know that this happened.  If it does, you'll need to run the tests again.  The suspected cause of the issue is the Chrome driver or Selenium's interaction with it.
 

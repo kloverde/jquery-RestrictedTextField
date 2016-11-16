@@ -1,13 +1,36 @@
 <!DOCTYPE html>
 
 <!--
-   RestrictedTextField v1.0.1
+   RestrictedTextField v1.1
    https://www.github.com/kloverde/jquery-RestrictedTextField
 
-   Copyright (c) 2016 Kurtis LoVerde
-   All rights reserved
+   Copyright (c) 2016, Kurtis LoVerde
+   All rights reserved.
 
-   Donations:  https://paypal.me/KurtisLoVerde/5
+   Donations:  https://paypal.me/KurtisLoVerde/10
+
+   Redistribution and use in source and binary forms, with or without
+   modification, are permitted provided that the following conditions are met:
+
+       1. Redistributions of source code must retain the above copyright
+          notice, this list of conditions and the following disclaimer.
+       2. Redistributions in binary form must reproduce the above copyright
+          notice, this list of conditions and the following disclaimer in the
+          documentation and/or other materials provided with the distribution.
+       3. Neither the name of the copyright holder nor the names of its
+          contributors may be used to endorse or promote products derived from
+          this software without specific prior written permission.
+
+   THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+   ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+   WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+   DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
+   FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+   DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+   SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+   CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+   OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+   OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 -->
 
 <html lang="en-US">
@@ -16,8 +39,8 @@
 
       <title>RestrictedTextField Demo</title>
 
-      <script type="text/javascript" src="http://code.jquery.com/jquery-1.12.1.min.js"></script>
-      <script type="text/javascript" src="jquery.restrictedtextfield.js"></script>
+      <script type="text/javascript" src="../test/jquery.js"></script>
+      <script type="text/javascript" src="../src/jquery.restrictedtextfield.js"></script>
 
       <style type="text/css">
          input.inputIgnored {
@@ -55,6 +78,10 @@
       <script type="text/javascript">
          "use strict";
 
+         function log( msg ) {
+            console.log( msg );
+         }
+
          function createCustomTypes() {
             var cfg= new $.fn.RestrictedTextFieldConfig();
 
@@ -87,30 +114,36 @@
                preventInvalidInput : false
             } );
 
-            $( "#txtUpperAlpha" ).restrictedTextField( { type : "upperAlpha" } );
-            $( "#txtLowerAlpha" ).restrictedTextField( { type : "lowerAlpha" } );
-            $( "#txtAlphaSpace" ).restrictedTextField( { type : "alphaSpace" } );
-            $( "#txtUpperAlphaSpace" ).restrictedTextField( { type : "upperAlphaSpace" } );
-            $( "#txtLowerAlphaSpace" ).restrictedTextField( { type : "lowerAlphaSpace" } );
-            $( "#txtAlphanum" ).restrictedTextField( { type: "alphanumeric" } );
-            $( "#txtUpperAlphanum" ).restrictedTextField( { type : "upperAlphanumeric" } );
-            $( "#txtLowerAlphanum" ).restrictedTextField( { type : "lowerAlphanumeric" } );
-            $( "#txtAlphanumSpace" ).restrictedTextField( { type : "alphanumericSpace" } );
-            $( "#txtUpperAlphanumSpace" ).restrictedTextField( { type : "upperAlphanumericSpace" } );
-            $( "#txtLowerAlphanumSpace" ).restrictedTextField( { type : "lowerAlphanumericSpace" } );
-            $( "#txtInt" ).restrictedTextField( { type : "int" } );
-            $( "#txtPosInt" ).restrictedTextField( { type : "positiveInt" } );
-            $( "#txtNegInt" ).restrictedTextField( { type : "negativeInt" } );
-            $( "#txtFloat" ).restrictedTextField( { type : "float" } );
-            $( "#txtPosFloat" ).restrictedTextField( { type : "positiveFloat" } );
-            $( "#txtNegFloat" ).restrictedTextField( { type : "negativeFloat" } );
-            $( "#txtMoney" ).restrictedTextField( { type : "money" } );
-            $( "#txtPosMoney" ).restrictedTextField( { type : "positiveMoney" } );
-            $( "#txtNegMoney" ).restrictedTextField( { type : "negativeMoney" } );
-            $( "#txtAccountingMoney" ).restrictedTextField( { type : "accountingMoney" } );
-            $( "#txtNegAccountingMoney" ).restrictedTextField( { type : "negativeAccountingMoney" } );
-            $( "#txtVowelsOnly" ).restrictedTextField( { type : "vowels" } );
-            $( "#txtAdditionExpr" ).restrictedTextField( { type : "additionExpr" } );
+            $( "#txtUpperAlpha" ).restrictedTextField( { type: "upperAlpha", logger: log } );
+            $( "#txtLowerAlpha" ).restrictedTextField( { type: "lowerAlpha", logger: log } );
+            $( "#txtAlphaSpace" ).restrictedTextField( { type: "alphaSpace", logger: log } );
+            $( "#txtUpperAlphaSpace" ).restrictedTextField( { type: "upperAlphaSpace", logger: log } );
+            $( "#txtLowerAlphaSpace" ).restrictedTextField( { type: "lowerAlphaSpace", logger: log } );
+            $( "#txtAlphanum" ).restrictedTextField( { type: "alphanumeric", logger: log } );
+            $( "#txtUpperAlphanum" ).restrictedTextField( { type: "upperAlphanumeric", logger: log } );
+            $( "#txtLowerAlphanum" ).restrictedTextField( { type: "lowerAlphanumeric", logger: log } );
+            $( "#txtAlphanumSpace" ).restrictedTextField( { type: "alphanumericSpace", logger: log } );
+            $( "#txtUpperAlphanumSpace" ).restrictedTextField( { type: "upperAlphanumericSpace", logger: log } );
+            $( "#txtLowerAlphanumSpace" ).restrictedTextField( { type: "lowerAlphanumericSpace", logger: log } );
+            $( "#txtInt" ).restrictedTextField( { type: "int", logger: log } );
+            $( "#txtPosInt" ).restrictedTextField( { type: "positiveInt", logger: log } );
+            $( "#txtNegInt" ).restrictedTextField( { type: "negativeInt", logger: log } );
+            $( "#txtStrictInt" ).restrictedTextField( { type: "strictInt", logger: log } );
+            $( "#txtStrictPosInt" ).restrictedTextField( { type: "strictPositiveInt", logger: log } );
+            $( "#txtStrictNegInt" ).restrictedTextField( { type: "strictNegativeInt", logger: log } );
+            $( "#txtFloat" ).restrictedTextField( { type: "float", logger: log } );
+            $( "#txtPosFloat" ).restrictedTextField( { type: "positiveFloat", logger: log } );
+            $( "#txtNegFloat" ).restrictedTextField( { type: "negativeFloat", logger: log } );
+            $( "#txtStrictFloat" ).restrictedTextField( { type: "strictFloat", logger: log } );
+            $( "#txtStrictPosFloat" ).restrictedTextField( { type: "strictPositiveFloat", logger: log } );
+            $( "#txtStrictNegFloat" ).restrictedTextField( { type: "strictNegativeFloat", logger: log } );
+            $( "#txtMoney" ).restrictedTextField( { type: "money", logger: log } );
+            $( "#txtPosMoney" ).restrictedTextField( { type: "positiveMoney", logger: log } );
+            $( "#txtNegMoney" ).restrictedTextField( { type: "negativeMoney", logger: log } );
+            $( "#txtAccountingMoney" ).restrictedTextField( { type: "accountingMoney", logger: log } );
+            $( "#txtNegAccountingMoney" ).restrictedTextField( { type: "negativeAccountingMoney", logger: log } );
+            $( "#txtVowelsOnly" ).restrictedTextField( { type: "vowels", logger: log } );
+            $( "#txtAdditionExpr" ).restrictedTextField( { type: "additionExpr", logger: log } );
 
             $( "input" ).on( "inputIgnored", function(event) {
                var jqThis = $( this );
@@ -126,7 +159,7 @@
                jqThis.removeClass( "inputIgnored" );
                jqThis.addClass( "invalid" );
             } )
-            .on( "validationSuccess", function() {
+            .on( "validationSuccess", function(event) {
                var jqThis = $( this );
 
                jqThis.removeClass( "inputIgnored" );
@@ -233,6 +266,21 @@
       </div>
 
       <div>
+         <h4>Strict positive/negative integers</h4>
+         <input type="text" id="txtStrictInt"/>
+      </div>
+
+      <div>
+         <h4>Strict positive integers</h4>
+         <input type="text" id="txtStrictPosInt"/>
+      </div>
+
+      <div>
+         <h4>Strict negative integers</h4>
+         <input type="text" id="txtStrictNegInt"/>
+      </div>
+
+      <div>
          <h4>Floating-point numbers</h4>
          <input type="text" id="txtFloat"/>
       </div>
@@ -245,6 +293,21 @@
       <div>
          <h4>Negative floating-point numbers</h4>
          <input type="text" id="txtNegFloat"/>
+      </div>
+
+      <div>
+         <h4>Strict floating-point numbers</h4>
+         <input type="text" id="txtStrictFloat"/>
+      </div>
+
+      <div>
+         <h4>Strict positive floating-point numbers</h4>
+         <input type="text" id="txtStrictPosFloat"/>
+      </div>
+
+      <div>
+         <h4>Strict negative floating-point numbers</h4>
+         <input type="text" id="txtStrictNegFloat"/>
       </div>
 
       <div>
@@ -338,6 +401,6 @@
          support.  Your support is greatly appreciated, and it motivates me to keep this project alive and to release
          more open source software.
       </p>
-      <a href="https://paypal.me/KurtisLoVerde/5" target="new">https://paypal.me/KurtisLoVerde/5</a>
+      <a href="https://paypal.me/KurtisLoVerde/10" target="new">https://paypal.me/KurtisLoVerde/10</a>
    </body>
 </html>

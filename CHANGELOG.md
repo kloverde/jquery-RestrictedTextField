@@ -1,4 +1,4 @@
-# Release 1.1 (UPCOMING RELEASE)
+# Release 1.1 (November 15, 2016)
 
 * Fixes for money types
 * All money types automatically format on blur:  values will be updated, if necessary, to always end in a period followed by two digits

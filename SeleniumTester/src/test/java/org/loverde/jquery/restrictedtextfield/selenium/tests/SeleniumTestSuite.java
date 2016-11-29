@@ -1,5 +1,5 @@
 /*
- * RestrictedTextField v1.1
+ * RestrictedTextField v1.1.1
  * https://www.github.com/kloverde/jquery-RestrictedTextField
  *
  * Copyright (c) 2016, Kurtis LoVerde

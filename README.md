@@ -47,9 +47,6 @@ A jQuery plugin which uses regular expressions to validate and control input to 
 27.  Negative money
 28.  Accounting money notation (negatives expressed by wrapping the value in parentheses)
 29.  Negative accounting money
-
-Credit Card Numbers (enforces number prefixes, card number lengths and performs Luhn validation):
-
 30.  American Express
 31.  VISA 
 32.  MasterCard
@@ -78,6 +75,11 @@ Credit Card Numbers (enforces number prefixes, card number lengths and performs 
 * Values must be floating-point
 * Zero is valid (0.0, .0, 0000.000, etc.)
 * Zero cannot be negative
+
+
+## Credit Card types
+
+Each credit card type enforces prefixes and length as specified by https://en.wikipedia.org/wiki/Payment_card_number in December, 2016.  [Luhn validation](https://en.wikipedia.org/wiki/Luhn_algorithm) is also performed.
 
 
 ## Configuration

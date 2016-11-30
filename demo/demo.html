@@ -142,6 +142,11 @@
             $( "#txtNegMoney" ).restrictedTextField( { type: "negativeMoney", logger: log } );
             $( "#txtAccountingMoney" ).restrictedTextField( { type: "accountingMoney", logger: log } );
             $( "#txtNegAccountingMoney" ).restrictedTextField( { type: "negativeAccountingMoney", logger: log } );
+            $( "#txtAmericanExpress" ).restrictedTextField( { type: "americanExpress", logger: log } );
+            $( "#txtVisa" ).restrictedTextField( { type: "visa", logger: log } );
+            $( "#txtMasterCard" ).restrictedTextField( { type: "masterCard", logger: log } );
+            $( "#txtDiscover" ).restrictedTextField( { type: "discover", logger: log } );
+            $( "#txtCreditCard" ).restrictedTextField( { type: "creditCard", logger: log } );
             $( "#txtVowelsOnly" ).restrictedTextField( { type: "vowels", logger: log } );
             $( "#txtAdditionExpr" ).restrictedTextField( { type: "additionExpr", logger: log } );
 
@@ -333,6 +338,31 @@
       <div>
          <h4>Negative accounting notation money</h4>
          <input type="text" id="txtNegAccountingMoney"/>
+      </div>
+
+      <div>
+         <h4>American Express</h4>
+         <input type="text" id="txtAmericanExpress"/>
+      </div>
+
+      <div>
+         <h4>VISA</h4>
+         <input type="text" id="txtVisa"/>
+      </div>
+
+      <div>
+         <h4>MasterCard</h4>
+         <input type="text" id="txtMasterCard"/>
+      </div>
+
+      <div>
+         <h4>Discover</h4>
+         <input type="text" id="txtDiscover"/>
+      </div>
+
+      <div>
+         <h4>Credit Card (any of the standalone card types supported by RestrictedTextField)</h4>
+         <input type="text" id="txtCreditCard"/>
       </div>
 
       <h2>Creating Your Own Types</h2>

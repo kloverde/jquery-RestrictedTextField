@@ -1,15 +1,17 @@
-RestrictedTextField v1.1.1
-==========================
+RestrictedTextField v1.2 (UPCOMING RELEASE)
+===========================================
+
+## You have stumbled upon a development branch.  Have a look around if you want, but only use code that has been posted on the Releases page.
 
 See LICENSE for this software's licensing terms.
 
-A jQuery plugin which uses regular expressions to validate HTML text fields.  Using nearly 30 built-in types or types you define yourself, it allows you to prevent invalid keystrokes or to allow them into the field for later validation.  Fields are always validated on blur.
+A jQuery plugin which uses regular expressions to validate and control input to HTML text fields.  Using 34 built-in types or types you define yourself, it allows you to prevent invalid keystrokes or to allow them into the field for later validation.  Fields are always validated on blur.
 
 
 ## Features
 
 * Prevent invalid keystrokes or catch a validation failure event to handle it as you wish
-* Has 29 built-in types
+* Has 34 built-in types
 * Extendible:  define your own types
 * Money types automatically format on blur to end in a decimal point and two digits
 
@@ -45,6 +47,14 @@ A jQuery plugin which uses regular expressions to validate HTML text fields.  Us
 27.  Negative money
 28.  Accounting money notation (negatives expressed by wrapping the value in parentheses)
 29.  Negative accounting money
+
+Credit Card Numbers (enforces number prefixes, card number lengths and performs Luhn validation):
+
+30.  American Express
+31.  VISA 
+32.  MasterCard
+33.  Discover
+34.  "Credit Card" type (covers all of the individual card types above)
 
 
 ## What's the difference between integer/strict integer, float/strict float?

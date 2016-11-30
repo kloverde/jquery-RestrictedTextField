@@ -1,3 +1,10 @@
+# Release 1.2 (UPCOMING RELEASE)
+
+You have stumbled upon a development branch.  Have a look around if you want, but only use code that has been posted on the Releases page.
+
+* Added credit cards (AMEX, VISA, MasterCard, Discover)
+
+
 # Release 1.1.1 (November 28, 2016)
 
 * The demo page wasn't working due to an incorrect path to jquery.js.  This has been fixed.  Although the source code, including the JavaScript files themselves, have been updated to say 1.1.1 in their internal code comments, there is no difference in these files from release 1.1.  Only demo.html has been changed.

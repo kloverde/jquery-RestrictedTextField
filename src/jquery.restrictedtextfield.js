@@ -141,6 +141,23 @@
          _addType( dest, "negativeMoney",           /^0\.00$|^-\d+\.\d{2}$/  , partialNegativeMoney );
          _addType( dest, "accountingMoney",         /^\d*\.?\d{2}$|^\(\d*\.?\d{2}\)$/  ,  /^\(?0*\.?0{0,2}$|^[\.\d]$|^\.$|^\d*\.\d{0,2}$|^\(\d*\.?$|^\(\d*\.\d{1,2}?\)?$/ );
          _addType( dest, "negativeAccountingMoney", /^0\.00$|^\(\d*\.?\d{2}\)$/        ,  /^\(?0*\.?0{0,2}$|^\(\d*\.?$|^\((\d*\.\d{1,2}?)\)?$/ );
+
+         // Credit card regular expressions were written according to the formats described by https://en.wikipedia.org/wiki/Payment_card_number (December 2016).
+
+         // Prefix: 34, 37; Lengths: 15
+         _addType( dest, "americanExpress",  /^3[47]\d{13}$/   ,  /^3[47]?$|3[47]\d{0,13}$/ );
+
+         // Prefix: 4; Lengths: 13, 16, 19
+         _addType( dest, "visa",  /^4(\d{12}|\d{15}|\d{18})$/  ,  /^4\d{0,18}$/ );
+
+         // Prefix: 51-55, 2221-2720; Lengths: 16
+         _addType( dest, "masterCard",  /^5[12345]\d{14}$|^(?!2721)2[2-7]2[0-1]\d{12}$/  ,  /^5([12345]?|[12345]\d{0,14})$|^2([2-7]?|[2-7]2?)$|^(?!2721)2[2-7]2[0-1]\d{0,12}$/ );
+
+         // Prefix: 6011, 622126-622925, 644-649, 65; Lengths: 16, 19
+         _addType( dest, "discover",  /^$/  ,  /^$/ );
+
+         // All previously-defined credit card types
+         _addType( dest, "creditCard", joinRegex(true, "americanExpress", "visa", "masterCard"), joinRegex(false, "americanExpress", "visa", "masterCard") );
       }
 
       var regexes = $.fn.restrictedTextField.types[ settings.type ];
@@ -153,6 +170,26 @@
          if( isNothing(regexes) ) {
             throw "Invalid type: " + settings.type;
          }
+      }
+
+      /**
+       * Combines multiple regular expressions into one
+       *
+       * @param [0] : boolean - true for fullRegex, false for partialRegex
+       * @param vararg of regular expression objects
+       */
+      function joinRegex() {
+         if( arguments.length < 3 ) throw "Minimum 3 arguments: boolean, regex, regex";
+
+         var isFullRegex = arguments[0];
+         var src = $.fn.restrictedTextField.types;
+         var regex = new RegExp( isFullRegex ? src[arguments[1]].fullRegex : src[arguments[1]].partialRegex );
+
+         for( var i = 1; i < arguments.length; i++ ) {
+            regex = new RegExp( regex.source + "|" + (isFullRegex ? src[arguments[i]].fullRegex.source : src[arguments[i]].partialRegex.source) );
+         }
+
+         return regex;
       }
 
       return this.each( function() {
@@ -228,6 +265,13 @@
                   this.value = formatted;
                   log( "blur:  formatted " + settings.type + " field to " + formatted );
                }
+            } else if( type === "americanExpress" || type === "visa" || type === "masterCard" || type === "discover" || type === "creditCard" || type === "luhnNumber" ) {
+               passesFullRegex = regexes.fullRegex.test( this.value );
+
+               if( passesFullRegex ) {
+                  passesFullRegex = luhnCheck( this.value );
+                  log( passesFullRegex ? "passes Luhn check" : "fails Luhn check" );
+               }
             } else {
                passesFullRegex = regexes.fullRegex.test( this.value );
             }
@@ -281,6 +325,35 @@
             }
          }
       } );
+
+      function luhnCheck( numStr ) {
+         var luhnNums = [];
+         var sum = 0;
+         var checkDigit = 0;
+
+         if( isNaN(numStr) ) throw "Value [" + numStr + "] is not numeric";
+
+         var doubleMe = true;
+
+         for( var i = numStr.length - 2; i >= 0; i-- ) {
+            var num = parseInt( numStr[i] );
+
+            if( doubleMe ) {
+               var x2 = num * 2;
+               luhnNums[i] = x2 > 9 ? x2 - 9 : x2;
+            } else {
+               luhnNums[i] = num;
+            }
+
+            sum += luhnNums[i];
+            doubleMe = !doubleMe;
+         }
+
+         checkDigit = (sum * 9) % 10;
+         sum += checkDigit;
+
+         return sum % 10 === 0 && parseInt( numStr[numStr.length - 1] ) === checkDigit;
+      }
 
       function log( msg ) {
          if( settings.logger && typeof settings.logger === "function" ) {

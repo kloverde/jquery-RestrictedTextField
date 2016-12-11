@@ -167,7 +167,7 @@
          // a non-credit card number, or if you just don't like the idea of using the credit card types.  After all, you can just
          // leave it to your payment card processor to reject an invalid credit card number, while still using Luhn validation to
          // reject a number that has no possibility of being valid.  This is the safest option, but the choice is yours.
-         _addType( dest, "luhnNumber",  /^\d+$/  ,  /^\d+$/ );
+         _addType( dest, "luhnNumber",  /^\d+$/  ,  null );
       }
 
       var regexes = $.fn.restrictedTextField.types[ settings.type ];

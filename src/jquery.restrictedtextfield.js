@@ -165,7 +165,7 @@
          );
 
          // All credit card types
-         _addType( dest, "creditCard", joinIds(true, "americanExpress", "visa", "masterCard", "discover"), joinIds(false, "americanExpress", "visa", "masterCard", "discover") );
+         _addType( dest, "creditCard", joinTypes(true, "americanExpress", "visa", "masterCard", "discover"), joinTypes(false, "americanExpress", "visa", "masterCard", "discover") );
 
          // Not as stringent as a formal credit card type - just performs Luhn validation.  Use this if you need Luhn validation for
          // a non-credit card number, or if you just don't like the idea of using the credit card types.  After all, you can just
@@ -194,7 +194,7 @@
        *
        * @return A single regular expression satisfying all specified types
        */
-      function joinIds() {
+      function joinTypes() {
          if( arguments.length < 3 ) throw "Minimum 3 arguments: boolean, id, id";
 
          var isFullRegex = arguments[0];

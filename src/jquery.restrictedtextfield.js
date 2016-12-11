@@ -142,7 +142,8 @@
          _addType( dest, "accountingMoney",         /^\d*\.?\d{2}$|^\(\d*\.?\d{2}\)$/  ,  /^\(?0*\.?0{0,2}$|^[\.\d]$|^\.$|^\d*\.\d{0,2}$|^\(\d*\.?$|^\(\d*\.\d{1,2}?\)?$/ );
          _addType( dest, "negativeAccountingMoney", /^0\.00$|^\(\d*\.?\d{2}\)$/        ,  /^\(?0*\.?0{0,2}$|^\(\d*\.?$|^\((\d*\.\d{1,2}?)\)?$/ );
 
-         // Credit card regular expressions were written according to the formats described by https://en.wikipedia.org/wiki/Payment_card_number (December 2016).
+         // Credit card regular expressions were written according to the formats described by https://en.wikipedia.org/wiki/Payment_card_number as of December 2016.
+         // Note:  these formats evolve over time.
 
          // Prefix: 34, 37; Lengths: 15
          _addType( dest, "americanExpress",  /^3[47]\d{13}$/   ,  /^3[47]?$|3[47]\d{0,13}$/ );
@@ -154,10 +155,23 @@
          _addType( dest, "masterCard",  /^5[12345]\d{14}$|^(?!2721)2[2-7]2[0-1]\d{12}$/  ,  /^5([12345]?|[12345]\d{0,14})$|^2([2-7]?|[2-7]2?)$|^(?!2721)2[2-7]2[0-1]\d{0,12}$/ );
 
          // Prefix: 6011, 622126-622925, 644-649, 65; Lengths: 16, 19
-         _addType( dest, "discover",  /^$/  ,  /^$/ );
+         _addType( dest,
+                   "discover",
+                   /^6011(\d{12}|\d{15})$|^65(\d{14}|\d{17})$|^64[4-9](\d{13}|\d{16})$|^(?!622926)622[1-9]2[56](\d{10}|\d{13})$/ ,
+                   joinRegex( /^60?$|^601?$|^6011?$|^6011\d{0,15}$/ ,                                        // 6011
+                              /^62{0,2}$|^622([1-9]?|[1-9]2)$|^(?!622926)622[1-9]2[5-6](\d{10}|\d{13})$/ ,   // 622126-622925
+                              /^64?$|^64[4-9]\d{0,16}$/ ,                                                    // 644-649
+                              /^6(5?|5\d{0,17})$/ )                                                          // 65
+         );
 
-         // All previously-defined credit card types
-         _addType( dest, "creditCard", joinRegex(true, "americanExpress", "visa", "masterCard"), joinRegex(false, "americanExpress", "visa", "masterCard") );
+         // All credit card types
+         _addType( dest, "creditCard", joinIds(true, "americanExpress", "visa", "masterCard", "discover"), joinIds(false, "americanExpress", "visa", "masterCard", "discover") );
+
+         // Not as stringent as a formal credit card type - just performs Luhn validation.  Use this if you need Luhn validation for
+         // a non-credit card number, or if you just don't like the idea of using the credit card types.  After all, you can just
+         // leave it to your payment card processor to reject an invalid credit card number, while still using Luhn validation to
+         // reject a number that has no possibility of being valid.  This is the safest option, but the choice is yours.
+         _addType( dest, "luhnNumber",  /^\d+$/  ,  /^\d+$/ );
       }
 
       var regexes = $.fn.restrictedTextField.types[ settings.type ];
@@ -173,20 +187,41 @@
       }
 
       /**
-       * Combines multiple regular expressions into one
+       * Combines multiple regular expression types into one
        *
        * @param [0] : boolean - true for fullRegex, false for partialRegex
-       * @param vararg of regular expression objects
+       * @param vararg of regular expression IDs
+       *
+       * @return A single regular expression satisfying all specified types
        */
-      function joinRegex() {
-         if( arguments.length < 3 ) throw "Minimum 3 arguments: boolean, regex, regex";
+      function joinIds() {
+         if( arguments.length < 3 ) throw "Minimum 3 arguments: boolean, id, id";
 
          var isFullRegex = arguments[0];
          var src = $.fn.restrictedTextField.types;
          var regex = new RegExp( isFullRegex ? src[arguments[1]].fullRegex : src[arguments[1]].partialRegex );
 
          for( var i = 1; i < arguments.length; i++ ) {
-            regex = new RegExp( regex.source + "|" + (isFullRegex ? src[arguments[i]].fullRegex.source : src[arguments[i]].partialRegex.source) );
+            regex = joinRegex( regex, (isFullRegex ? src[arguments[i]].fullRegex.source : src[arguments[i]].partialRegex.source) );
+         }
+
+         return regex;
+      }
+
+      /**
+       * Combines multiple regular expressions into one
+       *
+       * @param vararg of regular expression objects
+       *
+       * @return A single regular expression satisfying all provided regular expressions
+       */
+      function joinRegex() {
+         if( arguments.length < 2 ) throw "Minimum 2 RegExp arguments";
+
+         var regex = new RegExp( arguments[0] );
+
+         for( var i = 1; i < arguments.length; i++ ) {
+            regex = new RegExp( regex.source + "|" + arguments[i].source );
          }
 
          return regex;
@@ -260,7 +295,7 @@
                var formatted = formatMoney( this.value );
 
                passesFullRegex = regexes.fullRegex.test( formatted );
-   
+
                if( passesFullRegex ) {
                   this.value = formatted;
                   log( "blur:  formatted " + settings.type + " field to " + formatted );

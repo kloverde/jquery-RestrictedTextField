@@ -82,7 +82,7 @@ RestrictedTextField is a jQuery plugin which uses regular expressions to validat
 
 Each credit card type enforces prefixes and length as specified by https://en.wikipedia.org/wiki/Payment_card_number in December, 2016.  [Luhn validation](https://en.wikipedia.org/wiki/Luhn_algorithm) is also performed.
 
-If you prefer not to use strictly-enforced credit card types (is Wikipedia correct, and is RestrictedTextField up-to-date?), you can use the Luhn type instead.  It performs basic mathematical validation, but it can only tell you that a value is invalid, not that a value IS valid.  Full validation is shifted to your payment card processor in the form of a rejected transaction.
+If you prefer not to use strictly-enforced credit card types (is Wikipedia correct, and is RestrictedTextField up-to-date?), you can use the Luhn type instead.  It performs basic mathematical validation, but it can only tell you that a value is invalid, not that a value IS valid.  Full validation is shifted to your payment card processor in the form of a rejected transaction -- or, if they provide an API for validation, you could use that.
 
 
 ## Configuration

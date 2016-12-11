@@ -100,11 +100,7 @@
 
              partialPosNegFloat   = /^-?\d*\.?\d*$/,
              partialPositiveFloat = /^\d*\.?\d*$/,
-             partialNegativeFloat = /^0*\.?$|^-\d*\.?\d*$/,
-
-             partialPosNegMoney   = /^-?\d*\.?\d{0,2}$/,
-             partialPositiveMoney = /^\d*\.?\d{0,2}$/,
-             partialNegativeMoney = /^0*\.?0?$|^-\d*\.?\d{0,2}$/;
+             partialNegativeFloat = /^0*\.?$|^-\d*\.?\d*$/;
 
          if( $.fn.restrictedTextField.types === undefined || $.fn.restrictedTextField.types === null ) {
             $.fn.restrictedTextField.types = [];
@@ -136,9 +132,9 @@
          _addType( dest, "strictFloat",             /^0*\.0+$|^-?0*\.\d*[1-9]$|^-?\d*\.\d*[1-9]\d*$|^-?0*[1-9]\d*?\d*\.\d+$/  , partialPosNegFloat );
          _addType( dest, "strictPositiveFloat",     /^0*\.0+$|^0*\.\d*[1-9]$|^\d*\.\d*[1-9]\d*$|^\d*[1-9]*\d*\.\d+$/     , partialPositiveFloat );
          _addType( dest, "strictNegativeFloat",     /^0*\.0+$|^-0*\.\d*[1-9]$|^-\d*\.\d*[1-9]\d*$|^-[^0]\d*?\d*\.\d+$/   , partialNegativeFloat );
-         _addType( dest, "money",                   /^-?\d+\.\d{2}$/         , partialPosNegMoney );
-         _addType( dest, "positiveMoney",           /^\d+\.\d{2}$/           , partialPositiveMoney );
-         _addType( dest, "negativeMoney",           /^0\.00$|^-\d+\.\d{2}$/  , partialNegativeMoney );
+         _addType( dest, "money",                   /^-?\d+\.\d{2}$/                   ,  /^-?\d*\.?\d{0,2}$/ );
+         _addType( dest, "positiveMoney",           /^\d+\.\d{2}$/                     ,  /^\d*\.?\d{0,2}$/ );
+         _addType( dest, "negativeMoney",           /^0\.00$|^-\d+\.\d{2}$/            ,  /^0*\.?0?$|^-\d*\.?\d{0,2}$/ );
          _addType( dest, "accountingMoney",         /^\d*\.?\d{2}$|^\(\d*\.?\d{2}\)$/  ,  /^\(?0*\.?0{0,2}$|^[\.\d]$|^\.$|^\d*\.\d{0,2}$|^\(\d*\.?$|^\(\d*\.\d{1,2}?\)?$/ );
          _addType( dest, "negativeAccountingMoney", /^0\.00$|^\(\d*\.?\d{2}\)$/        ,  /^\(?0*\.?0{0,2}$|^\(\d*\.?$|^\((\d*\.\d{1,2}?)\)?$/ );
 

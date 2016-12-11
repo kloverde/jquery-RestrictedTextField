@@ -5,13 +5,13 @@ RestrictedTextField v1.2 (UPCOMING RELEASE)
 
 See LICENSE for this software's licensing terms.
 
-A jQuery plugin which uses regular expressions to validate and control input to HTML text fields.  Using 34 built-in types or types you define yourself, it allows you to prevent invalid keystrokes or to allow them into the field for later validation.  Fields are always validated on blur.
+RestrictedTextField is a jQuery plugin which uses regular expressions to validate and control input to HTML text fields.  Using 35 built-in types or types you define yourself, it allows you to prevent invalid keystrokes or to allow them into the field for later validation.  Fields are always validated on blur.
 
 
 ## Features
 
 * Prevent invalid keystrokes or catch a validation failure event to handle it as you wish
-* Has 34 built-in types
+* Has 35 built-in types
 * Extendible:  define your own types
 * Money types automatically format on blur to end in a decimal point and two digits
 
@@ -51,7 +51,8 @@ A jQuery plugin which uses regular expressions to validate and control input to 
 31.  VISA 
 32.  MasterCard
 33.  Discover
-34.  "Credit Card" type (covers all of the individual card types above)
+34.  Credit Card (combines all of the individual credit card types above)
+35.  [Luhn-valid](https://en.wikipedia.org/wiki/Luhn_algorithm) numbers
 
 
 ## What's the difference between integer/strict integer, float/strict float?
@@ -81,12 +82,14 @@ A jQuery plugin which uses regular expressions to validate and control input to 
 
 Each credit card type enforces prefixes and length as specified by https://en.wikipedia.org/wiki/Payment_card_number in December, 2016.  [Luhn validation](https://en.wikipedia.org/wiki/Luhn_algorithm) is also performed.
 
+If you don't like the idea of using strictly-enforced credit card types (for example:  is Wikipedia correct, and is RestrictedTextField up-to-date?), you can use the Luhn type instead.  This performs basic mathematical validation, but it can only tell you that a value is invalid, not that a value IS valid.  Full validation is shifted to your payment card processor in the form of a rejected transaction.
+
 
 ## Configuration
 
 | Property | Description   | Data Type | Valid Values         | Default Value |
 | -------- | --------------|---------- |----------------------|---------------|
-| `type`   | Text field type.  This is a required setting. | string | alpha, upperAlpha, lowerAlpha, alphaSpace, upperAlphaSpace, lowerAlphaSpace, alphanumeric, upperAlphanumeric, lowerAlphanumeric, alphanumericSpace, upperAlphanumericSpace, lowerAlphanumericSpace, int, positiveInt, negativeInt, strictInt, strictPositiveInt, strictNegativeInt, float, positiveFloat, negativeFloat, strictFloat, money, positiveMoney, negativeMoney, accountingMoney, negativeAccountingMoney| null |
+| `type`   | Text field type.  This is a required setting. | string | alpha, upperAlpha, lowerAlpha, alphaSpace, upperAlphaSpace, lowerAlphaSpace, alphanumeric, upperAlphanumeric, lowerAlphanumeric, alphanumericSpace, upperAlphanumericSpace, lowerAlphanumericSpace, int, positiveInt, negativeInt, strictInt, strictPositiveInt, strictNegativeInt, float, positiveFloat, negativeFloat, strictFloat, money, positiveMoney, negativeMoney, accountingMoney, negativeAccountingMoney, americanExpress, visa, masterCard, discover, creditCard, luhnNumber | null |
 | `preventInvalidInput` | When enabled, invalid keystrokes are ignored (the value of the text field is not updated).  When disabled, invalid keystrokes are not ignored. | boolean | true/false | true |
 | `logger` | An optional callback function for logging.  If you want to enable logging, provide a function and then do whatever you wish with the message. | function | A function accepting the log message as a string argument | undefined |
 

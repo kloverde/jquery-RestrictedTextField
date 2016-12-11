@@ -147,6 +147,7 @@
             $( "#txtMasterCard" ).restrictedTextField( { type: "masterCard", logger: log } );
             $( "#txtDiscover" ).restrictedTextField( { type: "discover", logger: log } );
             $( "#txtCreditCard" ).restrictedTextField( { type: "creditCard", logger: log } );
+            $( "#txtLuhnNumber" ).restrictedTextField( { type: "luhnNumber", logger: log } );            
             $( "#txtVowelsOnly" ).restrictedTextField( { type: "vowels", logger: log } );
             $( "#txtAdditionExpr" ).restrictedTextField( { type: "additionExpr", logger: log } );
 
@@ -181,9 +182,9 @@
       <p>
          This text field has been configured to allow invalid text to remain in the field.  When the invalid keystroke
          fails validation, the <code>validationFailed</code> event fires.  When the invalid data is removed, the
-         <code>validationSuccess</code> event fires.  The <code>validationFailed</code> listener turns the border red,
-         and it remains red until the <code>validationSuccess</code> listener turns it off.  When the blur event
-         fires, the field is validated again, and one of these two events will fire.
+         <code>validationSuccess</code> event fires.  This demo defines a <code>validationFailed</code> listener which
+         turns the border red, and it remains red until the <code>validationSuccess</code> listener turns it off.
+         When the blur event fires, the field is validated again, and one of these two events will fire.
       </p>
       <h4>Alpha characters (A-Z, case-insensitive)</h4>
       <input type="text" id="txtAlpha" />
@@ -193,9 +194,9 @@
             The remaining examples work differently.  Instead of allowing invalid input to remain in the field, the
             invalid keystroke is ignored, so the field never has an invalid value.  Events work differently in this
             scenario.  When an invalid keystroke is ignored, the <code>inputIgnored</code> event fires.  The
-            <code>validationFailed</code> event does not fire in response to an invalid keystroke.  The
-            <code>inputIgnored</code> listener flashes the border of the textbox to alert the user that the
-            keystroke was ignored.  When the blur event fires, the field is validated again, and either the
+            <code>validationFailed</code> event does not fire in response to an invalid keystroke.  This demo
+            defines an <code>inputIgnored</code> listener which flashes the textbox border to alert the user that
+            the keystroke was ignored.  When the blur event fires, the field is validated again, and either the
             <code>validationFailed</code> or <code>validationSuccess</code> event will fire.
          </p>
       </div>
@@ -361,15 +362,23 @@
       </div>
 
       <div>
-         <h4>Credit Card (any of the standalone card types supported by RestrictedTextField)</h4>
+         <h4>Credit Card (any of the individual card types supported by RestrictedTextField)</h4>
          <input type="text" id="txtCreditCard"/>
+      </div>
+
+      <div>
+         <h4><a href="https://en.wikipedia.org/wiki/Luhn_algorithm">Luhn Number</a></h4>
+         <input type="text" id="txtLuhnNumber"/>
       </div>
 
       <h2>Creating Your Own Types</h2>
 
       <div>
-         Defining your own types requires an understanding of regular expressions.  A good resource is<br/>
-         <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/RegExp">https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/RegExp</a>.
+         Defining your own types requires an understanding of regular expressions.  Some good resources are:<br/>
+         <ul>
+            <li><a href="http://www.regular-expressions.info">http://www.regular-expressions.info</a></li>
+            <li><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/RegExp">https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/RegExp</a></li>
+         </ul>
 
          <p>
             RestrictedTextField provides a function class called <code>RestrictedTextFieldConfig</code>.  This class
@@ -406,8 +415,7 @@
          <p>Create a type which recognizes the addition of two integers, such as 2+1.</p>
          <p>
             This is trickier than the previous example.  In the first example, you could throw down any number of letters in any quantity
-            and any order.  'a' was valid, as was 'uo', 'iiiuuuuuiie', etc.  Any keystroke within the set of allowed characters passed
-            validation by the regular expression.
+            and any order.  Any keystroke within the set of allowed characters passed validation by the regular expression.
          </p>
          <p>
             That's not the case here.  This type requires an integer, followed by a plus sign, followed by another integer.  The regular

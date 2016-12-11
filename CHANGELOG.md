@@ -2,7 +2,8 @@
 
 You have stumbled upon a development branch.  Have a look around if you want, but only use code that has been posted on the Releases page.
 
-* Added credit cards (AMEX, VISA, MasterCard, Discover)
+* Added credit cards (AMEX, VISA, MasterCard, Discover), plus a credit card type encompassing each of these types
+* Added a [Luhn](https://en.wikipedia.org/wiki/Luhn_algorithm) type
 
 
 # Release 1.1.1 (November 28, 2016)

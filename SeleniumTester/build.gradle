@@ -6,6 +6,7 @@ apply from: buildScriptsDir + "/build_java_lib.gradle"
 dependencies {
    testCompile "junit:junit:4.12"
    testCompile "org.seleniumhq.selenium:selenium-server:3.0.1"
+   testCompile files( "lib/paymentcardgenerator-1.0.jar" )
 }
 
 test {

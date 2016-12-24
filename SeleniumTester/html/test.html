@@ -98,13 +98,19 @@
       <script type="text/javascript" src="../../src/jquery.restrictedtextfield.js"></script>
 
       <script type="text/javascript">
+         var log;
+
          var inputIgnoredEvent,
              validationFailedEvent,
              validationSuccessEvent;
 
+         $( document ).ready( function() {
+            log = document.getElementById( "log" );//$( "#log" );
+         } );
+
          function setUp() {
-            $( "#log" ).html( "" );
-            log( "setUp" );
+            log.innerHTML = "";
+            writeLog( "setUp" );
 
             $( "#field" ).remove();
 
@@ -117,72 +123,75 @@
          }
 
          function tearDown() {
-            log( "tearDown\n" );
+            writeLog( "tearDown\n" );
          }
 
          function resetEventFlags() {
-            log( "resetting event flags" );
+            writeLog( "resetting event flags" );
 
             inputIgnoredEvent = false;
             validationFailedEvent = false;
             validationSuccessEvent = false;
          }
 
-         function blur() {
-            $( "#field" ).blur();
-         }
-
          function initField( testName, fieldType, ignore ) {
-            log( "test:  " + testName );
-            log( "initField:  fieldType[" + fieldType + "], ignore[" + ignore + "]" );
+            writeLog( "test:  " + testName );
+            writeLog( "initField:  fieldType[" + fieldType + "], ignore[" + ignore + "]" );
 
             var jqField = $( "#field" );
 
             jqField.restrictedTextField( { type : fieldType,
                                            preventInvalidInput : ignore,
-                                           logger : log } );
+                                           logger : writeLog } );
 
             jqField.on( "inputIgnored", function() {
-               log( "inputIgnored event" );
+               writeLog( "inputIgnored event" );
                inputIgnoredEvent = true;
             } );
 
             jqField.on( "validationFailed", function() {
-               log( "validationFailed event" );
+               writeLog( "validationFailed event" );
                validationFailedEvent = true;
             } );
 
             jqField.on( "validationSuccess", function() {
-               log( "validationSuccess event" );
+               writeLog( "validationSuccess event" );
                validationSuccessEvent = true;
             } );
          }
 
+         function simulateInput( input ) {
+            var field = $( "#field" );
+
+            for( var i = 0; i < input.length; i++ ) {
+               field.trigger( "keydown" );
+               field.val( field.val() + input[i] );
+               field.trigger( "input" );
+            }
+         }
+
+         function blur() {
+            $( "#field" ).blur();
+         }
+
          function didInputIgnoredEventFire() {
-            log( "returning inputIgnoredEvent = " + inputIgnoredEvent );
+            writeLog( "returning inputIgnoredEvent = " + inputIgnoredEvent );
             return inputIgnoredEvent;
          }
 
          function didValidationFailedEventFire() {
-            log( "returning validationFailedEvent = " + validationFailedEvent );
+            writeLog( "returning validationFailedEvent = " + validationFailedEvent );
             return validationFailedEvent;
          }
 
          function didValidationSuccessEventFire() {
-            log( "returning validationSuccessEvent = " + validationSuccessEvent );
+            writeLog( "returning validationSuccessEvent = " + validationSuccessEvent );
             return validationSuccessEvent;
          }
 
-         function log( msg ) {
-            var log = $( "#log" );
-
-            if( console && console.log ) {
-               console.log( msg );
-            }
-
-            log.append( msg + "\n" );
-
-            log.prop( "scrollTop", log.prop("scrollHeight") );
+         function writeLog( msg ) {
+            var node = document.createTextNode( msg + "\n" );
+            log.appendChild( node );
          }
 
          function writeStatus( testName, testNum, totalTests ) {

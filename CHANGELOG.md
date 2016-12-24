@@ -4,6 +4,7 @@ You have stumbled upon a development branch.  Have a look around if you want, bu
 
 * Added credit cards (AMEX, VISA, MasterCard, Discover), plus a credit card type encompassing each of these types
 * Added a [Luhn](https://en.wikipedia.org/wiki/Luhn_algorithm) type
+* The unit tests have a new dependency:  [PaymentCardGenerator](https://github.com/kloverde/java-PaymentCardGenerator].  See README.md for more information.
 
 
 # Release 1.1.1 (November 28, 2016)

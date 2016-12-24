@@ -82,7 +82,7 @@ RestrictedTextField is a jQuery plugin which uses regular expressions to validat
 
 Each credit card type enforces prefixes and length as specified by https://en.wikipedia.org/wiki/Payment_card_number in December, 2016.  [Luhn validation](https://en.wikipedia.org/wiki/Luhn_algorithm) is also performed.
 
-If you prefer not to use strictly-enforced credit card types (is Wikipedia correct, and is RestrictedTextField up-to-date?), you can use the Luhn type instead.  It performs basic mathematical validation, but it can only tell you that a value is invalid, not that a value IS valid.  Full validation is shifted to your payment card processor in the form of a rejected transaction -- or, if they provide an API for validation, you could use that.
+If you prefer not to use strictly-enforced credit card types (is Wikipedia correct, and is RestrictedTextField up-to-date?), you can use the Luhn type instead.  It performs basic mathematical validation, but it can only tell you that a value is invalid, not that a value IS valid.  Full validation would then be shifted to your payment card processor in the form of a rejected transaction -- or, if they provide an API for validation, you could use that.
 
 
 ## Configuration
@@ -142,12 +142,14 @@ This plugin has only been tested on desktop browsers.  Mobile testing might happ
   * [Gradle](http://gradle.org)
   * [Java JDK](http://www.oracle.com/technetwork/java/javase/index.html) version 8 or later
   * [BuildScripts](https://github.com/kloverde/BuildScripts)
+  * [PaymentCardGenerator](https://github.com/kloverde/java-PaymentCardGenerator/releases) (see note below)
 2.  Modify the `buildScriptsDir` property in `SeleniumTester/gradle.properties` to reflect the location of BuildScripts on your filesystem
-3.  Download the appropriate browser drivers for your system at [seleniumhq.org](http://www.seleniumhq.org).  Once you've downloaded them, update `geckoDriverPath`, `edgeDriverPath`, `ieDriverPath` and `chromeDriverPath` in `SeleniumTester/gradle.properties` with their paths.
-4.  If you're testing in IE, set Protected Mode to the same value in all zones (it doesn't matter whether it's set to enabled or disabled, just that it's the same for all).  See [here](http://jimevansmusic.blogspot.com/2012/08/youre-doing-it-wrong-protected-mode-and.html) for more information.  If that page disappears from the Web, see [the Wayback Machine's copy](http://web.archive.org/web/20151026094711/http://jimevansmusic.blogspot.com/2012/08/youre-doing-it-wrong-protected-mode-and.html).
-5.  Set your browsers' zoom levels to 100%.  If you don't, Selenium will throw an exception, at least for IE.
-6.  Update the `browsers` property in `SeleniumTester/gradle.properties` to reflect which browsers you'll be testing with.  This is explained further by documentation found in the properties file.
-7.  Now, from a command prompt:
+3.  PaymentCardGenerator:  `SeleniumTester/build.gradle` indicates the version appropriate for this release.  Create a `lib` directory inside `SeleniumTester` and put the jar in there.  Maybe one day I'll put PaymentCardGenerator on Maven Central so that this manual action isn't necessary.
+4.  Download the appropriate browser drivers for your system at [seleniumhq.org](http://www.seleniumhq.org).  Once you've downloaded them, update `geckoDriverPath`, `edgeDriverPath`, `ieDriverPath` and `chromeDriverPath` in `SeleniumTester/gradle.properties` with their paths.
+5.  If you're testing in IE, set Protected Mode to the same value in all zones (it doesn't matter whether it's set to enabled or disabled, just that it's the same for all).  See [here](http://jimevansmusic.blogspot.com/2012/08/youre-doing-it-wrong-protected-mode-and.html) for more information.  If that page disappears from the Web, see [the Wayback Machine's copy](http://web.archive.org/web/20151026094711/http://jimevansmusic.blogspot.com/2012/08/youre-doing-it-wrong-protected-mode-and.html).
+6.  Set your browsers' zoom levels to 100%.  If you don't, Selenium will throw an exception, at least for IE.
+7.  Update the `browsers` property in `SeleniumTester/gradle.properties` to reflect which browsers you'll be testing with.  This is explained further by documentation found in the properties file.
+8.  Now, from a command prompt:
   1.  `cd` to the project root (`jquery-RestrictedTextField`)
   2.  Type `npm install`
   3.  Type `npm test`
@@ -168,6 +170,8 @@ This plugin has only been tested on desktop browsers.  Mobile testing might happ
 * #### The tests fail in Edge if Edge doesn't have focus.  Sometimes Edge opens behind another window (for example, the console which you might have used to invoke the tests).
 
 
-## Thanks
+## Donations
 
-Do you like this software?  Want to toss a few bucks my way to say thanks?  I accept donations at https://paypal.me/KurtisLoVerde/10.  Thank you for your support!
+https://paypal.me/KurtisLoVerde/10
+
+Thank you for your support!

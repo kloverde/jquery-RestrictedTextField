@@ -63,7 +63,13 @@ public enum FieldType {
    POSITIVE_MONEY( "positiveMoney" ),
    NEGATIVE_MONEY( "negativeMoney" ),
    ACCOUNTING_MONEY( "accountingMoney" ),
-   NEGATIVE_ACCOUNTING_MONEY( "negativeAccountingMoney" );
+   NEGATIVE_ACCOUNTING_MONEY( "negativeAccountingMoney" ),
+   AMERICAN_EXPRESS( "americanExpress" ),
+   VISA( "visa" ),
+   MASTERCARD( "masterCard" ),
+   DISCOVER( "discover" ),
+   CREDIT_CARD( "creditCard" ),
+   LUHN_NUMBER( "luhnNumber" );
 
    private String type;
 

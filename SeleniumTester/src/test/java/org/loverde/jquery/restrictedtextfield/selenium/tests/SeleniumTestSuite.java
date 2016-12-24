@@ -65,7 +65,7 @@ public class SeleniumTestSuite {
 
    public static TestSuite suite() throws FileNotFoundException, IOException {
       final Properties props = new Properties();
-      final Set<Class<? extends AbstractTest>> tests = new HashSet<Class<? extends AbstractTest>>();
+      final Set<Class<? extends AbstractTest>> tests = new HashSet<>();
       final TestSuite suite = new TestSuite();
 
       props.load( new FileInputStream("gradle.properties") );

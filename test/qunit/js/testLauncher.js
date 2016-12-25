@@ -1,4 +1,3 @@
-"use strict";
 /*
  * RestrictedTextField
  * https://www.github.com/kloverde/jquery-RestrictedTextField
@@ -32,6 +31,7 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+"use strict";
 
 ( function() {
    "use strict";

@@ -161,6 +161,12 @@
    }
 
    if( validateTestCases(testCases) ) {
+      QUnit.jUnitDone( function(report) {
+         if( typeof console !== "undefined" ) {
+            console.log( report.xml );
+         }
+       } );
+
       QUnit.cases( testCases )
       .test( "Parameterized Test", function(params) {
          equal( "", "", "Test: " + params.testName );  // Hack to get the test name into the report

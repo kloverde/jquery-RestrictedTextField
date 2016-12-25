@@ -163,7 +163,7 @@
    if( validateTestCases(testCases) ) {
       QUnit.cases( testCases )
       .test( "Parameterized Test", function(params) {
-         equal( params.testName, params.testName, "Test: " + params.testName );  // Hack to get the test name into the report
+         equal( "", "", "Test: " + params.testName );  // Hack to get the test name into the report
          ++testNum;
 
          initField( params.testName, params.fieldType, params.preventInvalidInput );

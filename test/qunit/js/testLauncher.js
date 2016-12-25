@@ -94,7 +94,7 @@
       } );
 
       jqField.on( "validationFailed", function() {
-         writeLog( "validationFailed event caputred" );
+         writeLog( "validationFailed event captured" );
          validationFailedEvent = true;
       } );
 

@@ -101,8 +101,8 @@ These events are fired based on the state of the text field.
 | Event name        | Description                                                     |
 | ------------------| ----------------------------------------------------------------|
 | inputIgnored      | Fires when an invalid keystroke is ignored.  `preventInvalidInput` must be enabled for this event to fire. |
-| validationFailed  | Fires when an invalid keystroke is made when `preventInvalidInput` is disabled.  Also fires if validation performed on blur() fails. |
-| validationSuccess | Fires when the user removes invalid data when `preventInvalidInput` is disabled.  Also fires if validation performed on blur() succeeds. |
+| validationFailed  | If `preventInvalidInput` is disabled, fires when an invalid keystroke is made.  Also fires if validation performed on blur() fails. |
+| validationSuccess | If `preventInvalidInput` is disabled, fires when the user removes invalid data.  Also fires if validation performed on blur() succeeds. |
 
 
 #### Example

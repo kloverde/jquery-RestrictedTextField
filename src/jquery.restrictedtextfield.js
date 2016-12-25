@@ -279,12 +279,15 @@
             var passesPartialRegex = false,
                 passesFullRegex    = false;
 
-            var responseEvent = EVENT_VALIDATION_FAILED;
+            var responseEvent = settings.preventInvalidInput ? null : EVENT_VALIDATION_FAILED;
 
             if( this.value.length === 0 ) {
                passesPartialRegex = true;
                passesFullRegex = true;
-               responseEvent = EVENT_VALIDATION_SUCCESS;
+
+               if( !settings.preventInvalidInput ) {
+                  responseEvent = EVENT_VALIDATION_SUCCESS;
+               }
             } else {
                passesFullRegex = regexes.fullRegex.test( this.value );
 
@@ -294,16 +297,25 @@
 
                if( passesFullRegex ) {
                   log( "passes full regex" );
-                  responseEvent = EVENT_VALIDATION_SUCCESS;
+                  
+                  if( !settings.preventInvalidInput ) {
+                     responseEvent = EVENT_VALIDATION_SUCCESS;
+                  }
                } else {
                   log( "fails full regex" );
 
                   if( passesPartialRegex ) {
                      log( "passes partial regex" );
-                     responseEvent = EVENT_VALIDATION_SUCCESS;
+
+                     if( !settings.preventInvalidInput ) {
+                        responseEvent = EVENT_VALIDATION_SUCCESS;
+                     }
                   } else {
                      log( "fails partial regex" );
-                     responseEvent = EVENT_VALIDATION_FAILED;
+
+                     if( !settings.preventInvalidInput ) {
+                        responseEvent = EVENT_VALIDATION_FAILED;
+                     }
                   }
                }
 
@@ -316,9 +328,10 @@
                }
             }
 
-            log( "triggering " + responseEvent + " event " );
-
-            jqThis.trigger( responseEvent );
+            if( responseEvent != null ) {
+               log( "triggering " + responseEvent + " event " );
+               jqThis.trigger( responseEvent );
+            }
          } );
 
          jqThis.on( "blur", function() {

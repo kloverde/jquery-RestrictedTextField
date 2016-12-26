@@ -3015,14 +3015,14 @@ var testCases = [
    tc(  FieldType.NEGATIVE_ACCOUNTING_MONEY,   "noIgnore_negativeAccountingMoney_noClosingParen",        false,   "(1.23",       "(1.23",      "(1.23",       Event.VALIDATION_FAILED  ),
    tc(  FieldType.NEGATIVE_ACCOUNTING_MONEY,   "noIgnore_negativeAccountingMoney_noOpeningParen",        false,   "1.23)",       "1.23)",      "1.23)",       Event.VALIDATION_FAILED  ),
    tc(  FieldType.NEGATIVE_ACCOUNTING_MONEY,   "noIgnore_negativeAccountingMoney_nonDigit1",             false,   "1.a",         "1.a",        "1.a",         Event.VALIDATION_FAILED  ),
-   tc(  FieldType.NEGATIVE_ACCOUNTING_MONEY,   "noIgnore_negativeAccountingMoney_nonDigit2",             false,   "(1.a",        "(1.a",       "(1.a",        Event.VALIDATION_FAILED  ),
+   tc(  FieldType.NEGATIVE_ACCOUNTING_MONEY,   "noIgnore_negativeAccountingMoney_nonDigit2",             false,   "(1.a",        "(1.a",       "(1.a",        Event.VALIDATION_FAILED  )
 ];
 
 /** Creates a test case */
-function tc( fieldType, testName, preventInvalidInput, input, expectedValueBeforeBlur, expectedValueAfterBlur, expectedEventOnBlur ) {
+function tc( fieldType, title, preventInvalidInput, input, expectedValueBeforeBlur, expectedValueAfterBlur, expectedEventOnBlur ) {
    return {
       fieldType               : fieldType,
-      testName                : testName,
+      title                   : title,
       preventInvalidInput     : preventInvalidInput,
       input                   : input,
       expectedValueBeforeBlur : expectedValueBeforeBlur,
@@ -3035,15 +3035,15 @@ function validateTestCases( tests ) {
    // Check the test cases for duplicate test names
 
    for( var i = 0; i < tests.length; i++ ) {
-      var name = tests[i].testName;
+      var name = tests[i].title;
 
       if( !tests[i].preventInvalidInput && tests[i].expectedValueBeforeBlur !== tests[i].input ) {
-         throw "Tests that allow invalid input can't have the input change pre-blur: " + tests[i].testName;
+         throw "Tests that allow invalid input can't have the input change pre-blur: " + tests[i].title;
          // Note, however, that if it's a money type, it can change post-blur due to automatic formatting
       }
 
       for( var j = i + 1; j < tests.length; j++ ) {
-         var name2 = tests[j].testName;
+         var name2 = tests[j].title;
 
          if( name.toLowerCase() === name2.toLowerCase() ) {
             throw "Duplicate test name (case-insensitive): " + name;

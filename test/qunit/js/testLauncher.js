@@ -72,10 +72,10 @@
       validationSuccessEvent = false;
    }
 
-   function initField( testName, fieldType, ignore ) {
+   function initField( title, fieldType, ignore ) {
       setUp();
 
-      writeLog( "test:  " + testName );
+      writeLog( "test:  " + title );
       writeLog( "initField:  fieldType[" + fieldType + "], ignore[" + ignore + "]" );
 
       var jqField = $( "#field" );
@@ -115,8 +115,8 @@
       log.appendChild( node );
    }
 
-   function writeStatus( testName, testNum, totalTests ) {
-      $( "#status" ).html( testName + "<br/>" + testNum + " of " + totalTests );
+   function writeStatus( title, testNum, totalTests ) {
+      $( "#status" ).html( title + "<br/>" + testNum + " of " + totalTests );
    }
 
    function validatePreBlur( params ) {
@@ -164,12 +164,11 @@
        } );
 
       QUnit.cases( testCases )
-      .test( "Parameterized Test", function(params) {
-         equal( "", "", "Test: " + params.testName );  // Hack to get the test name into the report
+      .test( "Test", function(params) {
          ++testNum;
 
-         initField( params.testName, params.fieldType[0], params.preventInvalidInput );
-         writeStatus( params.testName, testNum, testCases.length );
+         initField( params.title, params.fieldType[0], params.preventInvalidInput );
+         writeStatus( params.title, testNum, testCases.length );
 
          simulateInput( params.input );
 

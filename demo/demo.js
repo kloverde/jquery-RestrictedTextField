@@ -5,17 +5,20 @@
 
    $( document ).ready( function() {
       var dropdown = document.getElementById( "fieldTypes" );
-
-      Object.values( FieldType ).forEach( function(element) {
-         var type = element[0];
+      var keys = Object.keys( FieldType );
+      
+      for( var i = 0; i < keys.length; i++ ) {
+         var key = keys[i];
+         var value = FieldType[key];
+         var type = value[0];
          var opt = document.createElement( "option" );
 
          opt.value = type;
          opt.innerHTML = type;
          dropdown.appendChild( opt );
 
-         descrMap[type] = element[1];
-      } );
+         descrMap[type] = value[1];
+      }
 
       $( dropdown ).on( "change", function() {
          if( this.value !== "Select Type" ) {
@@ -43,7 +46,7 @@
       field.id = "field";
 
       fieldContainer.innerHTML = descrMap[fieldType] + "<br/><br/>";
-      fieldContainer.append( field );
+      fieldContainer.appendChild( field );
 
       field = $( field );
 

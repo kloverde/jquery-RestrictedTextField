@@ -172,7 +172,7 @@
          equal( "", "", "Test: " + params.testName );  // Hack to get the test name into the report
          ++testNum;
 
-         initField( params.testName, params.fieldType, params.preventInvalidInput );
+         initField( params.testName, params.fieldType[0], params.preventInvalidInput );
          writeStatus( params.testName, testNum, testCases.length );
 
          simulateInput( params.input );

@@ -1,0 +1,20 @@
+#fieldDemo{
+   display: table;
+}
+
+.cell {
+   display: table-cell;
+   vertical-align: middle;
+}
+
+#fieldDemo .cell {
+   padding: 20px 25px 20px 25px;
+}
+
+input.inputIgnored {
+   border: 2px solid #FC8D3D;
+}
+
+input.invalid {
+   border: 2px solid #FF0000;
+}

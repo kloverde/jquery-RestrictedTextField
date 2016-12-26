@@ -154,15 +154,15 @@
                    joinRegex(
                               // Prefix 51-55, plus padding out to 16 digits
                               /^5([12345]?|[12345]\d{0,14})$/ ,
-                              
+
                               // Prefix 2221-2720 breakdown:
-                              
+
                                  // 22-27
                                  /^2[2-7]?$/ ,
-                                 
+
                                  // 222-272
                                  /^(22[2-9]|2[3-6][0-9]|27[0-2])$/ ,
-                                 
+
                                  // 2221-2720 plus padding out to 16 digits
                                  /^(222[1-9]|22[3-9][0-9]|2[3-6][0-9]{2}|27[01][0-9]|2720)\d{0,12}$/
                    )
@@ -237,8 +237,8 @@
          var src = $.fn.restrictedTextField.types;
          var regex = new RegExp( isFullRegex ? src[arguments[1]].fullRegex : src[arguments[1]].partialRegex );
 
-         for( var i = 1; i < arguments.length; i++ ) {
-            regex = joinRegex( regex, (isFullRegex ? src[arguments[i]].fullRegex.source : src[arguments[i]].partialRegex.source) );
+         for( var i = 2; i < arguments.length; i++ ) {
+            regex = joinRegex( regex, (isFullRegex ? src[arguments[i]].fullRegex : src[arguments[i]].partialRegex) );
          }
 
          return regex;

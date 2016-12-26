@@ -1,7 +1,7 @@
 RestrictedTextField v1.2 (UPCOMING RELEASE)
 ===========================================
 
-## You have stumbled upon a development branch.  Have a look around if you want, but only use code that has been posted on the Releases page.
+## You have stumbled upon a development branch.  Have a look around if you want, but only use code that has been merged to the master branch.
 
 See LICENSE for this software's licensing terms.
 

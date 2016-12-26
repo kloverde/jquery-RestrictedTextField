@@ -64,10 +64,6 @@
       resetEventFlags();
    }
 
-   function tearDown() {
-      writeLog( "tearDown\n" );
-   }
-
    function resetEventFlags() {
       writeLog( "resetting event flags" );
 

@@ -122,7 +122,7 @@
    function validatePreBlur( params ) {
       var actualValue = $( selector ).val();
 
-      equal( params.expectedValueBeforeBlur, actualValue, "Pre-blur:  Ensure field has expected value" );
+      equal( actualValue, params.expectedValueBeforeBlur, "Pre-blur:  Ensure field has expected value" );
 
       if( params.preventInvalidInput ) {
          notOk( validationFailedEvent, "Pre-blur:  Validation failed event should never fire pre-blur when configured to ignore invalid input" );
@@ -141,18 +141,20 @@
    function validatePostBlur( params ) {
       var actualValue = $( selector ).val();
 
-      equal( params.expectedValueAfterBlur, actualValue, "Post-blur:  Ensure field has expected value" );
+      equal( actualValue, params.expectedValueAfterBlur, "Post-blur:  Ensure field has expected value" );
 
       if( !params.preventInvalidInput ) {
          notOk( inputIgnoredEvent, "Post-blur:  Test case is configured to allow invalid input, so ensure input ignored event didn't fire" );
       }
 
-      if( params.expectedEventOnBlur == Event.VALIDATION_FAILED ) {
+      if( params.expectedEventOnBlur === Event.VALIDATION_FAILED ) {
          ok( validationFailedEvent, "Post-blur:  Ensure validation failed event fired" );
          notOk( validationSuccessEvent, "Post-blur:  Ensure validation success event didn't fire" );
-      } else if( params.expectedEventOnBlur == Event.VALIDATION_SUCCESS ) {
+      } else if( params.expectedEventOnBlur === Event.VALIDATION_SUCCESS ) {
          ok( validationSuccessEvent, "Post-blur:  Ensure validation success event fired" );
          notOk( validationFailedEvent, "Post-blur:  Ensure validation failed event didn't fire" );
+      } else {
+         notOk( true, "Test has unknown expected result - should have been caught by validation in testCases.js" );
       }
    }
 

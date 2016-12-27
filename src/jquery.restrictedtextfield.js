@@ -142,7 +142,7 @@
          // Note:  these formats evolve over time.
 
          // Prefix: 34, 37; Lengths: 15
-         _addType( dest, "americanExpress",  /^3[47]\d{13}$/   ,  /^3[47]?$|3[47]\d{0,13}$/ );
+         _addType( dest, "americanExpress",  /^3[47]\d{13}$/   ,  /^3[47]?$|^3[47]\d{0,13}$/ );
 
          // Prefix: 4; Lengths: 13, 16, 19
          _addType( dest, "visa",  /^4(\d{12}|\d{15}|\d{18})$/  ,  /^4\d{0,18}$/ );

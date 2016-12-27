@@ -457,8 +457,32 @@ var testCases = [
    tc(  FieldType.NEGATIVE_ACCOUNTING_MONEY,   "ignore_negativeAccountingMoney_noOpeningParen",        true,   "1.23)",       ".",          ".",         Event.VALIDATION_FAILED  ),
    tc(  FieldType.NEGATIVE_ACCOUNTING_MONEY,   "ignore_negativeAccountingMoney_nonDigit1",             true,   "1.a",         ".",          ".",         Event.VALIDATION_FAILED  ),
    tc(  FieldType.NEGATIVE_ACCOUNTING_MONEY,   "ignore_negativeAccountingMoney_nonDigit2",             true,   "(1.a",        "(1.",        "(1.",       Event.VALIDATION_FAILED  ),
-   tc(  FieldType.AMERICAN_EXPRESS,   "ignore_americanExpress_prefix34_length15",  true,   "342466101232205",   "342466101232205",   "342466101232205",   Event.VALIDATION_SUCCESS  ),
-   tc(  FieldType.AMERICAN_EXPRESS,   "ignore_americanExpress_prefix37_length15",  true,   "376766541844884",   "376766541844884",   "376766541844884",   Event.VALIDATION_SUCCESS  ),
+
+   tc(  FieldType.AMERICAN_EXPRESS,   "ignore_americanExpress_prefix34_length15",               true,   "342466101232205",         "342466101232205",   "342466101232205",   Event.VALIDATION_SUCCESS  ),
+   tc(  FieldType.AMERICAN_EXPRESS,   "ignore_americanExpress_prefix37_length15",               true,   "376766541844884",         "376766541844884",   "376766541844884",   Event.VALIDATION_SUCCESS  ),
+   tc(  FieldType.AMERICAN_EXPRESS,   "ignore_americanExpress_prefix34_invalidLength14",        true,   "34351314365583",          "34351314365583",    "34351314365583",    Event.VALIDATION_FAILED  ),
+   tc(  FieldType.AMERICAN_EXPRESS,   "ignore_americanExpress_prefix34_invalidLength16",        true,   "3418170037118164",        "341817003711816",   "341817003711816",   Event.VALIDATION_FAILED  ),  // Input is Luhn-valid; accepted input is not
+   tc(  FieldType.AMERICAN_EXPRESS,   "ignore_americanExpress_prefix37_invalidLength14",        true,   "37124610876877",          "37124610876877",    "37124610876877",    Event.VALIDATION_FAILED  ),
+   tc(  FieldType.AMERICAN_EXPRESS,   "ignore_americanExpress_prefix37_invalidLength16",        true,   "3731310754648247",        "373131075464824",   "373131075464824",   Event.VALIDATION_FAILED  ),  // Input is Luhn-valid; accepted input is not
+   tc(  FieldType.AMERICAN_EXPRESS,   "ignore_americanExpress_prefix34_length15_invalidChars",  true,   "a#- 34246610G1232_205$",  "342466101232205",   "342466101232205",   Event.VALIDATION_SUCCESS  ),
+   tc(  FieldType.AMERICAN_EXPRESS,   "ignore_americanExpress_invalidPrefix1",                  true,   "1",                       "",                  "",                  Event.VALIDATION_SUCCESS  ),
+   tc(  FieldType.AMERICAN_EXPRESS,   "ignore_americanExpress_invalidPrefix2",                  true,   "2",                       "",                  "",                  Event.VALIDATION_SUCCESS  ),
+   tc(  FieldType.AMERICAN_EXPRESS,   "ignore_americanExpress_invalidPrefix30",                 true,   "30",                      "3",                 "3",                 Event.VALIDATION_FAILED  ),
+   tc(  FieldType.AMERICAN_EXPRESS,   "ignore_americanExpress_invalidPrefix31",                 true,   "31",                      "3",                 "3",                 Event.VALIDATION_FAILED  ),
+   tc(  FieldType.AMERICAN_EXPRESS,   "ignore_americanExpress_invalidPrefix32",                 true,   "32",                      "3",                 "3",                 Event.VALIDATION_FAILED  ),
+   tc(  FieldType.AMERICAN_EXPRESS,   "ignore_americanExpress_invalidPrefix33",                 true,   "33",                      "3",                 "3",                 Event.VALIDATION_FAILED  ),
+   tc(  FieldType.AMERICAN_EXPRESS,   "ignore_americanExpress_invalidPrefix35",                 true,   "35",                      "3",                 "3",                 Event.VALIDATION_FAILED  ),
+   tc(  FieldType.AMERICAN_EXPRESS,   "ignore_americanExpress_invalidPrefix36",                 true,   "36",                      "3",                 "3",                 Event.VALIDATION_FAILED  ),
+   tc(  FieldType.AMERICAN_EXPRESS,   "ignore_americanExpress_invalidPrefix38",                 true,   "38",                      "3",                 "3",                 Event.VALIDATION_FAILED  ),
+   tc(  FieldType.AMERICAN_EXPRESS,   "ignore_americanExpress_invalidPrefix39",                 true,   "30",                      "3",                 "3",                 Event.VALIDATION_FAILED  ),
+   tc(  FieldType.AMERICAN_EXPRESS,   "ignore_americanExpress_invalidPrefix4",                  true,   "4",                       "",                  "",                  Event.VALIDATION_SUCCESS  ),
+   tc(  FieldType.AMERICAN_EXPRESS,   "ignore_americanExpress_invalidPrefix5",                  true,   "5",                       "",                  "",                  Event.VALIDATION_SUCCESS  ),
+   tc(  FieldType.AMERICAN_EXPRESS,   "ignore_americanExpress_invalidPrefix6",                  true,   "6",                       "",                  "",                  Event.VALIDATION_SUCCESS  ),
+   tc(  FieldType.AMERICAN_EXPRESS,   "ignore_americanExpress_invalidPrefix7",                  true,   "7",                       "",                  "",                  Event.VALIDATION_SUCCESS  ),
+   tc(  FieldType.AMERICAN_EXPRESS,   "ignore_americanExpress_invalidPrefix8",                  true,   "8",                       "",                  "",                  Event.VALIDATION_SUCCESS  ),
+   tc(  FieldType.AMERICAN_EXPRESS,   "ignore_americanExpress_invalidPrefix9",                  true,   "9",                       "",                  "",                  Event.VALIDATION_SUCCESS  ),
+   tc(  FieldType.AMERICAN_EXPRESS,   "ignore_americanExpress_invalidPrefix0",                  true,   "0",                       "",                  "",                  Event.VALIDATION_SUCCESS  ),
+
    tc(  FieldType.DISCOVER,   "ignore_discover_prefix65_length16",      true,   "6575446417684229",   "6575446417684229",   "6575446417684229",   Event.VALIDATION_SUCCESS  ),
    tc(  FieldType.DISCOVER,   "ignore_discover_prefix644_length16",     true,   "6446086757405046",   "6446086757405046",   "6446086757405046",   Event.VALIDATION_SUCCESS  ),
    tc(  FieldType.DISCOVER,   "ignore_discover_prefix645_length16",     true,   "6458278761757281",   "6458278761757281",   "6458278761757281",   Event.VALIDATION_SUCCESS  ),
@@ -2075,6 +2099,7 @@ var testCases = [
    tc(  FieldType.DISCOVER,   "ignore_discover_prefix622923_length19",  true,   "6229230182371543619",   "6229230182371543619",   "6229230182371543619",   Event.VALIDATION_SUCCESS  ),
    tc(  FieldType.DISCOVER,   "ignore_discover_prefix622924_length19",  true,   "6229246178874174383",   "6229246178874174383",   "6229246178874174383",   Event.VALIDATION_SUCCESS  ),
    tc(  FieldType.DISCOVER,   "ignore_discover_prefix622925_length19",  true,   "6229250808267132860",   "6229250808267132860",   "6229250808267132860",   Event.VALIDATION_SUCCESS  ),
+
    tc(  FieldType.MASTERCARD,   "ignore_masterCard_prefix51_length16",  true,   "5135607880621304",   "5135607880621304",   "5135607880621304",   Event.VALIDATION_SUCCESS  ),
    tc(  FieldType.MASTERCARD,   "ignore_masterCard_prefix52_length16",  true,   "5217801253014533",   "5217801253014533",   "5217801253014533",   Event.VALIDATION_SUCCESS  ),
    tc(  FieldType.MASTERCARD,   "ignore_masterCard_prefix53_length16",  true,   "5343043472540777",   "5343043472540777",   "5343043472540777",   Event.VALIDATION_SUCCESS  ),
@@ -2580,6 +2605,7 @@ var testCases = [
    tc(  FieldType.MASTERCARD,   "ignore_masterCard_prefix2718_length16",  true,   "2718538738518149",   "2718538738518149",   "2718538738518149",   Event.VALIDATION_SUCCESS  ),
    tc(  FieldType.MASTERCARD,   "ignore_masterCard_prefix2719_length16",  true,   "2719184621702786",   "2719184621702786",   "2719184621702786",   Event.VALIDATION_SUCCESS  ),
    tc(  FieldType.MASTERCARD,   "ignore_masterCard_prefix2720_length16",  true,   "2720502475813374",   "2720502475813374",   "2720502475813374",   Event.VALIDATION_SUCCESS  ),
+
    tc(  FieldType.VISA,         "ignore_visa_prefix4_length13",           true,   "4455067444713",      "4455067444713",      "4455067444713",      Event.VALIDATION_SUCCESS  ),
    tc(  FieldType.VISA,         "ignore_visa_prefix4_length16",           true,   "4371447711783213",   "4371447711783213",   "4371447711783213",   Event.VALIDATION_SUCCESS  ),
    tc(  FieldType.VISA,         "ignore_visa_prefix4_length19",           true,   "4212144770344706041","4212144770344706041","4212144770344706041",Event.VALIDATION_SUCCESS  ),
@@ -3015,11 +3041,48 @@ var testCases = [
    tc(  FieldType.NEGATIVE_ACCOUNTING_MONEY,   "noIgnore_negativeAccountingMoney_noClosingParen",        false,   "(1.23",       "(1.23",      "(1.23",       Event.VALIDATION_FAILED  ),
    tc(  FieldType.NEGATIVE_ACCOUNTING_MONEY,   "noIgnore_negativeAccountingMoney_noOpeningParen",        false,   "1.23)",       "1.23)",      "1.23)",       Event.VALIDATION_FAILED  ),
    tc(  FieldType.NEGATIVE_ACCOUNTING_MONEY,   "noIgnore_negativeAccountingMoney_nonDigit1",             false,   "1.a",         "1.a",        "1.a",         Event.VALIDATION_FAILED  ),
-   tc(  FieldType.NEGATIVE_ACCOUNTING_MONEY,   "noIgnore_negativeAccountingMoney_nonDigit2",             false,   "(1.a",        "(1.a",       "(1.a",        Event.VALIDATION_FAILED  )
+   tc(  FieldType.NEGATIVE_ACCOUNTING_MONEY,   "noIgnore_negativeAccountingMoney_nonDigit2",             false,   "(1.a",        "(1.a",       "(1.a",        Event.VALIDATION_FAILED  ),
+
+   tc(  FieldType.AMERICAN_EXPRESS,   "noIgnore_americanExpress_prefix34_length15",               false,   "342466101232205",         "342466101232205",         "342466101232205",         Event.VALIDATION_SUCCESS  ),
+   tc(  FieldType.AMERICAN_EXPRESS,   "noIgnore_americanExpress_prefix37_length15",               false,   "376766541844884",         "376766541844884",         "376766541844884",         Event.VALIDATION_SUCCESS  ),
+   tc(  FieldType.AMERICAN_EXPRESS,   "noIgnore_americanExpress_prefix34_invalidLength14",        false,   "34351314365583",          "34351314365583",          "34351314365583",          Event.VALIDATION_FAILED  ),
+   tc(  FieldType.AMERICAN_EXPRESS,   "noIgnore_americanExpress_prefix34_invalidLength16",        false,   "3418170037118164",        "3418170037118164",        "3418170037118164",        Event.VALIDATION_FAILED  ),
+   tc(  FieldType.AMERICAN_EXPRESS,   "noIgnore_americanExpress_prefix37_invalidLength14",        false,   "37124610876877",          "37124610876877",          "37124610876877",          Event.VALIDATION_FAILED  ),
+   tc(  FieldType.AMERICAN_EXPRESS,   "noIgnore_americanExpress_prefix37_invalidLength16",        false,   "3731310754648247",        "3731310754648247",        "3731310754648247",        Event.VALIDATION_FAILED  ),
+   tc(  FieldType.AMERICAN_EXPRESS,   "noIgnore_americanExpress_prefix34_length15_invalidChars",  false,   "a#- 34246610G1232_205$",  "a#- 34246610G1232_205$",  "a#- 34246610G1232_205$",  Event.VALIDATION_FAILED  ),
+   tc(  FieldType.AMERICAN_EXPRESS,   "noIgnore_americanExpress_invalidPrefix1",                  false,   "110533335310535",         "110533335310535",         "110533335310535",         Event.VALIDATION_FAILED  ),
+   tc(  FieldType.AMERICAN_EXPRESS,   "noIgnore_americanExpress_invalidPrefix2",                  false,   "235384710700605",         "235384710700605",         "235384710700605",         Event.VALIDATION_FAILED  ),
+   tc(  FieldType.AMERICAN_EXPRESS,   "noIgnore_americanExpress_invalidPrefix30",                 false,   "305821522055038",         "305821522055038",         "305821522055038",         Event.VALIDATION_FAILED  ),
+   tc(  FieldType.AMERICAN_EXPRESS,   "noIgnore_americanExpress_invalidPrefix31",                 false,   "310554515025436",         "310554515025436",         "310554515025436",         Event.VALIDATION_FAILED  ),
+   tc(  FieldType.AMERICAN_EXPRESS,   "noIgnore_americanExpress_invalidPrefix32",                 false,   "323285216278850",         "323285216278850",         "323285216278850",         Event.VALIDATION_FAILED  ),
+   tc(  FieldType.AMERICAN_EXPRESS,   "noIgnore_americanExpress_invalidPrefix33",                 false,   "334661661140844",         "334661661140844",         "334661661140844",         Event.VALIDATION_FAILED  ),
+   tc(  FieldType.AMERICAN_EXPRESS,   "noIgnore_americanExpress_invalidPrefix35",                 false,   "358455622458127",         "358455622458127",         "358455622458127",         Event.VALIDATION_FAILED  ),
+   tc(  FieldType.AMERICAN_EXPRESS,   "noIgnore_americanExpress_invalidPrefix36",                 false,   "367742827400114",         "367742827400114",         "367742827400114",         Event.VALIDATION_FAILED  ),
+   tc(  FieldType.AMERICAN_EXPRESS,   "noIgnore_americanExpress_invalidPrefix38",                 false,   "381850360004201",         "381850360004201",         "381850360004201",         Event.VALIDATION_FAILED  ),
+   tc(  FieldType.AMERICAN_EXPRESS,   "noIgnore_americanExpress_invalidPrefix39",                 false,   "392105252864684",         "392105252864684",         "392105252864684",         Event.VALIDATION_FAILED  ),
+   tc(  FieldType.AMERICAN_EXPRESS,   "noIgnore_americanExpress_invalidPrefix4",                  false,   "423665854673869",         "423665854673869",         "423665854673869",         Event.VALIDATION_FAILED  ),
+   tc(  FieldType.AMERICAN_EXPRESS,   "noIgnore_americanExpress_invalidPrefix5",                  false,   "561612036607649",         "561612036607649",         "561612036607649",         Event.VALIDATION_FAILED  ),
+   tc(  FieldType.AMERICAN_EXPRESS,   "noIgnore_americanExpress_invalidPrefix6",                  false,   "611317481740537",         "611317481740537",         "611317481740537",         Event.VALIDATION_FAILED  ),
+   tc(  FieldType.AMERICAN_EXPRESS,   "noIgnore_americanExpress_invalidPrefix7",                  false,   "712036268735837",         "712036268735837",         "712036268735837",         Event.VALIDATION_FAILED  ),
+   tc(  FieldType.AMERICAN_EXPRESS,   "noIgnore_americanExpress_invalidPrefix8",                  false,   "883583531758248",         "883583531758248",         "883583531758248",         Event.VALIDATION_FAILED  ),
+   tc(  FieldType.AMERICAN_EXPRESS,   "noIgnore_americanExpress_invalidPrefix9",                  false,   "918467501545034",         "918467501545034",         "918467501545034",         Event.VALIDATION_FAILED  ),
+   tc(  FieldType.AMERICAN_EXPRESS,   "noIgnore_americanExpress_invalidPrefix0",                  false,   "052877548455029",         "052877548455029",         "052877548455029",         Event.VALIDATION_FAILED  )
 ];
 
 /** Creates a test case */
 function tc( fieldType, title, preventInvalidInput, input, expectedValueBeforeBlur, expectedValueAfterBlur, expectedEventOnBlur ) {
+   if( fieldType == null || fieldType == undefined ) throw "Test [" + title + "] has no fieldType - perhaps a typo in the FieldType member name?";
+   if( title == null || title == undefined || title === "" ) throw "Test has no name";
+   if( input == null || input == undefined ) throw "Test [" + title + "] has no input.  If this was intentional, use empty string.";
+   if( expectedValueBeforeBlur == null || expectedValueBeforeBlur == undefined ) throw "Test [" + title + "] has no expectedValueBeforeBlur.  If this was intentional, use empty string.";
+   if( expectedValueAfterBlur == null || expectedValueAfterBlur == undefined ) throw "Test [" + title + "] has no expectedValueAfterBlur.  If this was intentional, use empty string.";
+   if( expectedEventOnBlur == null || expectedEventOnBlur == undefined ) throw "Test [" + title + "] has no expected event - perhaps a typo in the Event name?";
+
+   if( !preventInvalidInput && expectedValueBeforeBlur !== input ) {
+      throw "Tests that allow invalid input can't have the input change pre-blur: " + title;
+      // Note, however, that if it's a money type, it can change POST-blur due to automatic formatting
+   }
+
    return {
       fieldType               : fieldType,
       title                   : title,
@@ -3036,11 +3099,6 @@ function validateTestCases( tests ) {
 
    for( var i = 0; i < tests.length; i++ ) {
       var name = tests[i].title;
-
-      if( !tests[i].preventInvalidInput && tests[i].expectedValueBeforeBlur !== tests[i].input ) {
-         throw "Tests that allow invalid input can't have the input change pre-blur: " + tests[i].title;
-         // Note, however, that if it's a money type, it can change post-blur due to automatic formatting
-      }
 
       for( var j = i + 1; j < tests.length; j++ ) {
          var name2 = tests[j].title;

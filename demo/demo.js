@@ -24,7 +24,7 @@
          if( this.value !== "Select Type" ) {
             createField();
          } else {
-            $( "#field" ).remove();
+            $( "#fieldContainer" ).html( "" );
             $( "#code" ).html( "" );
          }
       } );

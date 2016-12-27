@@ -44,6 +44,10 @@ h1, h2 {
    padding-top: 20px;
 }
 
+.left {
+   float: left;
+}
+
 .center {
     margin-left: auto;
     margin-right: auto;
@@ -57,29 +61,19 @@ h1, h2 {
 
 #fieldContainer {
    padding-bottom: 15px;
+   clear: both;
 }
 
 #field {
    margin-top: 15px;
 }
 
-#logContainer {
-   width: 100%;
-   height: 65%;
-}
-
 #status {
    margin-top: 25px !important;
-   text-align: left;
    height: 20px;
 }
 
-#log {
-   margin-top: 10px;
-   width: 100%;
-   height: 88.5%;
-   padding: 0px;
-   text-align: left;
-   overflow: scroll;
-   border: 1px solid black;
+#done {
+   margin-top: 80px;
+   visibility: hidden;
 }

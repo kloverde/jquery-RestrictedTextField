@@ -38,21 +38,14 @@
 
    var selector = "#field";
 
-   var log;
-
    var inputIgnoredEvent,
        validationFailedEvent,
        validationSuccessEvent;
 
    var testNum = 0;
 
-   $( document ).ready( function() {
-      log = document.getElementById( "log" );
-   } );
-
    function setUp() {
-      log.innerHTML = "";
-      writeLog( "setUp" );
+      log( "setUp" );
 
       $( "#field" ).remove();
 
@@ -65,7 +58,7 @@
    }
 
    function resetEventFlags() {
-      writeLog( "resetting event flags" );
+      log( "resetting event flags" );
 
       inputIgnoredEvent = false;
       validationFailedEvent = false;
@@ -75,27 +68,27 @@
    function initField( title, fieldType, ignore ) {
       setUp();
 
-      writeLog( "test:  " + title );
-      writeLog( "initField:  fieldType[" + fieldType + "], ignore[" + ignore + "]" );
+      log( "test:  " + title );
+      log( "initField:  fieldType[" + fieldType + "], ignore[" + ignore + "]" );
 
       var jqField = $( "#field" );
 
       jqField.restrictedTextField( { type : fieldType,
                                      preventInvalidInput : ignore,
-                                     logger : writeLog } );
+                                     logger : log } );
 
       jqField.on( "inputIgnored", function() {
-         writeLog( "inputIgnored event captured" );
+         log( "inputIgnored event captured" );
          inputIgnoredEvent = true;
       } );
 
       jqField.on( "validationFailed", function() {
-         writeLog( "validationFailed event captured" );
+         log( "validationFailed event captured" );
          validationFailedEvent = true;
       } );
 
       jqField.on( "validationSuccess", function() {
-         writeLog( "validationSuccess event captured" );
+         log( "validationSuccess event captured" );
          validationSuccessEvent = true;
       } );
    }
@@ -110,13 +103,11 @@
       }
    }
 
-   function writeLog( msg ) {
-      var node = document.createTextNode( msg + "\n" );
-      log.appendChild( node );
+   function log( msg ) {
    }
 
    function writeStatus( title, testNum, totalTests ) {
-      $( "#status" ).html( title + "<br/>" + testNum + " of " + totalTests );
+      $( "#status" ).html( title + "<br/>Test " + testNum + " of " + totalTests );
    }
 
    function validatePreBlur( params ) {
@@ -160,13 +151,14 @@
 
    if( validateTestCases(testCases) ) {
       QUnit.jUnitDone( function(report) {
+         document.getElementById( "done" ).style.visibility = "visible";
+
          if( typeof console !== "undefined" ) {
             console.log( report.xml );
          }
-       } );
+      } );
 
-      QUnit.cases( testCases )
-      .test( "Test", function(params) {
+      QUnit.cases( testCases ).test( "Test", function(params) {
          ++testNum;
 
          initField( params.title, params.fieldType[0], params.preventInvalidInput );
@@ -176,11 +168,11 @@
 
          validatePreBlur( params );
 
-         writeLog( "setting up blur validation" );
+         log( "setting up blur validation" );
          resetEventFlags();
 
          $( selector ).blur();
-         validatePostBlur( params );   
+         validatePostBlur( params );
       } );
    }
 } )();

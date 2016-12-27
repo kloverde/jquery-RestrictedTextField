@@ -2099,12 +2099,69 @@ var testCases = [
    tc(  FieldType.DISCOVER,   "ignore_discover_prefix622923_length19",  true,   "6229230182371543619",   "6229230182371543619",   "6229230182371543619",   Event.VALIDATION_SUCCESS  ),
    tc(  FieldType.DISCOVER,   "ignore_discover_prefix622924_length19",  true,   "6229246178874174383",   "6229246178874174383",   "6229246178874174383",   Event.VALIDATION_SUCCESS  ),
    tc(  FieldType.DISCOVER,   "ignore_discover_prefix622925_length19",  true,   "6229250808267132860",   "6229250808267132860",   "6229250808267132860",   Event.VALIDATION_SUCCESS  ),
+   // Begin invalid chars check   
+   tc(  FieldType.DISCOVER,   "ignore_discover_prefix6011_length16_invalidChars",    true,   "b60t1130%70044;82082_+",  "6011307004482082",  "6011307004482082",   Event.VALIDATION_SUCCESS  ),
+   tc(  FieldType.DISCOVER,   "ignore_discover_prefix622644_length16_invlaidChars",  true,   "@6226x44711%8125]50o7",   "6226447118125507",  "6226447118125507",   Event.VALIDATION_SUCCESS  ),
+   tc(  FieldType.DISCOVER,   "ignore_discover_prefix65_length16_invalidChars",      true,   "65-754464'1768F4229!",    "6575446417684229",  "6575446417684229",   Event.VALIDATION_SUCCESS  ),
+   tc(  FieldType.DISCOVER,   "ignore_discover_prefix644_length16_invalidChars",     true,   "6L44608^675k740504m6",    "6446086757405046",  "6446086757405046",   Event.VALIDATION_SUCCESS  ),
+   // End invalid chars check
+   tc(  FieldType.DISCOVER,   "ignore_discover_invalidPrefix1",                  true,   "1",                       "",                     "",                  Event.VALIDATION_SUCCESS  ),
+   tc(  FieldType.DISCOVER,   "ignore_discover_invalidPrefix2",                  true,   "2",                       "",                     "",                  Event.VALIDATION_SUCCESS  ),
+   tc(  FieldType.DISCOVER,   "ignore_discover_invalidPrefix3",                  true,   "3",                       "",                     "",                  Event.VALIDATION_SUCCESS  ),
+   tc(  FieldType.DISCOVER,   "ignore_discover_invalidPrefix4",                  true,   "4",                       "",                     "",                  Event.VALIDATION_SUCCESS  ),
+   tc(  FieldType.DISCOVER,   "ignore_discover_invalidPrefix5",                  true,   "5",                       "",                     "",                  Event.VALIDATION_SUCCESS  ),
+   // Begin check of 6011
+   tc(  FieldType.DISCOVER,   "ignore_discover_invalidPrefix6010",               true,   "6010",                    "601",                  "601",               Event.VALIDATION_FAILED  ),
+   tc(  FieldType.DISCOVER,   "ignore_discover_invalidPrefix6012",               true,   "6012",                    "601",                  "601",               Event.VALIDATION_FAILED  ),
+   tc(  FieldType.DISCOVER,   "ignore_discover_invalidPrefix6013",               true,   "6013",                    "601",                  "601",               Event.VALIDATION_FAILED  ),
+   tc(  FieldType.DISCOVER,   "ignore_discover_invalidPrefix6014",               true,   "6014",                    "601",                  "601",               Event.VALIDATION_FAILED  ),
+   tc(  FieldType.DISCOVER,   "ignore_discover_invalidPrefix6015",               true,   "6015",                    "601",                  "601",               Event.VALIDATION_FAILED  ),
+   tc(  FieldType.DISCOVER,   "ignore_discover_invalidPrefix6016",               true,   "6016",                    "601",                  "601",               Event.VALIDATION_FAILED  ),
+   tc(  FieldType.DISCOVER,   "ignore_discover_invalidPrefix6017",               true,   "6017",                    "601",                  "601",               Event.VALIDATION_FAILED  ),
+   tc(  FieldType.DISCOVER,   "ignore_discover_invalidPrefix6018",               true,   "6018",                    "601",                  "601",               Event.VALIDATION_FAILED  ),
+   tc(  FieldType.DISCOVER,   "ignore_discover_invalidPrefix6019",               true,   "6019",                    "601",                  "601",               Event.VALIDATION_FAILED  ),
+   // End of check 6011
+   // Begin check of 622126-622925
+   tc(  FieldType.DISCOVER,   "ignore_discover_invalidPrefix620",                true,   "620",                     "62",                   "62",                Event.VALIDATION_FAILED  ),
+   tc(  FieldType.DISCOVER,   "ignore_discover_invalidPrefix621",                true,   "621",                     "62",                   "62",                Event.VALIDATION_FAILED  ),
+   tc(  FieldType.DISCOVER,   "ignore_discover_invalidPrefix6220",               true,   "6220",                    "622",                  "622",               Event.VALIDATION_FAILED  ),
+   tc(  FieldType.DISCOVER,   "ignore_discover_invalidPrefix62210",              true,   "62210",                   "6221",                 "6221",              Event.VALIDATION_FAILED  ),
+   tc(  FieldType.DISCOVER,   "ignore_discover_invalidPrefix62211",              true,   "62211",                   "6221",                 "6221",              Event.VALIDATION_FAILED  ),
+   tc(  FieldType.DISCOVER,   "ignore_discover_invalidPrefix622121",             true,   "622121",                  "62212",                "62212",             Event.VALIDATION_FAILED  ),
+   tc(  FieldType.DISCOVER,   "ignore_discover_invalidPrefix622122",             true,   "622122",                  "62212",                "62212",             Event.VALIDATION_FAILED  ),
+   tc(  FieldType.DISCOVER,   "ignore_discover_invalidPrefix622123",             true,   "622123",                  "62212",                "62212",             Event.VALIDATION_FAILED  ),
+   tc(  FieldType.DISCOVER,   "ignore_discover_invalidPrefix622124",             true,   "622124",                  "62212",                "62212",             Event.VALIDATION_FAILED  ),
+   tc(  FieldType.DISCOVER,   "ignore_discover_invalidPrefix622125",             true,   "622125",                  "62212",                "62212",             Event.VALIDATION_FAILED  ),
+   tc(  FieldType.DISCOVER,   "ignore_discover_invalidPrefix622926",             true,   "622926",                  "62292",                "62292",             Event.VALIDATION_FAILED  ),
+   tc(  FieldType.DISCOVER,   "ignore_discover_invalidPrefix622927",             true,   "622927",                  "62292",                "62292",             Event.VALIDATION_FAILED  ),
+   tc(  FieldType.DISCOVER,   "ignore_discover_invalidPrefix622928",             true,   "622928",                  "62292",                "62292",             Event.VALIDATION_FAILED  ),
+   tc(  FieldType.DISCOVER,   "ignore_discover_invalidPrefix622929",             true,   "622929",                  "62292",                "62292",             Event.VALIDATION_FAILED  ),
+   tc(  FieldType.DISCOVER,   "ignore_discover_invalidPrefix62293",              true,   "62293",                   "6229",                 "6229",              Event.VALIDATION_FAILED  ),
+   // End check of 622126-622925
+   // Begin check of 644-649
+   tc(  FieldType.DISCOVER,   "ignore_discover_invalidPrefix640",                true,   "640",                     "64",                   "64",                Event.VALIDATION_FAILED  ),
+   tc(  FieldType.DISCOVER,   "ignore_discover_invalidPrefix641",                true,   "641",                     "64",                   "64",                Event.VALIDATION_FAILED  ),
+   tc(  FieldType.DISCOVER,   "ignore_discover_invalidPrefix642",                true,   "642",                     "64",                   "64",                Event.VALIDATION_FAILED  ),
+   tc(  FieldType.DISCOVER,   "ignore_discover_invalidPrefix643",                true,   "643",                     "64",                   "64",                Event.VALIDATION_FAILED  ),
+   // End check of 644-649
+   // Begin check of 65
+   tc(  FieldType.DISCOVER,   "ignore_discover_invalidPrefix61",                true,   "61",                       "6",                   "6",                  Event.VALIDATION_FAILED  ),
+   tc(  FieldType.DISCOVER,   "ignore_discover_invalidPrefix63",                true,   "63",                       "6",                   "6",                  Event.VALIDATION_FAILED  ),
+   tc(  FieldType.DISCOVER,   "ignore_discover_invalidPrefix66",                true,   "66",                       "6",                   "6",                  Event.VALIDATION_FAILED  ),
+   tc(  FieldType.DISCOVER,   "ignore_discover_invalidPrefix67",                true,   "67",                       "6",                   "6",                  Event.VALIDATION_FAILED  ),
+   tc(  FieldType.DISCOVER,   "ignore_discover_invalidPrefix68",                true,   "68",                       "6",                   "6",                  Event.VALIDATION_FAILED  ),
+   tc(  FieldType.DISCOVER,   "ignore_discover_invalidPrefix69",                true,   "69",                       "6",                   "6",                  Event.VALIDATION_FAILED  ),
+   // End check of 65
+   tc(  FieldType.DISCOVER,   "ignore_discover_invalidPrefix7",                 true,   "7",                       "",                     "",                  Event.VALIDATION_SUCCESS  ),
+   tc(  FieldType.DISCOVER,   "ignore_discover_invalidPrefix8",                 true,   "8",                       "",                     "",                  Event.VALIDATION_SUCCESS  ),
+   tc(  FieldType.DISCOVER,   "ignore_discover_invalidPrefix9",                 true,   "9",                       "",                     "",                  Event.VALIDATION_SUCCESS  ),
+   tc(  FieldType.DISCOVER,   "ignore_discover_invalidPrefix0",                 true,   "0",                       "",                     "",                  Event.VALIDATION_SUCCESS  ),
 
-   tc(  FieldType.MASTERCARD,   "ignore_masterCard_prefix51_length16",  true,   "5135607880621304",   "5135607880621304",   "5135607880621304",   Event.VALIDATION_SUCCESS  ),
-   tc(  FieldType.MASTERCARD,   "ignore_masterCard_prefix52_length16",  true,   "5217801253014533",   "5217801253014533",   "5217801253014533",   Event.VALIDATION_SUCCESS  ),
-   tc(  FieldType.MASTERCARD,   "ignore_masterCard_prefix53_length16",  true,   "5343043472540777",   "5343043472540777",   "5343043472540777",   Event.VALIDATION_SUCCESS  ),
-   tc(  FieldType.MASTERCARD,   "ignore_masterCard_prefix54_length16",  true,   "5451347224828804",   "5451347224828804",   "5451347224828804",   Event.VALIDATION_SUCCESS  ),
-   tc(  FieldType.MASTERCARD,   "ignore_masterCard_prefix55_length16",  true,   "5574045605155753",   "5574045605155753",   "5574045605155753",   Event.VALIDATION_SUCCESS  ),
+   tc(  FieldType.MASTERCARD,   "ignore_masterCard_prefix51_length16",    true,   "5135607880621304",   "5135607880621304",   "5135607880621304",   Event.VALIDATION_SUCCESS  ),
+   tc(  FieldType.MASTERCARD,   "ignore_masterCard_prefix52_length16",    true,   "5217801253014533",   "5217801253014533",   "5217801253014533",   Event.VALIDATION_SUCCESS  ),
+   tc(  FieldType.MASTERCARD,   "ignore_masterCard_prefix53_length16",    true,   "5343043472540777",   "5343043472540777",   "5343043472540777",   Event.VALIDATION_SUCCESS  ),
+   tc(  FieldType.MASTERCARD,   "ignore_masterCard_prefix54_length16",    true,   "5451347224828804",   "5451347224828804",   "5451347224828804",   Event.VALIDATION_SUCCESS  ),
+   tc(  FieldType.MASTERCARD,   "ignore_masterCard_prefix55_length16",    true,   "5574045605155753",   "5574045605155753",   "5574045605155753",   Event.VALIDATION_SUCCESS  ),
    tc(  FieldType.MASTERCARD,   "ignore_masterCard_prefix2221_length16",  true,   "2221266606077424",   "2221266606077424",   "2221266606077424",   Event.VALIDATION_SUCCESS  ),
    tc(  FieldType.MASTERCARD,   "ignore_masterCard_prefix2222_length16",  true,   "2222117606040723",   "2222117606040723",   "2222117606040723",   Event.VALIDATION_SUCCESS  ),
    tc(  FieldType.MASTERCARD,   "ignore_masterCard_prefix2223_length16",  true,   "2223251402851253",   "2223251402851253",   "2223251402851253",   Event.VALIDATION_SUCCESS  ),
@@ -3066,7 +3123,65 @@ var testCases = [
    tc(  FieldType.AMERICAN_EXPRESS,   "noIgnore_americanExpress_invalidPrefix7",                  false,   "712036268735837",         "712036268735837",         "712036268735837",         Event.VALIDATION_FAILED  ),
    tc(  FieldType.AMERICAN_EXPRESS,   "noIgnore_americanExpress_invalidPrefix8",                  false,   "883583531758248",         "883583531758248",         "883583531758248",         Event.VALIDATION_FAILED  ),
    tc(  FieldType.AMERICAN_EXPRESS,   "noIgnore_americanExpress_invalidPrefix9",                  false,   "918467501545034",         "918467501545034",         "918467501545034",         Event.VALIDATION_FAILED  ),
-   tc(  FieldType.AMERICAN_EXPRESS,   "noIgnore_americanExpress_invalidPrefix0",                  false,   "052877548455029",         "052877548455029",         "052877548455029",         Event.VALIDATION_FAILED  )
+   tc(  FieldType.AMERICAN_EXPRESS,   "noIgnore_americanExpress_invalidPrefix0",                  false,   "052877548455029",         "052877548455029",         "052877548455029",         Event.VALIDATION_FAILED  ),
+
+   // Begin invalid chars check
+   tc(  FieldType.DISCOVER,   "noIgnoreDiscover_prefix6011_length16_invalidChars",    false,   "b60t1130%70044;82082_+",   "b60t1130%70044;82082_+",   "b60t1130%70044;82082_+",   Event.VALIDATION_FAILED  ),
+   tc(  FieldType.DISCOVER,   "noIgnoreDiscover_prefix622644_length16_invlaidChars",  false,   "@6226x44711%8125]50o7",    "@6226x44711%8125]50o7",    "@6226x44711%8125]50o7",    Event.VALIDATION_FAILED  ),
+   tc(  FieldType.DISCOVER,   "noIgnoreDiscover_prefix65_length16_invalidChars",      false,   "65-754464'1768F4229!",     "65-754464'1768F4229!",     "65-754464'1768F4229!",     Event.VALIDATION_FAILED  ),
+   tc(  FieldType.DISCOVER,   "noIgnoreDiscover_prefix644_length16_invalidChars",     false,   "6L44608^675k740504m6",     "6L44608^675k740504m6",     "6L44608^675k740504m6",     Event.VALIDATION_FAILED  ),
+   // End invalid chars check
+   tc(  FieldType.DISCOVER,   "noIgnoreDiscover_invalidPrefix1",                      false,   "1470336445841148",         "1470336445841148",   "1470336445841148",   Event.VALIDATION_FAILED  ),
+   tc(  FieldType.DISCOVER,   "noIgnoreDiscover_invalidPrefix2",                      false,   "2331184710706670",         "2331184710706670",   "2331184710706670",   Event.VALIDATION_FAILED  ),
+   tc(  FieldType.DISCOVER,   "noIgnoreDiscover_invalidPrefix3",                      false,   "3407166401078268",         "3407166401078268",   "3407166401078268",   Event.VALIDATION_FAILED  ),
+   tc(  FieldType.DISCOVER,   "noIgnoreDiscover_invalidPrefix4",                      false,   "4712231176638155",         "4712231176638155",   "4712231176638155",   Event.VALIDATION_FAILED  ),
+   tc(  FieldType.DISCOVER,   "noIgnoreDiscover_invalidPrefix5",                      false,   "5030181551316434",         "5030181551316434",   "5030181551316434",   Event.VALIDATION_FAILED  ),
+   // Begin check of 6011
+   tc(  FieldType.DISCOVER,   "noIgnoreDiscover_invalidPrefix6010",                   false,   "6010110872853363",         "6010110872853363",   "6010110872853363",   Event.VALIDATION_FAILED  ),
+   tc(  FieldType.DISCOVER,   "noIgnoreDiscover_invalidPrefix6012",                   false,   "6012136762285265",         "6012136762285265",   "6012136762285265",   Event.VALIDATION_FAILED  ),
+   tc(  FieldType.DISCOVER,   "noIgnoreDiscover_invalidPrefix6013",                   false,   "6013415673133130",         "6013415673133130",   "6013415673133130",   Event.VALIDATION_FAILED  ),
+   tc(  FieldType.DISCOVER,   "noIgnoreDiscover_invalidPrefix6014",                   false,   "6014317653573724",         "6014317653573724",   "6014317653573724",   Event.VALIDATION_FAILED  ),
+   tc(  FieldType.DISCOVER,   "noIgnoreDiscover_invalidPrefix6015",                   false,   "6015106588356738",         "6015106588356738",   "6015106588356738",   Event.VALIDATION_FAILED  ),
+   tc(  FieldType.DISCOVER,   "noIgnoreDiscover_invalidPrefix6016",                   false,   "6016233133477311",         "6016233133477311",   "6016233133477311",   Event.VALIDATION_FAILED  ),
+   tc(  FieldType.DISCOVER,   "noIgnoreDiscover_invalidPrefix6017",                   false,   "6017724412487350",         "6017724412487350",   "6017724412487350",   Event.VALIDATION_FAILED  ),
+   tc(  FieldType.DISCOVER,   "noIgnoreDiscover_invalidPrefix6018",                   false,   "6018331363865573",         "6018331363865573",   "6018331363865573",   Event.VALIDATION_FAILED  ),
+   tc(  FieldType.DISCOVER,   "noIgnoreDiscover_invalidPrefix6019",                   false,   "6019611518210083",         "6019611518210083",   "6019611518210083",   Event.VALIDATION_FAILED  ),
+   // End of check 6011
+   // Begin check of 622126-622925
+   tc(  FieldType.DISCOVER,   "noIgnoreDiscover_invalidPrefix620",                    false,   "6206262740660753",         "6206262740660753",   "6206262740660753",   Event.VALIDATION_FAILED  ),
+   tc(  FieldType.DISCOVER,   "noIgnoreDiscover_invalidPrefix621",                    false,   "6217652406406102",         "6217652406406102",   "6217652406406102",   Event.VALIDATION_FAILED  ),
+   tc(  FieldType.DISCOVER,   "noIgnoreDiscover_invalidPrefix6220",                   false,   "6220300714742728",         "6220300714742728",   "6220300714742728",   Event.VALIDATION_FAILED  ),
+   tc(  FieldType.DISCOVER,   "noIgnoreDiscover_invalidPrefix62210",                  false,   "6221025426011588",         "6221025426011588",   "6221025426011588",   Event.VALIDATION_FAILED  ),
+   tc(  FieldType.DISCOVER,   "noIgnoreDiscover_invalidPrefix62211",                  false,   "6221120034581617",         "6221120034581617",   "6221120034581617",   Event.VALIDATION_FAILED  ),
+   tc(  FieldType.DISCOVER,   "noIgnoreDiscover_invalidPrefix622121",                 false,   "6221210187238360",         "6221210187238360",   "6221210187238360",   Event.VALIDATION_FAILED  ),
+   tc(  FieldType.DISCOVER,   "noIgnoreDiscover_invalidPrefix622122",                 false,   "6221228502235002",         "6221228502235002",   "6221228502235002",   Event.VALIDATION_FAILED  ),
+   tc(  FieldType.DISCOVER,   "noIgnoreDiscover_invalidPrefix622123",                 false,   "6221237772553432",         "6221237772553432",   "6221237772553432",   Event.VALIDATION_FAILED  ),
+   tc(  FieldType.DISCOVER,   "noIgnoreDiscover_invalidPrefix622124",                 false,   "6221240062530235",         "6221240062530235",   "6221240062530235",   Event.VALIDATION_FAILED  ),
+   tc(  FieldType.DISCOVER,   "noIgnoreDiscover_invalidPrefix622125",                 false,   "6221258114221504",         "6221258114221504",   "6221258114221504",   Event.VALIDATION_FAILED  ),
+   tc(  FieldType.DISCOVER,   "noIgnoreDiscover_invalidPrefix622926",                 false,   "6229262456808243",         "6229262456808243",   "6229262456808243",   Event.VALIDATION_FAILED  ),
+   tc(  FieldType.DISCOVER,   "noIgnoreDiscover_invalidPrefix622927",                 false,   "6229275708688189",         "6229275708688189",   "6229275708688189",   Event.VALIDATION_FAILED  ),
+   tc(  FieldType.DISCOVER,   "noIgnoreDiscover_invalidPrefix622928",                 false,   "6229284038808277",         "6229284038808277",   "6229284038808277",   Event.VALIDATION_FAILED  ),
+   tc(  FieldType.DISCOVER,   "noIgnoreDiscover_invalidPrefix622929",                 false,   "6229294830633831",         "6229294830633831",   "6229294830633831",   Event.VALIDATION_FAILED  ),
+   tc(  FieldType.DISCOVER,   "noIgnoreDiscover_invalidPrefix62293",                  false,   "6229306107813720",         "6229306107813720",   "6229306107813720",   Event.VALIDATION_FAILED  ),
+   // End check of 622126-622925
+   // Begin check of 644-649
+   tc(  FieldType.DISCOVER,   "noIgnoreDiscover_invalidPrefix640",                    false,   "6403463407714013",         "6403463407714013",   "6403463407714013",   Event.VALIDATION_FAILED  ),
+   tc(  FieldType.DISCOVER,   "noIgnoreDiscover_invalidPrefix641",                    false,   "6410467716531720",         "6410467716531720",   "6410467716531720",   Event.VALIDATION_FAILED  ),
+   tc(  FieldType.DISCOVER,   "noIgnoreDiscover_invalidPrefix642",                    false,   "6420558280431152",         "6420558280431152",   "6420558280431152",   Event.VALIDATION_FAILED  ),
+   tc(  FieldType.DISCOVER,   "noIgnoreDiscover_invalidPrefix643",                    false,   "6438758550731345",         "6438758550731345",   "6438758550731345",   Event.VALIDATION_FAILED  ),
+   // End check of 644-649
+   // Begin check of 65
+   tc(  FieldType.DISCOVER,   "noIgnoreDiscover_invalidPrefix61",                    false,   "6131460445268019",          "6131460445268019",   "6131460445268019",   Event.VALIDATION_FAILED  ),
+   tc(  FieldType.DISCOVER,   "noIgnoreDiscover_invalidPrefix63",                    false,   "6368248412255745",          "6368248412255745",   "6368248412255745",   Event.VALIDATION_FAILED  ),
+   tc(  FieldType.DISCOVER,   "noIgnoreDiscover_invalidPrefix66",                    false,   "6606200217844142",          "6606200217844142",   "6606200217844142",   Event.VALIDATION_FAILED  ),
+   tc(  FieldType.DISCOVER,   "noIgnoreDiscover_invalidPrefix67",                    false,   "6782716743078364",          "6782716743078364",   "6782716743078364",   Event.VALIDATION_FAILED  ),
+   tc(  FieldType.DISCOVER,   "noIgnoreDiscover_invalidPrefix68",                    false,   "6823557574621851",          "6823557574621851",   "6823557574621851",   Event.VALIDATION_FAILED  ),
+   tc(  FieldType.DISCOVER,   "noIgnoreDiscover_invalidPrefix69",                    false,   "6923884463143584",          "6923884463143584",   "6923884463143584",   Event.VALIDATION_FAILED  ),
+   // End check of 65
+   tc(  FieldType.DISCOVER,   "noIgnoreDiscover_invalidPrefix7",                     false,   "7835078042573057",          "7835078042573057",   "7835078042573057",   Event.VALIDATION_FAILED  ),
+   tc(  FieldType.DISCOVER,   "noIgnoreDiscover_invalidPrefix8",                     false,   "8671618203021183",          "8671618203021183",   "8671618203021183",   Event.VALIDATION_FAILED  ),
+   tc(  FieldType.DISCOVER,   "noIgnoreDiscover_invalidPrefix9",                     false,   "9133348252506245",          "9133348252506245",   "9133348252506245",   Event.VALIDATION_FAILED  ),
+   tc(  FieldType.DISCOVER,   "noIgnoreDiscover_invalidPrefix0",                     false,   "0502622771555244",          "0502622771555244",   "0502622771555244",   Event.VALIDATION_FAILED  )
 ];
 
 /** Creates a test case */

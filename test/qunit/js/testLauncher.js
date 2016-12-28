@@ -142,7 +142,6 @@
 
    if( validateTestCases(testCases) ) {
       QUnit.config.hidepassed = true;
-      QUnit.notrycatch = true;
 
       QUnit.testStart( function() {   // Analagous to JUnit's @Before
          log( "setUp" );

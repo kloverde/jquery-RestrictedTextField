@@ -2750,12 +2750,33 @@ var testCases = [
    tc(  FieldType.MASTERCARD,   "ignore_masterCard_invalidPrefix8",      true,   "8",      "",      "",      Event.VALIDATION_SUCCESS  ),
    tc(  FieldType.MASTERCARD,   "ignore_masterCard_invalidPrefix9",      true,   "9",      "",      "",      Event.VALIDATION_SUCCESS  ),
    tc(  FieldType.MASTERCARD,   "ignore_masterCard_invalidPrefix0",      true,   "0",      "",      "",      Event.VALIDATION_SUCCESS  ),
-  // End blatantly wrong prefix check
+   // End blatantly wrong prefix check
 
-
-   tc(  FieldType.VISA,         "ignore_visa_prefix4_length13",           true,   "4455067444713",      "4455067444713",      "4455067444713",      Event.VALIDATION_SUCCESS  ),
-   tc(  FieldType.VISA,         "ignore_visa_prefix4_length16",           true,   "4371447711783213",   "4371447711783213",   "4371447711783213",   Event.VALIDATION_SUCCESS  ),
-   tc(  FieldType.VISA,         "ignore_visa_prefix4_length19",           true,   "4212144770344706041","4212144770344706041","4212144770344706041",Event.VALIDATION_SUCCESS  ),
+   tc(  FieldType.VISA,         "ignore_visa_prefix4_length13",          true,   "4455067444713",          "4455067444713",         "4455067444713",         Event.VALIDATION_SUCCESS  ),
+   tc(  FieldType.VISA,         "ignore_visa_prefix4_length16",          true,   "4371447711783213",       "4371447711783213",      "4371447711783213",      Event.VALIDATION_SUCCESS  ),
+   tc(  FieldType.VISA,         "ignore_visa_prefix4_length19",          true,   "4212144770344706041",    "4212144770344706041",   "4212144770344706041",   Event.VALIDATION_SUCCESS  ),
+   // Begin invalid length check
+   tc(  FieldType.VISA,         "ignore_visa_prefix4_length12",          true,   "427815235648",           "427815235648",          "427815235648",          Event.VALIDATION_FAILED  ),
+   tc(  FieldType.VISA,         "ignore_visa_prefix4_length14",          true,   "45842811557182",         "45842811557182",        "45842811557182",        Event.VALIDATION_FAILED  ),
+   tc(  FieldType.VISA,         "ignore_visa_prefix4_length15",          true,   "438740434546761",        "438740434546761",       "438740434546761",       Event.VALIDATION_FAILED  ),
+   tc(  FieldType.VISA,         "ignore_visa_prefix4_length17",          true,   "43487538814261138",      "43487538814261138",     "43487538814261138",     Event.VALIDATION_FAILED  ),
+   tc(  FieldType.VISA,         "ignore_visa_prefix4_length18",          true,   "421431601867875553",     "421431601867875553",    "421431601867875553",    Event.VALIDATION_FAILED  ),
+   tc(  FieldType.VISA,         "ignore_visa_prefix4_length20",          true,   "43213753745312750349",   "4321375374531275034",   "4321375374531275034",   Event.VALIDATION_FAILED  ),
+   // End invalid length check
+   // Begin invalid chars check
+   tc(  FieldType.VISA,         "ignore_visa_prefix4_length13_invalidChars",   true,   "#4455-067.4 44%71f3A",   "4455067444713",         "4455067444713",         Event.VALIDATION_SUCCESS  ),
+   // End invalid chars check
+   // Begin wrong prefix check
+   tc(  FieldType.VISA,   "ignore_visa_invalidPrefix1",      true,   "1",      "",      "",      Event.VALIDATION_SUCCESS  ),
+   tc(  FieldType.VISA,   "ignore_visa_invalidPrefix2",      true,   "2",      "",      "",      Event.VALIDATION_SUCCESS  ),
+   tc(  FieldType.VISA,   "ignore_visa_invalidPrefix3",      true,   "3",      "",      "",      Event.VALIDATION_SUCCESS  ),
+   tc(  FieldType.VISA,   "ignore_visa_invalidPrefix5",      true,   "5",      "",      "",      Event.VALIDATION_SUCCESS  ),
+   tc(  FieldType.VISA,   "ignore_visa_invalidPrefix6",      true,   "6",      "",      "",      Event.VALIDATION_SUCCESS  ),
+   tc(  FieldType.VISA,   "ignore_visa_invalidPrefix7",      true,   "7",      "",      "",      Event.VALIDATION_SUCCESS  ),
+   tc(  FieldType.VISA,   "ignore_visa_invalidPrefix8",      true,   "8",      "",      "",      Event.VALIDATION_SUCCESS  ),
+   tc(  FieldType.VISA,   "ignore_visa_invalidPrefix9",      true,   "9",      "",      "",      Event.VALIDATION_SUCCESS  ),
+   tc(  FieldType.VISA,   "ignore_visa_invalidPrefix0",      true,   "0",      "",      "",      Event.VALIDATION_SUCCESS  ),
+   // End wrong prefix check
 
    // Second set:  don't ignore invalid input
 
@@ -3363,7 +3384,30 @@ var testCases = [
    tc(  FieldType.MASTERCARD,   "noIgnore_masterCard_invalidPrefix8",      false,   "8641488077660210",   "8641488077660210",   "8641488077660210",   Event.VALIDATION_FAILED  ),
    tc(  FieldType.MASTERCARD,   "noIgnore_masterCard_invalidPrefix9",      false,   "9277072425886062",   "9277072425886062",   "9277072425886062",   Event.VALIDATION_FAILED  ),
    tc(  FieldType.MASTERCARD,   "noIgnore_masterCard_invalidPrefix0",      false,   "0454145386713147",   "0454145386713147",   "0454145386713147",   Event.VALIDATION_FAILED  ),
-  // End blatantly wrong prefix check 
+   // End blatantly wrong prefix check
+
+   // Begin invalid length check
+   tc(  FieldType.VISA,   "noIgnore_visa_prefix4_length12",   false,   "427815235648",           "427815235648",          "427815235648",          Event.VALIDATION_FAILED  ),
+   tc(  FieldType.VISA,   "noIgnore_visa_prefix4_length14",   false,   "45842811557182",         "45842811557182",        "45842811557182",        Event.VALIDATION_FAILED  ),
+   tc(  FieldType.VISA,   "noIgnore_visa_prefix4_length15",   false,   "438740434546761",        "438740434546761",       "438740434546761",       Event.VALIDATION_FAILED  ),
+   tc(  FieldType.VISA,   "noIgnore_visa_prefix4_length17",   false,   "43487538814261138",      "43487538814261138",     "43487538814261138",     Event.VALIDATION_FAILED  ),
+   tc(  FieldType.VISA,   "noIgnore_visa_prefix4_length18",   false,   "421431601867875553",     "421431601867875553",    "421431601867875553",    Event.VALIDATION_FAILED  ),
+   tc(  FieldType.VISA,   "noIgnore_visa_prefix4_length20",   false,   "43213753745312750349",   "43213753745312750349",  "43213753745312750349",  Event.VALIDATION_FAILED  ),
+   // End invalid length check
+   // Begin invalid chars check
+   tc(  FieldType.VISA,   "noIgnore_visa_prefix4_length13_invalidChars",   false,   "4455-0674-44713",   "4455-0674-44713",   "4455-0674-44713",  Event.VALIDATION_FAILED  ),
+   // End invalid chars check
+   // Begin wrong prefix check
+   tc(  FieldType.VISA,   "noIgnore_visa_invalidPrefix1",     false,   "1605245848825848",   "1605245848825848",   "1605245848825848",   Event.VALIDATION_FAILED  ),
+   tc(  FieldType.VISA,   "noIgnore_visa_invalidPrefix2",     false,   "2470338735648223",   "2470338735648223",   "2470338735648223",   Event.VALIDATION_FAILED  ),
+   tc(  FieldType.VISA,   "noIgnore_visa_invalidPrefix3",     false,   "3666013168163600",   "3666013168163600",   "3666013168163600",   Event.VALIDATION_FAILED  ),
+   tc(  FieldType.VISA,   "noIgnore_visa_invalidPrefix5",     false,   "5781802805381236",   "5781802805381236",   "5781802805381236",   Event.VALIDATION_FAILED  ),
+   tc(  FieldType.VISA,   "noIgnore_visa_invalidPrefix6",     false,   "6548487325884463",   "6548487325884463",   "6548487325884463",   Event.VALIDATION_FAILED  ),
+   tc(  FieldType.VISA,   "noIgnore_visa_invalidPrefix7",     false,   "7248126431710417",   "7248126431710417",   "7248126431710417",   Event.VALIDATION_FAILED  ),
+   tc(  FieldType.VISA,   "noIgnore_visa_invalidPrefix8",     false,   "8641488077660210",   "8641488077660210",   "8641488077660210",   Event.VALIDATION_FAILED  ),
+   tc(  FieldType.VISA,   "noIgnore_visa_invalidPrefix9",     false,   "9277072425886062",   "9277072425886062",   "9277072425886062",   Event.VALIDATION_FAILED  ),
+   tc(  FieldType.VISA,   "noIgnore_visa_invalidPrefix0",     false,   "0454145386713147",   "0454145386713147",   "0454145386713147",   Event.VALIDATION_FAILED  )
+   // End wrong prefix check
 ];
 
 /** Creates a test case */

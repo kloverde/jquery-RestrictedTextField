@@ -44,19 +44,6 @@
 
    var testNum = 0;
 
-   function setUp() {
-      log( "setUp" );
-
-      $( fieldSelector ).remove();
-
-      $( "<input/>", {
-         id   : "field",
-         type : "text"
-      } ).appendTo( $("#fieldContainer") );
-
-      resetEventFlags();
-   }
-
    function resetEventFlags() {
       log( "resetting event flags" );
 
@@ -66,8 +53,6 @@
    }
 
    function initField( title, fieldType, ignore ) {
-      setUp();
-
       log( "test:  " + title );
       log( "initField:  fieldType[" + fieldType + "], ignore[" + ignore + "]" );
 
@@ -153,6 +138,21 @@
       QUnit.config.hidepassed = true;
       QUnit.notrycatch = true;
 
+      QUnit.testStart( function() {   // Analagous to JUnit's @Before
+         log( "setUp" );
+
+         ++testNum;
+
+         $( fieldSelector ).remove();
+
+         $( "<input/>", {
+            id   : "field",
+            type : "text"
+         } ).appendTo( $("#fieldContainer") );
+
+         resetEventFlags();
+      } );
+
       QUnit.jUnitDone( function(report) {
          document.getElementById( "done" ).style.visibility = "visible";
 
@@ -162,8 +162,6 @@
       } );
 
       QUnit.cases( testCases ).test( "Test", function(params) {
-         ++testNum;
-
          initField( params.title, params.fieldType[0], params.preventInvalidInput );
          writeStatus( params.title, testNum, testCases.length );
 

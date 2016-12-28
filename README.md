@@ -144,43 +144,6 @@ Many other versions of the listed browsers, whether older or newer that what's l
 * Opera 4.3 / 41.1.2246.111645 - listed in the Play store as 4.3; reports as 41.1.2246.111645 from within Opera
 
 
-# Running the Unit Tests
-
-[Selenium](http://www.seleniumhq.org) is used for unit testing in order to generate true keypresses in a text field.  A JavaScript-based framework (such as QUnit, etc.) would have made life simpler, but synthetic JavaScript events don't carry out the actual actions associated with them.  In other words, simulating a keypress fires the correct events, but doesn't result in actual text being written to a text field.  This is a security restriction of JavaScript.  As a result, this project uses Selenium and JUnit.
-
-1.  Install the following build dependencies:
-  * [Node.js](https://nodejs.org/en)
-  * [Gradle](http://gradle.org)
-  * [Java JDK](http://www.oracle.com/technetwork/java/javase/index.html) version 8 or later
-  * [BuildScripts](https://github.com/kloverde/BuildScripts)
-  * [PaymentCardGenerator](https://github.com/kloverde/java-PaymentCardGenerator/releases) (see note below)
-2.  Modify the `buildScriptsDir` property in `SeleniumTester/gradle.properties` to reflect the location of BuildScripts on your filesystem
-3.  PaymentCardGenerator:  `SeleniumTester/build.gradle` indicates the version appropriate for this release.  Create a `lib` directory inside `SeleniumTester` and put the jar in there.  Maybe one day I'll put PaymentCardGenerator on Maven Central so that this manual action isn't necessary.
-4.  Download the appropriate browser drivers for your system at [seleniumhq.org](http://www.seleniumhq.org).  Once you've downloaded them, update `geckoDriverPath`, `edgeDriverPath`, `ieDriverPath` and `chromeDriverPath` in `SeleniumTester/gradle.properties` with their paths.
-5.  If you're testing in IE, set Protected Mode to the same value in all zones (it doesn't matter whether it's set to enabled or disabled, just that it's the same for all).  See [here](http://jimevansmusic.blogspot.com/2012/08/youre-doing-it-wrong-protected-mode-and.html) for more information.  If that page disappears from the Web, see [the Wayback Machine's copy](http://web.archive.org/web/20151026094711/http://jimevansmusic.blogspot.com/2012/08/youre-doing-it-wrong-protected-mode-and.html).
-6.  Set your browsers' zoom levels to 100%.  If you don't, Selenium will throw an exception, at least for IE.
-7.  Update the `browsers` property in `SeleniumTester/gradle.properties` to reflect which browsers you'll be testing with.  This is explained further by documentation found in the properties file.
-8.  Now, from a command prompt:
-  1.  `cd` to the project root (`jquery-RestrictedTextField`)
-  2.  Type `npm install`
-  3.  Type `npm test`
-
-
-#### UNIT TESTS GOTCHAS:
-
-* #### The Selenium project's 64-bit IE driver is broken for IE 10 and 11, and according to a Selenium contributor, is unfixable.  See [here](https://github.com/seleniumhq/selenium-google-code-issue-archive/issues/5116) and [here](http://jimevansmusic.blogspot.com/2014/09/screenshots-sendkeys-and-sixty-four.html).  If you're testing on a 64-bit version of Windows with IE 10 or 11, use the 32-bit driver instead.  Its performance is still quite poor, but is far better than the 64-bit driver.
-
-* #### If you're using Windows and if you haven't used Selenium before, Windows Firewall will pop up an alert asking whether to allow driver servers to listen for connections.  You need to grant these permissions.  During this time, one or more of the unit tests will fail.  Simply re-run the tests after the permission has been granted.
-
-* #### If you're running the unit tests in Firefox, you must use Firefox 48 or later.  Starting with Firefox 48, Selenium is required to use the Marionette/Gecko driver, and my code is written to initialize that particular driver.  Although RestrictedTextField itself is supported on older Firefox releases, the unit tests are not.
-
-* #### If you're running the unit tests in Firefox, the last known Gecko driver which worked was v0.10.0.  Sometime after that, something happened in the Gecko driver which messes up the tests' ability to trigger blur events, which results in practically every test failing.  Version 0.11.1 (November, 2016) is confirmed to cause this problem.  No later version of the Gecko driver has been tested.
-
-* #### It's critical that you do not interact with the machine in any way while tests are running.  Being that this plugin is event-driven, any action that could cause an event to be fired unexpectedly could cause tests to fail.  This includes human actions, but also includes applications popping up notifications or asserting themselves in other ways.  To the extent possible, you should take steps to minimize this possibility.
-
-* #### The tests fail in Edge if Edge doesn't have focus.  Sometimes Edge opens behind another window (for example, the console which you might have used to invoke the tests).
-
-
 ## Donations
 
 https://paypal.me/KurtisLoVerde/10

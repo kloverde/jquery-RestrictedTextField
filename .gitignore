@@ -1,7 +1,1 @@
-/bin
-/build
 /node_modules
-/src/temp
-/SeleniumTester/.gradle
-/SeleniumTester/build
-/SeleniumTester/lib

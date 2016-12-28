@@ -150,6 +150,8 @@
    }
 
    if( validateTestCases(testCases) ) {
+      QUnit.config.hidepassed = true;
+
       QUnit.jUnitDone( function(report) {
          document.getElementById( "done" ).style.visibility = "visible";
 

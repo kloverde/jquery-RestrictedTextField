@@ -122,9 +122,10 @@ See `demo/demo.html` for detailed examples.
 
 # Desktop Browser Compatibility
 
-Many other versions of Firefox and Chrome, whether older or newer than what's listed here, are certainly compatible.  Browsers not listed here might work fine, but have not been tested.  If jQuery is supported by the browser, RestrictedTextField should also work.
+Many other versions of Firefox and Chrome, whether older or newer than what's listed here, are certainly compatible.  Browsers not listed here might work fine, but have not been tested.  If jQuery is supported by the browser, RestrictedTextField should also work.  If you'd like to contribute compatibility information, send it to the e-mail address listed on my GitHub profile and I'll post it here.
 
 * Firefox 49.0.2
+* Pale Moon 26.4.1
 * Chrome 54.0.2840.99 m
 * Edge
 * IE 11
@@ -133,14 +134,14 @@ Many other versions of Firefox and Chrome, whether older or newer than what's li
 * IE 8:  INCOMPATIBLE
 
 
-# Mobile Browser Compatibility
+# Mobile Browser Compatibility (Android)
 
-Many other versions of the listed browsers, whether older or newer that what's listed here, are certainly compatible.  Browsers not listed here might work fine, but have not been tested.  If jQuery is supported by the browser, RestrictedTextField should also work.
+Many other versions of the listed browsers, whether older or newer that what's listed here, are certainly compatible.  Browsers not listed here might work fine, but have not been tested.  If jQuery is supported by the browser, RestrictedTextField should also work.  If you'd like to contribute compatibility information, send it to the e-mail address listed on my GitHub profile and I'll post it here.
 
-* Firefox 50.1.0 (Android)
-* Opera 4.3 / 41.1.2246.111645 (Android) - listed in the Play store as 4.3; reported as 41.1.2246.111645 in the application
-
-I will not be evaluating RestrictedTextField in mobile Chrome because it requires me to accept terms of use and a privacy policy before letting me into the application.  I respectfully decline.  If someone wants to run the unit tests and play with the demo page in Chrome and report the results back to me, along with their Chrome version, I'll add the information here.
+* Firefox 50.1.0
+* Pale Moon 25.9.6
+* Chrome 55.0.2883.91
+* Opera 4.3 / 41.1.2246.111645 - listed in the Play store as 4.3; reports as 41.1.2246.111645 from within Opera
 
 
 # Running the Unit Tests

@@ -38,11 +38,21 @@
 
    var fieldSelector = "#field";
 
-   var inputIgnoredEvent,
-       validationFailedEvent,
-       validationSuccessEvent;
+   var field = null,
+       status = null,
+       fieldContainer = null;
+
+   var inputIgnoredEvent = false,
+       validationFailedEvent = false,
+       validationSuccessEvent = false;
 
    var testNum = 0;
+
+
+   $( document ).ready( function() {
+      status = $( "#status" );
+      fieldContainer = $( "#fieldContainer" );
+   } );
 
    function resetEventFlags() {
       log( "resetting event flags" );
@@ -56,31 +66,27 @@
       log( "test:  " + title );
       log( "initField:  fieldType[" + fieldType + "], ignore[" + ignore + "]" );
 
-      var jqField = $( fieldSelector );
+      field.restrictedTextField( { type : fieldType,
+                                   preventInvalidInput : ignore,
+                                   logger : log } );
 
-      jqField.restrictedTextField( { type : fieldType,
-                                     preventInvalidInput : ignore,
-                                     logger : log } );
-
-      jqField.on( "inputIgnored", function() {
+      field.on( "inputIgnored", function() {
          log( "inputIgnored event captured" );
          inputIgnoredEvent = true;
       } );
 
-      jqField.on( "validationFailed", function() {
+      field.on( "validationFailed", function() {
          log( "validationFailed event captured" );
          validationFailedEvent = true;
       } );
 
-      jqField.on( "validationSuccess", function() {
+      field.on( "validationSuccess", function() {
          log( "validationSuccess event captured" );
          validationSuccessEvent = true;
       } );
    }
 
    function simulateInput( input ) {
-      var field = $( fieldSelector );
-
       for( var i = 0; i < input.length; i++ ) {
          field.trigger( "keydown" );
          field.val( field.val() + input[i] );
@@ -92,11 +98,11 @@
    }
 
    function writeStatus( title, testNum, totalTests ) {
-      $( "#status" ).html( title + "<br/>Test " + testNum + " of " + totalTests );
+      status.html( title + "<br/>Test " + testNum + " of " + totalTests );
    }
 
    function validatePreBlur( params ) {
-      var actualValue = $( fieldSelector ).val();
+      var actualValue = field.val();
 
       equal( actualValue, params.expectedValueBeforeBlur, "Pre-blur:  Ensure field has expected value" );
 
@@ -115,7 +121,7 @@
    }
 
    function validatePostBlur( params ) {
-      var actualValue = $( fieldSelector ).val();
+      var actualValue = field.val();
 
       equal( actualValue, params.expectedValueAfterBlur, "Post-blur:  Ensure field has expected value" );
 
@@ -143,13 +149,16 @@
 
          ++testNum;
 
-         $( fieldSelector ).remove();
+         if( field != null ) {
+            field.remove();
+         }
 
          $( "<input/>", {
             id   : "field",
             type : "text"
-         } ).appendTo( $("#fieldContainer") );
+         } ).appendTo( fieldContainer );
 
+         field = $( fieldSelector );
          resetEventFlags();
       } );
 
@@ -172,7 +181,7 @@
          log( "setting up blur validation" );
          resetEventFlags();
 
-         $( fieldSelector ).blur();
+         field.blur();
          validatePostBlur( params );
       } );
    }

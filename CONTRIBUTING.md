@@ -15,7 +15,7 @@ please follow these few rules:
     your changes will not be accepted.  If your changes are of a nature that no new tests are necessary
     (for example, you're tweaking an existing regular expression which already has test coverage and was
     failing in an obscure browser), include a note which mentions this.  This will ensure that your changes
-    are not automatically rejected.
+    are not rejected.
 
 5.  Submit your changes through pull requests on GitHub.  Code submissions sent by other means won't be
     accepted.

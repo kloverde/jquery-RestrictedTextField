@@ -36,7 +36,7 @@
 ( function() {
    "use strict";
 
-   var selector = "#field";
+   var fieldSelector = "#field";
 
    var inputIgnoredEvent,
        validationFailedEvent,
@@ -47,7 +47,7 @@
    function setUp() {
       log( "setUp" );
 
-      $( "#field" ).remove();
+      $( fieldSelector ).remove();
 
       $( "<input/>", {
          id   : "field",
@@ -71,7 +71,7 @@
       log( "test:  " + title );
       log( "initField:  fieldType[" + fieldType + "], ignore[" + ignore + "]" );
 
-      var jqField = $( "#field" );
+      var jqField = $( fieldSelector );
 
       jqField.restrictedTextField( { type : fieldType,
                                      preventInvalidInput : ignore,
@@ -94,7 +94,7 @@
    }
 
    function simulateInput( input ) {
-      var field = $( "#field" );
+      var field = $( fieldSelector );
 
       for( var i = 0; i < input.length; i++ ) {
          field.trigger( "keydown" );
@@ -111,7 +111,7 @@
    }
 
    function validatePreBlur( params ) {
-      var actualValue = $( selector ).val();
+      var actualValue = $( fieldSelector ).val();
 
       equal( actualValue, params.expectedValueBeforeBlur, "Pre-blur:  Ensure field has expected value" );
 
@@ -130,7 +130,7 @@
    }
 
    function validatePostBlur( params ) {
-      var actualValue = $( selector ).val();
+      var actualValue = $( fieldSelector ).val();
 
       equal( actualValue, params.expectedValueAfterBlur, "Post-blur:  Ensure field has expected value" );
 
@@ -171,7 +171,7 @@
          log( "setting up blur validation" );
          resetEventFlags();
 
-         $( selector ).blur();
+         $( fieldSelector ).blur();
          validatePostBlur( params );
       } );
    }

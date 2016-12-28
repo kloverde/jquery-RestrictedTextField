@@ -2,8 +2,9 @@
 
 You have stumbled upon a development branch.  Have a look around if you want, but only use code that has been merged to the master branch.
 
-* Change to event firing:  validation success & validation failure events were firing pre-blur with `preventInvalidInput` enabled.  This is contrary to the documentation, which states that these events do not fire in that scenario.  The documentation describes the correct behavior.  The events no longer fire in this scenario.
-* Added credit cards (AMEX, VISA, MasterCard, Discover), plus a credit card type encompassing each of these types
+* Now confirmed to work on mobile!  See README.md for a list of tested browsers.
+* Change to event firing:  validation success & validation failure events were firing pre-blur with `preventInvalidInput` enabled.  This is contrary to the documentation, which states that these events do not fire in that scenario.  The documentation reflected the intended behavior; the events no longer fire in this scenario.
+* Added credit cards types (AMEX, VISA, MasterCard, Discover), plus a credit card type encompassing each of these types
 * Added a [Luhn](https://en.wikipedia.org/wiki/Luhn_algorithm) type
 * Updated and improved the demo page
 * The unit tests have a new dependency:  [PaymentCardGenerator](https://github.com/kloverde/java-PaymentCardGenerator].  See README.md for more information.

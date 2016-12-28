@@ -122,15 +122,25 @@ See `demo/demo.html` for detailed examples.
 
 # Desktop Browser Compatibility
 
-This plugin has only been tested on desktop browsers.  Mobile testing might happen in the future.  As for desktop browsers, many other versions of Firefox and Chrome, whether older or newer than what's listed here, are certainly compatible.  Browsers not listed here might work fine, but have not been tested.
+Many other versions of Firefox and Chrome, whether older or newer than what's listed here, are certainly compatible.  Browsers not listed here might work fine, but have not been tested.  If jQuery is supported by the browser, RestrictedTextField should also work.
 
-* Firefox 49.0.2:  Compatible
-* Chrome 54.0.2840.99 m:  Compatible
-* Edge:  Compatible
-* IE 11:  Compatible
-* IE 10:  Compatible
-* IE 9:  Compatible
+* Firefox 49.0.2
+* Chrome 54.0.2840.99 m
+* Edge
+* IE 11
+* IE 10
+* IE 9
 * IE 8:  INCOMPATIBLE
+
+
+# Mobile Browser Compatibility
+
+Many other versions of the listed browsers, whether older or newer that what's listed here, are certainly compatible.  Browsers not listed here might work fine, but have not been tested.  If jQuery is supported by the browser, RestrictedTextField should also work.
+
+* Firefox 50.1.0 (Android)
+* Opera 4.3 / 41.1.2246.111645 (Android) - listed in the Play store as 4.3; reported as 41.1.2246.111645 in the application
+
+I will not be evaluating RestrictedTextField in mobile Chrome because it requires me to accept terms of use and a privacy policy before letting me into the application.  I respectfully decline.  If someone wants to run the unit tests and play with the demo page in Chrome and report the results back to me, along with their Chrome version, I'll add the information here.
 
 
 # Running the Unit Tests

@@ -1,5 +1,5 @@
 /*
- * RestrictedTextField v1.1.1
+ * RestrictedTextField
  * https://www.github.com/kloverde/jquery-RestrictedTextField
  *
  * Copyright (c) 2016, Kurtis LoVerde
@@ -31,27 +31,33 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.loverde.jquery.restrictedtextfield.selenium.tests;
+"use strict";
 
-import org.loverde.jquery.restrictedtextfield.selenium.Event;
-import org.loverde.jquery.restrictedtextfield.selenium.FieldType;
+var Characters = {};
 
+Characters.UPPER_ALPHA = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+Characters.LOWER_ALPHA = "abcdefghijklmnopqrstuvwxyz";
+Characters.ALPHA = Characters.UPPER_ALPHA + Characters.LOWER_ALPHA;
 
-/**
- * This class' purpose is to re-run {@linkplain AbstractTest} under
- * a unique name so that in a multi-browser test scenario, you know
- * which browser a test failed in.
- */
-public class EdgeTest extends AbstractTest {
+Characters.ALPHA_SPACE = Characters.ALPHA + " ";
+Characters.UPPER_ALPHA_SPACE = Characters.UPPER_ALPHA + " ";
+Characters.LOWER_ALPHA_SPACE = Characters.LOWER_ALPHA + " ";
 
-   public EdgeTest( final FieldType fieldType,
-                    final String    testName,
-                    final boolean   ignoreInvalidInput,
-                    final String    input,
-                    final String    expectedValueBeforeBlur,
-                    final String    expectedValueAfterBlur,
-                    final Event     expectedEventOnBlur ) throws Exception {
+Characters.NUMBERS_NO_ZERO = "123456789";
+Characters.NUMBERS_START_ZERO = "0" + Characters.NUMBERS_NO_ZERO;
+Characters.NUMBERS_END_ZERO = Characters.NUMBERS_NO_ZERO + "0";
 
-      super( fieldType, testName, ignoreInvalidInput, input, expectedValueBeforeBlur, expectedValueAfterBlur, expectedEventOnBlur );
-   }
-}
+Characters.ALPHANUMERIC = Characters.ALPHA + Characters.NUMBERS_END_ZERO;
+Characters.UPPER_ALPHANUMERIC = Characters.UPPER_ALPHA + Characters.NUMBERS_END_ZERO;
+Characters.LOWER_ALPHANUMERIC = Characters.LOWER_ALPHA + Characters.NUMBERS_END_ZERO;
+
+Characters.ALPHANUMERIC_SPACE = Characters.ALPHANUMERIC + " ";
+Characters.UPPER_ALPHANUMERIC_SPACE = Characters.UPPER_ALPHANUMERIC + " ";
+Characters.LOWER_ALPHANUMERIC_SPACE = Characters.LOWER_ALPHANUMERIC + " ";
+
+Characters.SYMBOLS_EXCEPT_PARENS = "`~!@#$%^&*-_=+]}[{;:'\"/?.>,<";
+Characters.SYMBOLS_EXCEPT_MINUS = "`~!@#$%^&*()_=+]}[{;:'\"/?.>,<";
+Characters.SYMBOLS = Characters.SYMBOLS_EXCEPT_MINUS + "-";
+
+Characters.ALL = Characters.ALPHANUMERIC_SPACE + Characters.SYMBOLS;
+Characters.ALL_EXCEPT_MINUS = Characters.ALPHANUMERIC_SPACE + Characters.SYMBOLS_EXCEPT_MINUS;

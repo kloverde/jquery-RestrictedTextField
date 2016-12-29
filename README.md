@@ -1,16 +1,16 @@
-RestrictedTextField v1.1.1
-==========================
+RestrictedTextField v1.2
+========================
 
 See LICENSE for this software's licensing terms.
 
-A jQuery plugin which uses regular expressions to validate HTML text fields.  Using nearly 30 built-in types or types you define yourself, it allows you to prevent invalid keystrokes or to allow them into the field for later validation.  Fields are always validated on blur.
+RestrictedTextField is a jQuery plugin which uses regular expressions to validate and control input to HTML text fields.  Using 35 built-in types or types you define yourself, it allows you to suppress invalid keystrokes or to allow them into the field for later validation.  Fields are always validated on blur.
 
 
 ## Features
 
-* Prevent invalid keystrokes or catch a validation failure event to handle it as you wish
-* Has 29 built-in types
-* Extendible:  define your own types
+* Discard invalid keystrokes or catch a validation failure event to handle it as you wish
+* Has 35 built-in types
+* Extensible:  define your own types
 * Money types automatically format on blur to end in a decimal point and two digits
 
 
@@ -45,6 +45,12 @@ A jQuery plugin which uses regular expressions to validate HTML text fields.  Us
 27.  Negative money
 28.  Accounting money notation (negatives expressed by wrapping the value in parentheses)
 29.  Negative accounting money
+30.  American Express
+31.  VISA 
+32.  MasterCard
+33.  Discover
+34.  Credit Card (combines all of the individual credit card types above)
+35.  [Luhn-valid](https://en.wikipedia.org/wiki/Luhn_algorithm) numbers
 
 
 ## What's the difference between integer/strict integer, float/strict float?
@@ -70,11 +76,18 @@ A jQuery plugin which uses regular expressions to validate HTML text fields.  Us
 * Zero cannot be negative
 
 
+## Credit Card types
+
+Each credit card type enforces prefixes and length as specified by https://en.wikipedia.org/wiki/Payment_card_number in December, 2016.  [Luhn validation](https://en.wikipedia.org/wiki/Luhn_algorithm) is also performed.
+
+If you prefer not to use strictly-enforced credit card types (is Wikipedia correct, and is RestrictedTextField up-to-date?), you can use the Luhn type instead.  It performs basic mathematical validation, but it can only tell you that a value is invalid, not that a value IS valid.  Full validation would then be shifted to your payment card processor in the form of a rejected transaction -- or, if they provide an API for validation, you could use that.
+
+
 ## Configuration
 
 | Property | Description   | Data Type | Valid Values         | Default Value |
 | -------- | --------------|---------- |----------------------|---------------|
-| `type`   | Text field type.  This is a required setting. | string | alpha, upperAlpha, lowerAlpha, alphaSpace, upperAlphaSpace, lowerAlphaSpace, alphanumeric, upperAlphanumeric, lowerAlphanumeric, alphanumericSpace, upperAlphanumericSpace, lowerAlphanumericSpace, int, positiveInt, negativeInt, strictInt, strictPositiveInt, strictNegativeInt, float, positiveFloat, negativeFloat, strictFloat, money, positiveMoney, negativeMoney, accountingMoney, negativeAccountingMoney| null |
+| `type`   | Text field type.  This is a required setting. | string | alpha, upperAlpha, lowerAlpha, alphaSpace, upperAlphaSpace, lowerAlphaSpace, alphanumeric, upperAlphanumeric, lowerAlphanumeric, alphanumericSpace, upperAlphanumericSpace, lowerAlphanumericSpace, int, positiveInt, negativeInt, strictInt, strictPositiveInt, strictNegativeInt, float, positiveFloat, negativeFloat, strictFloat, strictPositiveFloat, strictNegativeFloat, money, positiveMoney, negativeMoney, accountingMoney, negativeAccountingMoney, americanExpress, visa, masterCard, discover, creditCard, luhnNumber | null |
 | `preventInvalidInput` | When enabled, invalid keystrokes are ignored (the value of the text field is not updated).  When disabled, invalid keystrokes are not ignored. | boolean | true/false | true |
 | `logger` | An optional callback function for logging.  If you want to enable logging, provide a function and then do whatever you wish with the message. | function | A function accepting the log message as a string argument | undefined |
 
@@ -86,8 +99,8 @@ These events are fired based on the state of the text field.
 | Event name        | Description                                                     |
 | ------------------| ----------------------------------------------------------------|
 | inputIgnored      | Fires when an invalid keystroke is ignored.  `preventInvalidInput` must be enabled for this event to fire. |
-| validationFailed  | Fires when an invalid keystroke is made when `preventInvalidInput` is disabled.  Also fires if validation performed on blur() fails. |
-| validationSuccess | Fires when the user removes invalid data when `preventInvalidInput` is disabled.  Also fires if validation performed on blur() succeeds. |
+| validationFailed  | If `preventInvalidInput` is disabled, fires when an invalid keystroke is made.  Also fires if validation performed on blur fails. |
+| validationSuccess | If `preventInvalidInput` is disabled, fires when the user removes invalid data.  Also fires if validation performed on blur succeeds. |
 
 
 #### Example
@@ -102,57 +115,35 @@ $( "#field" ).restrictedTextField( {
 } );
 ```
 
-See `demo/demo.html` for complete examples.
+See `demo/demo.html` for detailed examples.
 
 
 # Desktop Browser Compatibility
 
-This plugin has only been tested on desktop browsers.  Mobile testing might happen in the future.  As for desktop browsers, many other versions of Firefox and Chrome, whether older or newer than what's listed here, are certainly compatible.  Browsers not listed here might work fine, but have not been tested.
+Many other versions of Firefox and Chrome, whether older or newer than what's listed here, are certainly compatible.  Browsers not listed here might work fine, but have not been tested.  If jQuery is supported by the browser, RestrictedTextField should also work.  If you'd like to contribute compatibility information, send it to the e-mail address listed on my GitHub profile and I'll post it here.
 
-* Firefox 49.0.2:  Compatible
-* Chrome 54.0.2840.99 m:  Compatible
-* Edge:  Compatible
-* IE 11:  Compatible
-* IE 10:  Compatible
-* IE 9:  Compatible
+* Firefox 49.0.2
+* Pale Moon 26.4.1
+* Chrome 54.0.2840.99 m
+* Edge
+* IE 11
+* IE 10
+* IE 9
 * IE 8:  INCOMPATIBLE
 
 
-# Running the Unit Tests
+# Mobile Browser Compatibility (Android)
 
-[Selenium](http://www.seleniumhq.org) is used for unit testing in order to generate true keypresses in a text field.  A JavaScript-based framework (such as QUnit, etc.) would have made life simpler, but synthetic JavaScript events don't carry out the actual actions associated with them.  In other words, simulating a keypress fires the correct events, but doesn't result in actual text being written to a text field.  This is a security restriction of JavaScript.  As a result, this project uses Selenium and JUnit.
+Many other versions of the listed browsers, whether older or newer that what's listed here, are certainly compatible.  Browsers not listed here might work fine, but have not been tested.  If jQuery is supported by the browser, RestrictedTextField should also work.  If you'd like to contribute compatibility information, send it to the e-mail address listed on my GitHub profile and I'll post it here.
 
-1.  Install the following build dependencies:
-  * [Node.js](https://nodejs.org/en)
-  * [Gradle](http://gradle.org)
-  * [Java JDK](http://www.oracle.com/technetwork/java/javase/index.html) version 8 or later
-  * [BuildScripts](https://github.com/kloverde/BuildScripts)
-2.  Modify the `buildScriptsDir` property in `SeleniumTester/gradle.properties` to reflect the location of BuildScripts on your filesystem
-3.  Download the appropriate browser drivers for your system at [seleniumhq.org](http://www.seleniumhq.org).  Once you've downloaded them, update `geckoDriverPath`, `edgeDriverPath`, `ieDriverPath` and `chromeDriverPath` in `SeleniumTester/gradle.properties` with their paths.
-4.  If you're testing in IE, set Protected Mode to the same value in all zones (it doesn't matter whether it's set to enabled or disabled, just that it's the same for all).  See [here](http://jimevansmusic.blogspot.com/2012/08/youre-doing-it-wrong-protected-mode-and.html) for more information.  If that page disappears from the Web, see [the Wayback Machine's copy](http://web.archive.org/web/20151026094711/http://jimevansmusic.blogspot.com/2012/08/youre-doing-it-wrong-protected-mode-and.html).
-5.  Set your browsers' zoom levels to 100%.  If you don't, Selenium will throw an exception, at least for IE.
-6.  Update the `browsers` property in `SeleniumTester/gradle.properties` to reflect which browsers you'll be testing with.  This is explained further by documentation found in the properties file.
-7.  Now, from a command prompt:
-  1.  `cd` to the project root (`jquery-RestrictedTextField`)
-  2.  Type `npm install`
-  3.  Type `npm test`
+* Firefox 50.1.0
+* Pale Moon 25.9.6
+* Chrome 55.0.2883.91
+* Opera 4.3 / 41.1.2246.111645 - listed in the Play store as 4.3; reports as 41.1.2246.111645 from within Opera
 
 
-#### UNIT TESTS GOTCHAS:
+## Donations
 
-* #### The Selenium project's 64-bit IE driver is broken for IE 10 and 11, and according to a Selenium contributor, is unfixable.  See [here](https://github.com/seleniumhq/selenium-google-code-issue-archive/issues/5116) and [here](http://jimevansmusic.blogspot.com/2014/09/screenshots-sendkeys-and-sixty-four.html).  If you're testing on a 64-bit version of Windows with IE 10 or 11, use the 32-bit driver instead.  Its performance is still quite poor, but is far better than the 64-bit driver.
+https://paypal.me/KurtisLoVerde/10
 
-* #### If you're using Windows and if you haven't used Selenium before, Windows Firewall will pop up an alert asking whether to allow driver servers to listen for connections.  You need to grant these permissions.  During this time, one or more of the unit tests will fail.  Simply re-run the tests after the permission has been granted.
-
-* #### If you're running the unit tests in Firefox, you must use Firefox 48 or later.  Starting with Firefox 48, Selenium is required to use the Marionette/Gecko driver, and my code is written to initialize that particular driver.  Although RestrictedTextField itself is supported on older Firefox releases, the unit tests are not.
-
-* #### If you're running the unit tests in Firefox, the last known Gecko driver which worked was v0.10.0.  Sometime after that, something happened in the Gecko driver which messes up the tests' ability to trigger blur events, which results in practically every test failing.  Version 0.11.1 (November, 2016) is confirmed to cause this problem.  No later version of the Gecko driver has been tested.
-
-* #### It's critical that you do not interact with the machine in any way while tests are running.  Being that this plugin is event-driven, any action that could cause an event to be fired unexpectedly could cause tests to fail.  This includes human actions, but also includes applications popping up notifications or asserting themselves in other ways.  To the extent possible, you should take steps to minimize this possibility.
-
-* #### The tests fail in Edge if Edge doesn't have focus.  Sometimes Edge opens behind another window (for example, the console which you might have used to invoke the tests).
-
-
-## Thanks
-
-Do you like this software?  Want to toss a few bucks my way to say thanks?  I accept donations at https://paypal.me/KurtisLoVerde/10.  Thank you for your support!
+Thank you for your support!

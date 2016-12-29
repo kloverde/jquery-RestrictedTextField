@@ -1,3 +1,13 @@
+# Release 1.2 (December 28, 2016)
+
+* Now confirmed to work on mobile!  See README.md for a list of tested browsers.
+* Change to event firing:  validation success & validation failure events were firing pre-blur with `preventInvalidInput` enabled.  This is contrary to the documentation, which states that these events do not fire in that scenario.  The documentation reflected the intended behavior; the events no longer fire in this scenario.
+* Added credit cards types (AMEX, VISA, MasterCard, Discover), plus a credit card type encompassing each of these types
+* Added a [Luhn](https://en.wikipedia.org/wiki/Luhn_algorithm) type
+* Updated and redesigned the demo page
+* The unit tests are no longer implemented with Java/Selenium/JUnit; they've been re-implemented in JavaScript/QUnit.  This dramatically improves test performance and greatly simplifies running tests (just open the HTML file).
+
+
 # Release 1.1.1 (November 28, 2016)
 
 * The demo page wasn't working due to an incorrect path to jquery.js.  This has been fixed.  Although the source code, including the JavaScript files themselves, have been updated to say 1.1.1 in their internal code comments, there is no difference in these files from release 1.1.  Only demo.html has been changed.

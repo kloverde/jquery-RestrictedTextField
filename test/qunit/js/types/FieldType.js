@@ -68,5 +68,8 @@ var FieldType = {
    MASTERCARD                : ["masterCard", "MasterCard credit card numnbers conforming to https://en.wikipedia.org/wiki/Payment_card_number (December, 2016) and https://en.wikipedia.org/wiki/Luhn_algorithm"],
    DISCOVER                  : ["discover", "Discover credit card numbers conforming to https://en.wikipedia.org/wiki/Payment_card_number (December, 2016) and https://en.wikipedia.org/wiki/Luhn_algorithm"],
    CREDIT_CARD               : ["creditCard", "Combines all of the individual credit card types provided by RestrictedTextField"],
-   LUHN_NUMBER               : ["luhnNumber", "Any value which validates according to the Luhn algorithm (see https://en.wikipedia.org/wiki/Luhn_algorithm)"]
+   LUHN_NUMBER               : ["luhnNumber", "Any value which validates according to the Luhn algorithm (see https://en.wikipedia.org/wiki/Luhn_algorithm)"],
+   US_ZIP                    : ["usZip", "5-9 digit United States zip code.  If more than 5, has a hyphen after the fifth digit, followed by 1-4 digits."],
+   US_ZIP5                   : ["usZip5", "5-digit United States zip code"],
+   US_ZIP_SUFFIX             : ["usZipSuffix", "1-4 digit United States zip code suffix"],
 };

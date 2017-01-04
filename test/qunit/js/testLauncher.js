@@ -165,7 +165,7 @@
          document.getElementById( "done" ).style.visibility = "visible";
 
          if( typeof console !== "undefined" ) {
-            console.log( report.xml );
+            console.log( report.xml );  // TODO:  Get this out of the browser
          }
       } );
 

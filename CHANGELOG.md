@@ -1,8 +1,13 @@
+# Release 1.3 (January 3, 2017)
+
+* Added zip code types
+
+
 # Release 1.2 (December 28, 2016)
 
 * Now confirmed to work on mobile!  See README.md for a list of tested browsers.
 * Change to event firing:  validation success & validation failure events were firing pre-blur with `preventInvalidInput` enabled.  This is contrary to the documentation, which states that these events do not fire in that scenario.  The documentation reflected the intended behavior; the events no longer fire in this scenario.
-* Added credit cards types (AMEX, VISA, MasterCard, Discover), plus a credit card type encompassing each of these types
+* Added credit card types (AMEX, VISA, MasterCard, Discover), plus a credit card type encompassing each of these types
 * Added a [Luhn](https://en.wikipedia.org/wiki/Luhn_algorithm) type
 * Updated and redesigned the demo page
 * The unit tests are no longer implemented with Java/Selenium/JUnit; they've been re-implemented in JavaScript/QUnit.  This dramatically improves test performance and greatly simplifies running tests (just open the HTML file).

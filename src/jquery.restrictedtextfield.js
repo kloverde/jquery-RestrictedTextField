@@ -1,5 +1,5 @@
 /*
- * RestrictedTextField v1.2
+ * RestrictedTextField v1.3
  * https://www.github.com/kloverde/jquery-RestrictedTextField
  *
  * Copyright (c) 2016, Kurtis LoVerde
@@ -208,6 +208,10 @@
          // leave it to your payment card processor to reject an invalid credit card number, while still using Luhn validation to
          // reject a number that has no possibility of being valid.  This is the safest option, but the choice is yours.
          _addType( dest, "luhnNumber",  /^\d+$/  ,  null );
+
+         _addType( dest, "usZip",        /^\d{5}(\-\d{1,4})?$/  , /^(\d{1,5}|\d{5}\-|\d{5}\-\d{1,4})$/ );
+         _addType( dest, "usZip5",       /^\d{5}$/              , /^\d{1,5}$/ );
+         _addType( dest, "usZipSuffix",  /^\d{1,4}$/            , null );
       }
 
       var regexes = $.fn.restrictedTextField.types[ settings.type ];
@@ -391,7 +395,7 @@
             }
 
             if( (integerPart === "" || parseInt(integerPart) === 0) && (parseInt(decimalPart) === 0) ) {
-               formatted = "0.00"
+               formatted = "0.00";
             } else {
                formatted = openParen
                          + sign

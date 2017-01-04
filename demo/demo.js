@@ -86,6 +86,8 @@
          "} );<br/>\n" +
          "</code>\n"
       );
+
+      field.focus();
    }
 
    function flashBorder( jqField, cssClass, times, delayMillis ) {

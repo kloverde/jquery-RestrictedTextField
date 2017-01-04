@@ -2778,6 +2778,33 @@ var testCases = [
    tc(  FieldType.VISA,   "ignore_visa_invalidPrefix0",      true,   "0",      "",      "",      Event.VALIDATION_SUCCESS  ),
    // End wrong prefix check
 
+   tc(  FieldType.US_ZIP,   "ignore_usZip_1digit",            true,   "1",            "1",            "1",            Event.VALIDATION_FAILED  ),
+   tc(  FieldType.US_ZIP,   "ignore_usZip_2digits",           true,   "12",           "12",           "12",           Event.VALIDATION_FAILED  ),
+   tc(  FieldType.US_ZIP,   "ignore_usZip_3digits",           true,   "123",          "123",          "123",          Event.VALIDATION_FAILED  ),
+   tc(  FieldType.US_ZIP,   "ignore_usZip_4digits",           true,   "1234",         "1234",         "1234",         Event.VALIDATION_FAILED  ),
+   tc(  FieldType.US_ZIP,   "ignore_usZip_5digits",           true,   "12345",        "12345",        "12345",        Event.VALIDATION_SUCCESS  ),
+   tc(  FieldType.US_ZIP,   "ignore_usZip_6digitsNoHyphen",   true,   "123456",       "12345",        "12345",        Event.VALIDATION_SUCCESS  ),
+   tc(  FieldType.US_ZIP,   "ignore_usZip_6digits",           true,   "12345-6",      "12345-6",      "12345-6",      Event.VALIDATION_SUCCESS  ),
+   tc(  FieldType.US_ZIP,   "ignore_usZip_7digits",           true,   "12345-67",     "12345-67",     "12345-67",     Event.VALIDATION_SUCCESS  ),
+   tc(  FieldType.US_ZIP,   "ignore_usZip_8digits",           true,   "12345-678",    "12345-678",    "12345-678",    Event.VALIDATION_SUCCESS  ),
+   tc(  FieldType.US_ZIP,   "ignore_usZip_9digits",           true,   "12345-6789",   "12345-6789",   "12345-6789",   Event.VALIDATION_SUCCESS  ),
+   tc(  FieldType.US_ZIP,   "ignore_usZip_invalidChars",      true,   "1-2 3d4.5$",   "12345",        "12345",        Event.VALIDATION_SUCCESS  ),
+
+   tc(  FieldType.US_ZIP5,   "ignore_usZip5_1digit",         true,   "1",            "1",       "1",       Event.VALIDATION_FAILED  ),
+   tc(  FieldType.US_ZIP5,   "ignore_usZip5_2digits",        true,   "12",           "12",      "12",      Event.VALIDATION_FAILED  ),
+   tc(  FieldType.US_ZIP5,   "ignore_usZip5_3digits",        true,   "123",          "123",     "123",     Event.VALIDATION_FAILED  ),
+   tc(  FieldType.US_ZIP5,   "ignore_usZip5_4digits",        true,   "1234",         "1234",    "1234",    Event.VALIDATION_FAILED  ),
+   tc(  FieldType.US_ZIP5,   "ignore_usZip5_5digits",        true,   "12345",        "12345",   "12345",   Event.VALIDATION_SUCCESS  ),
+   tc(  FieldType.US_ZIP5,   "ignore_usZip5_6digits",        true,   "123456",       "12345",   "12345",   Event.VALIDATION_SUCCESS  ),
+   tc(  FieldType.US_ZIP5,   "ignore_usZip5_invalidChars",   true,   "1-2 3d4.5$",   "12345",   "12345",   Event.VALIDATION_SUCCESS  ),
+
+   tc(  FieldType.US_ZIP_SUFFIX,   "ignore_usZipSuffix_1digit",        true,   "1",          "1",      "1",      Event.VALIDATION_SUCCESS  ),
+   tc(  FieldType.US_ZIP_SUFFIX,   "ignore_usZipSuffix_2digits",       true,   "12",         "12",     "12",     Event.VALIDATION_SUCCESS  ),
+   tc(  FieldType.US_ZIP_SUFFIX,   "ignore_usZipSuffix_3digits",       true,   "123",        "123",    "123",    Event.VALIDATION_SUCCESS  ),
+   tc(  FieldType.US_ZIP_SUFFIX,   "ignore_usZipSuffix_4digits",       true,   "1234",       "1234",   "1234",   Event.VALIDATION_SUCCESS  ),
+   tc(  FieldType.US_ZIP_SUFFIX,   "ignore_usZipSuffix_5digits",       true,   "12345",      "1234",   "1234",   Event.VALIDATION_SUCCESS  ),
+   tc(  FieldType.US_ZIP_SUFFIX,   "ignore_usZipSuffix_invalidChars",  true,   "1-2 3d4.$",  "1234",   "1234",   Event.VALIDATION_SUCCESS  ),
+
    // Second set:  don't ignore invalid input
 
    tc(  FieldType.ALPHA,         "noIgnore_alpha_invalid1",        false,   "!",   "!",   "!",   Event.VALIDATION_FAILED  ),
@@ -3406,8 +3433,35 @@ var testCases = [
    tc(  FieldType.VISA,   "noIgnore_visa_invalidPrefix7",     false,   "7248126431710417",   "7248126431710417",   "7248126431710417",   Event.VALIDATION_FAILED  ),
    tc(  FieldType.VISA,   "noIgnore_visa_invalidPrefix8",     false,   "8641488077660210",   "8641488077660210",   "8641488077660210",   Event.VALIDATION_FAILED  ),
    tc(  FieldType.VISA,   "noIgnore_visa_invalidPrefix9",     false,   "9277072425886062",   "9277072425886062",   "9277072425886062",   Event.VALIDATION_FAILED  ),
-   tc(  FieldType.VISA,   "noIgnore_visa_invalidPrefix0",     false,   "0454145386713147",   "0454145386713147",   "0454145386713147",   Event.VALIDATION_FAILED  )
+   tc(  FieldType.VISA,   "noIgnore_visa_invalidPrefix0",     false,   "0454145386713147",   "0454145386713147",   "0454145386713147",   Event.VALIDATION_FAILED  ),
    // End wrong prefix check
+
+   tc(  FieldType.US_ZIP,   "noIgnore_usZip_1digit",            false,   "1",            "1",            "1",            Event.VALIDATION_FAILED  ),
+   tc(  FieldType.US_ZIP,   "noIgnore_usZip_2digits",           false,   "12",           "12",           "12",           Event.VALIDATION_FAILED  ),
+   tc(  FieldType.US_ZIP,   "noIgnore_usZip_3digits",           false,   "123",          "123",          "123",          Event.VALIDATION_FAILED  ),
+   tc(  FieldType.US_ZIP,   "noIgnore_usZip_4digits",           false,   "1234",         "1234",         "1234",         Event.VALIDATION_FAILED  ),
+   tc(  FieldType.US_ZIP,   "noIgnore_usZip_5digits",           false,   "12345",        "12345",        "12345",        Event.VALIDATION_SUCCESS  ),
+   tc(  FieldType.US_ZIP,   "noIgnore_usZip_6digitsNoHyphen",   false,   "123456",       "123456",       "123456",       Event.VALIDATION_FAILED  ),
+   tc(  FieldType.US_ZIP,   "noIgnore_usZip_6digits",           false,   "12345-6",      "12345-6",      "12345-6",      Event.VALIDATION_SUCCESS  ),
+   tc(  FieldType.US_ZIP,   "noIgnore_usZip_7digits",           false,   "12345-67",     "12345-67",     "12345-67",     Event.VALIDATION_SUCCESS  ),
+   tc(  FieldType.US_ZIP,   "noIgnore_usZip_8digits",           false,   "12345-678",    "12345-678",    "12345-678",    Event.VALIDATION_SUCCESS  ),
+   tc(  FieldType.US_ZIP,   "noIgnore_usZip_9digits",           false,   "12345-6789",   "12345-6789",   "12345-6789",   Event.VALIDATION_SUCCESS  ),
+   tc(  FieldType.US_ZIP,   "noIgnore_usZip_invalidChars",      false,   "1-2 3d4.5$",   "1-2 3d4.5$",   "1-2 3d4.5$",   Event.VALIDATION_FAILED  ),
+
+   tc(  FieldType.US_ZIP5,   "noIgnore_usZip5_1digit",         false,   "1",            "1",            "1",            Event.VALIDATION_FAILED  ),
+   tc(  FieldType.US_ZIP5,   "noIgnore_usZip5_2digits",        false,   "12",           "12",           "12",           Event.VALIDATION_FAILED  ),
+   tc(  FieldType.US_ZIP5,   "noIgnore_usZip5_3digits",        false,   "123",          "123",          "123",          Event.VALIDATION_FAILED  ),
+   tc(  FieldType.US_ZIP5,   "noIgnore_usZip5_4digits",        false,   "1234",         "1234",         "1234",         Event.VALIDATION_FAILED  ),
+   tc(  FieldType.US_ZIP5,   "noIgnore_usZip5_5digits",        false,   "12345",        "12345",        "12345",        Event.VALIDATION_SUCCESS  ),
+   tc(  FieldType.US_ZIP5,   "noIgnore_usZip5_6digits",        false,   "123456",       "123456",       "123456",       Event.VALIDATION_FAILED  ),
+   tc(  FieldType.US_ZIP5,   "noIgnore_usZip5_invalidChars",   false,   "1-2 3d4.5$",   "1-2 3d4.5$",   "1-2 3d4.5$",   Event.VALIDATION_FAILED  ),
+
+   tc(  FieldType.US_ZIP_SUFFIX,   "noIgnore_usZipSuffix_1digit",        false,   "1",           "1",           "1",           Event.VALIDATION_SUCCESS  ),
+   tc(  FieldType.US_ZIP_SUFFIX,   "noIgnore_usZipSuffix_2digits",       false,   "12",          "12",          "12",          Event.VALIDATION_SUCCESS  ),
+   tc(  FieldType.US_ZIP_SUFFIX,   "noIgnore_usZipSuffix_3digits",       false,   "123",         "123",         "123",         Event.VALIDATION_SUCCESS  ),
+   tc(  FieldType.US_ZIP_SUFFIX,   "noIgnore_usZipSuffix_4digits",       false,   "1234",        "1234",        "1234",        Event.VALIDATION_SUCCESS  ),
+   tc(  FieldType.US_ZIP_SUFFIX,   "noIgnore_usZipSuffix_5digits",       false,   "12345",       "12345",       "12345",       Event.VALIDATION_FAILED  ),
+   tc(  FieldType.US_ZIP_SUFFIX,   "noIgnore_usZipSuffix_invalidChars",  false,   "1-2 3d4.$",   "1-2 3d4.$",   "1-2 3d4.$",   Event.VALIDATION_FAILED  )
 ];
 
 /** Creates a test case */

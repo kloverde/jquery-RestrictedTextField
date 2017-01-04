@@ -1,15 +1,15 @@
-RestrictedTextField v1.2
+RestrictedTextField v1.3
 ========================
 
 See LICENSE for this software's licensing terms.
 
-RestrictedTextField is a jQuery plugin which uses regular expressions to validate and control input to HTML text fields.  Using 35 built-in types or types you define yourself, it allows you to suppress invalid keystrokes or to allow them into the field for later validation.  Fields are always validated on blur.
+RestrictedTextField is a jQuery plugin which uses regular expressions to validate and control input to HTML text fields.  Using 38 built-in types or types you define yourself, it allows you to suppress invalid keystrokes or to allow them into the field but be flagged incorrect.  Validation is performed on keystroke, paste and blur.
 
 
 ## Features
 
 * Discard invalid keystrokes or catch a validation failure event to handle it as you wish
-* Has 35 built-in types
+* Has 38 built-in types
 * Extensible:  define your own types
 * Money types automatically format on blur to end in a decimal point and two digits
 
@@ -51,6 +51,9 @@ RestrictedTextField is a jQuery plugin which uses regular expressions to validat
 33.  Discover
 34.  Credit Card (combines all of the individual credit card types above)
 35.  [Luhn-valid](https://en.wikipedia.org/wiki/Luhn_algorithm) numbers
+36.  US zip code (5 digits)
+37.  US zip code suffix (1-4 digits)
+38.  US zip code (5 digits with optional suffix)
 
 
 ## What's the difference between integer/strict integer, float/strict float?
@@ -87,7 +90,7 @@ If you prefer not to use strictly-enforced credit card types (is Wikipedia corre
 
 | Property | Description   | Data Type | Valid Values         | Default Value |
 | -------- | --------------|---------- |----------------------|---------------|
-| `type`   | Text field type.  This is a required setting. | string | alpha, upperAlpha, lowerAlpha, alphaSpace, upperAlphaSpace, lowerAlphaSpace, alphanumeric, upperAlphanumeric, lowerAlphanumeric, alphanumericSpace, upperAlphanumericSpace, lowerAlphanumericSpace, int, positiveInt, negativeInt, strictInt, strictPositiveInt, strictNegativeInt, float, positiveFloat, negativeFloat, strictFloat, strictPositiveFloat, strictNegativeFloat, money, positiveMoney, negativeMoney, accountingMoney, negativeAccountingMoney, americanExpress, visa, masterCard, discover, creditCard, luhnNumber | null |
+| `type`   | Text field type.  This is a required setting. | string | alpha, upperAlpha, lowerAlpha, alphaSpace, upperAlphaSpace, lowerAlphaSpace, alphanumeric, upperAlphanumeric, lowerAlphanumeric, alphanumericSpace, upperAlphanumericSpace, lowerAlphanumericSpace, int, positiveInt, negativeInt, strictInt, strictPositiveInt, strictNegativeInt, float, positiveFloat, negativeFloat, strictFloat, strictPositiveFloat, strictNegativeFloat, money, positiveMoney, negativeMoney, accountingMoney, negativeAccountingMoney, americanExpress, visa, masterCard, discover, creditCard, luhnNumber, usZip, usZip5, usZipSuffix | null |
 | `preventInvalidInput` | When enabled, invalid keystrokes are ignored (the value of the text field is not updated).  When disabled, invalid keystrokes are not ignored. | boolean | true/false | true |
 | `logger` | An optional callback function for logging.  If you want to enable logging, provide a function and then do whatever you wish with the message. | function | A function accepting the log message as a string argument | undefined |
 

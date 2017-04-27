@@ -1,5 +1,5 @@
 /*
- * RestrictedTextField v1.3
+ * RestrictedTextField v1.4
  * https://www.github.com/kloverde/jquery-RestrictedTextField
  *
  * Copyright (c) 2016, Kurtis LoVerde
@@ -50,7 +50,7 @@
        *                       phone number, for example, you need to provide a value for partialRegex to ensure that the user will be
        *                       able to continue to type into the field.  If partialRegex is not defined or is null, the text field will
        *                       be validated against this fullRegex on every keystroke.  Notwithstanding any of the foregoing, this
-       *                       regular expression is also used to validate the text field on blur. 
+       *                       regular expression is also used to validate the text field on blur.
        *
        * @param partialRegex - RegExp object.  This regular expression describes what a valid value looks like while the user is entering
        *                       it, NOT what valid input looks like after the user has finished.  If you provide a value for this, this
@@ -80,6 +80,7 @@
       var settings = $.extend( {
          type                : null,
          preventInvalidInput : true,
+         usePatternAttr      : false,
          logger              : undefined
       }, options );
 
@@ -111,15 +112,15 @@
          _addType( dest, "alpha",                   /^[a-zA-Z]+$/            , null );
          _addType( dest, "upperAlpha",              /^[A-Z]+$/               , null );
          _addType( dest, "lowerAlpha",              /^[a-z]+$/               , null );
-         _addType( dest, "alphaSpace",              /^[a-zA-Z\ ]+$/          , null );
-         _addType( dest, "upperAlphaSpace",         /^[A-Z\ ]+$/             , null );
-         _addType( dest, "lowerAlphaSpace",         /^[a-z\ ]+$/             , null );
+         _addType( dest, "alphaSpace",              /^[a-zA-Z ]+$/           , null );
+         _addType( dest, "upperAlphaSpace",         /^[A-Z ]+$/              , null );
+         _addType( dest, "lowerAlphaSpace",         /^[a-z ]+$/              , null );
          _addType( dest, "alphanumeric",            /^[a-zA-Z\d]+$/          , null );
          _addType( dest, "upperAlphanumeric",       /^[A-Z\d]+$/             , null );
          _addType( dest, "lowerAlphanumeric",       /^[a-z\d]+$/             , null );
-         _addType( dest, "alphanumericSpace",       /^[a-zA-Z\d\ ]+$/        , null );
-         _addType( dest, "upperAlphanumericSpace",  /^[A-Z\d\ ]+$/           , null );
-         _addType( dest, "lowerAlphanumericSpace",  /^[a-z\d\ ]+$/           , null );
+         _addType( dest, "alphanumericSpace",       /^[a-zA-Z\d ]+$/         , null );
+         _addType( dest, "upperAlphanumericSpace",  /^[A-Z\d ]+$/            , null );
+         _addType( dest, "lowerAlphanumericSpace",  /^[a-z\d ]+$/            , null );
          _addType( dest, "int",                     /^-?\d+$/                , partialNegativeInt );
          _addType( dest, "positiveInt",             /^\d+$/                  , null );
          _addType( dest, "negativeInt",             /^0+$|^-\d+$/            , partialNegativeInt );
@@ -209,7 +210,7 @@
          // reject a number that has no possibility of being valid.  This is the safest option, but the choice is yours.
          _addType( dest, "luhnNumber",  /^\d+$/  ,  null );
 
-         _addType( dest, "usZip",        /^\d{5}(\-\d{1,4})?$/  , /^(\d{1,5}|\d{5}\-|\d{5}\-\d{1,4})$/ );
+         _addType( dest, "usZip",        /^\d{5}(-\d{1,4})?$/   , /^(\d{1,5}|\d{5}-|\d{5}-\d{1,4})$/ );
          _addType( dest, "usZip5",       /^\d{5}$/              , /^\d{1,5}$/ );
          _addType( dest, "usZipSuffix",  /^\d{1,4}$/            , null );
       }
@@ -271,6 +272,11 @@
          var jqThis = $( this );
          var valueBeforeCommit = "";
 
+         if( settings.usePatternAttr === true ) {
+            var str = regexes.fullRegex.toString();
+            jqThis.prop( "pattern", str[0] === "/" && str[str.length - 1] === "/" ? str.substring(1, str.length - 1) : str );
+         }
+
          jqThis.on( "keydown paste", function(event) {
             valueBeforeCommit = this.value;
          } );
@@ -301,7 +307,7 @@
 
                if( passesFullRegex ) {
                   log( "passes full regex" );
-                  
+
                   if( !settings.preventInvalidInput ) {
                      responseEvent = EVENT_VALIDATION_SUCCESS;
                   }
@@ -363,7 +369,7 @@
             } else {
                passesFullRegex = regexes.fullRegex.test( this.value );
             }
-            
+
             if( this.value.length === 0 || passesFullRegex ) {
                responseEvent = EVENT_VALIDATION_SUCCESS;
             }
@@ -383,7 +389,7 @@
             var len         = value.length;
             var sign        = value[0] === "-" ? "-" : "";
             var openParen   = value[0] === "(" ? "(" : "";
-            var closeParen  = value[ len - 1 ] === ")" ? ")" : ""; 
+            var closeParen  = value[ len - 1 ] === ")" ? ")" : "";
             var decimalIdx  = value.indexOf( "." );
             var integerPart = value.substring( openParen === "" && sign === "" ? 0 : 1,
                                                decimalIdx > 0 ? decimalIdx -1 : (closeParen === ")" ? len - 1 : len) );

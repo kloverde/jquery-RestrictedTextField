@@ -42,6 +42,7 @@
       var fieldType = document.getElementById( "fieldTypes" ).value;
       var preventInvalid = $( "#preventInvalid" ).is( ":checked" );
       var usePatternAttr = $( "#usePatternAttr" ).is( ":checked" );
+      var form = document.getElementById( "form" );
       var fieldContainer = document.getElementById( "fieldContainer" );
       var field = document.createElement( "input" );
       var submit = document.createElement( "input" );

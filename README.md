@@ -1,5 +1,7 @@
-RestrictedTextField v1.3
+RestrictedTextField v1.4 (UPCOMING RELEASE)
 ========================
+
+# You've stumbled upon a development branch.  Have a look around if you want, but only use code that's posted on the releases page.
 
 See LICENSE for this software's licensing terms.
 
@@ -11,6 +13,7 @@ RestrictedTextField is a jQuery plugin which uses regular expressions to validat
 * Discard invalid keystrokes or catch a validation failure event to handle it as you wish
 * Has 38 built-in types
 * Extensible:  define your own types
+* Supports (but does not rely on) the HTML 5 `pattern` attribute - can be enabled during initialization
 * Money types automatically format on blur to end in a decimal point and two digits
 
 
@@ -93,6 +96,7 @@ If you prefer not to use strictly-enforced credit card types (is Wikipedia corre
 | `type`   | Text field type.  This is a required setting. | string | alpha, upperAlpha, lowerAlpha, alphaSpace, upperAlphaSpace, lowerAlphaSpace, alphanumeric, upperAlphanumeric, lowerAlphanumeric, alphanumericSpace, upperAlphanumericSpace, lowerAlphanumericSpace, int, positiveInt, negativeInt, strictInt, strictPositiveInt, strictNegativeInt, float, positiveFloat, negativeFloat, strictFloat, strictPositiveFloat, strictNegativeFloat, money, positiveMoney, negativeMoney, accountingMoney, negativeAccountingMoney, americanExpress, visa, masterCard, discover, creditCard, luhnNumber, usZip, usZip5, usZipSuffix | null |
 | `preventInvalidInput` | When enabled, invalid keystrokes are ignored (the value of the text field is not updated).  When disabled, invalid keystrokes are not ignored. | boolean | true/false | true |
 | `logger` | An optional callback function for logging.  If you want to enable logging, provide a function and then do whatever you wish with the message. | function | A function accepting the log message as a string argument | undefined |
+| `usePatternAttr` | When enabled, sets the HTML5 `pattern` attribute on the input field.  Check [caniuse.com](http://caniuse.com/#search=pattern) for browser support. | boolean | true/false | false |
 
 
 ## Events

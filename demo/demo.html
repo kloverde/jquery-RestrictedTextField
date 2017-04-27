@@ -1,65 +1,71 @@
 <!DOCTYPE html>
 
-<!--
-   RestrictedTextField
-   https://www.github.com/kloverde/jquery-RestrictedTextField
-
-   Copyright (c) 2016, Kurtis LoVerde
-   All rights reserved.
-
-   Donations:  https://paypal.me/KurtisLoVerde/10
-
-   Redistribution and use in source and binary forms, with or without
-   modification, are permitted provided that the following conditions are met:
-
-       1. Redistributions of source code must retain the above copyright
-          notice, this list of conditions and the following disclaimer.
-       2. Redistributions in binary form must reproduce the above copyright
-          notice, this list of conditions and the following disclaimer in the
-          documentation and/or other materials provided with the distribution.
-       3. Neither the name of the copyright holder nor the names of its
-          contributors may be used to endorse or promote products derived from
-          this software without specific prior written permission.
-
-   THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
-   ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
-   WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
-   DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
-   FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
-   DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
-   SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
-   CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
-   OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
-   OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
--->
-
 <html lang="en-US">
    <head>
       <meta charset="UTF-8"/>
+
+      <!--
+         RestrictedTextField
+         https://www.github.com/kloverde/jquery-RestrictedTextField
+
+         Copyright (c) 2016, Kurtis LoVerde
+         All rights reserved.
+
+         Donations:  https://paypal.me/KurtisLoVerde/10
+
+         Redistribution and use in source and binary forms, with or without
+         modification, are permitted provided that the following conditions are met:
+
+             1. Redistributions of source code must retain the above copyright
+                notice, this list of conditions and the following disclaimer.
+             2. Redistributions in binary form must reproduce the above copyright
+                notice, this list of conditions and the following disclaimer in the
+                documentation and/or other materials provided with the distribution.
+             3. Neither the name of the copyright holder nor the names of its
+                contributors may be used to endorse or promote products derived from
+                this software without specific prior written permission.
+
+         THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+         ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+         WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+         DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
+         FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+         DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+         SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+         CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+         OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+         OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+      -->
 
       <title>RestrictedTextField Demo</title>
 
       <link rel="stylesheet" href="demo.css"/>
 
-      <script type="text/javascript" src="../test/qunit/dep/jquery.js"></script>
-      <script type="text/javascript" src="../test/qunit/js/types/FieldType.js"></script>
+      <script type="text/javascript" src="../test/dep/jquery.js"></script>
+      <script type="text/javascript" src="../test/js/types/FieldType.js"></script>
       <script type="text/javascript" src="../src/jquery.restrictedtextfield.js"></script>
       <script type="text/javascript" src="demo.js"></script>
    </head>
 
    <body>
       <h1>Test Drive</h1>
-      <p>
-         This section allows you to test drive RestrictedTextField's built-in types.<br/>
-         Select a type from the dropdown menu and use the checkbox to control whether invalid keystrokes are discarded.<br/>
-         Regardless of the checkbox state, validation is always performed on each keystroke and on blur.
-      </p>
 
-      <p>
-         This demo has event listeners that flash the text field's border when a keystroke is discarded, and colors its<br/>
-         border solid red if it contains an invalid character.  The demo initializes RestrictedTextField with a logging<br/>
-         function, so you can open your browser's console to view events in real time.
-      </p>
+      <div id="instructions">
+         <p>Here you can test drive RestrictedTextField's built-in types.  Select a type from the dropdown menu and use the checkboxes to further customize the configuration.</p>
+
+         <p>Regardless of the state of the &quot;Discard invalid keystrokes&quot; checkbox, validation is always performed on each keystroke and on blur.</p>
+
+         <p>This demo declares event listeners that flash the text field's border when a keystroke is discarded, and colors its border solid red if an invalid character is allowed into the field.</p>
+
+         <p>
+            To better demonstrate the support of the <a href="http://caniuse.com/#search=pattern" target="_blank">pattern</a> attribute, the event listener which watches for invalid text
+            inside the field will be disabled when the pattern attribute is in use.  You'll notice that with the pattern attribute, the browser's built-in behavior alters the field's border
+            color, but only on blur.  Notice how this differs from RestrictedTextField's approach when the pattern attribute isn't turned on.  Note:  for types which require validation beyond
+            a regular expression (for example, a credit card number), the pattern attribute won't provide complete validation; you'll want to heed RestrictedTextField's validation events.
+         </p>
+
+         <p>The demo initializes RestrictedTextField with a logging function, so you can open your browser's console to view events in real time.</p>
+      </div>
 
       <div id="fieldDemo">
          <div id="criteria" class="cell">
@@ -69,11 +75,13 @@
 
             <br/><br/>
 
-            <input type="checkbox" id="preventInvalid"/> Discard invalid keystrokes
+            <input type="checkbox" id="preventInvalid"/> Discard invalid keystrokes<br/>
+            <input type="checkbox" id="usePatternAttr"/> Use pattern attribute
          </div>
 
-         <div id="fieldContainer" class="cell">
-         </div>
+         <form id="form" action="submitted.html">
+            <div id="fieldContainer" class="cell"></div>
+         </form>
 
          <div id="code" class="cell"></div>
       </div>
@@ -103,10 +111,9 @@
          <h3>Simple type:  vowels</h3>
          <p>Create a type which restricts input to the characters a, e, i, o and u.</p>
          <p>
-            This is a simple type:  the presence of a character
-            at position X does not require a character to be present at position X + Y.  Therefore, any value in the text field could be
-            regarded as the complete input.  For this reason, we provide a regular expression for <code>fullRegex</code> and no value for
-            <code>partialRegex</code>.
+            This is a simple type:  the presence of a character at position X does not require a character to be present at position X + Y.
+            Therefore, any value in the text field could be regarded as the complete input.  For this reason, we provide a regular
+            expression for <code>fullRegex</code> and no value for <code>partialRegex</code>.
          </p>
          <p>
             <code>
@@ -147,6 +154,6 @@
          support.  Your support is greatly appreciated, and it motivates me to keep this project alive and to release
          more open source software.
       </p>
-      <a href="https://paypal.me/KurtisLoVerde/10" target="new">https://paypal.me/KurtisLoVerde/10</a>
+      <a href="https://paypal.me/KurtisLoVerde/10" target="_blank">https://paypal.me/KurtisLoVerde/10</a>
    </body>
 </html>

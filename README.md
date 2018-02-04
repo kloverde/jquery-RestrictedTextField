@@ -7,7 +7,7 @@ RestrictedTextField is a jQuery plugin which uses regular expressions to validat
 
 You might not need this plugin for your purposes - the HTML5 `pattern` attribute provides most of the same functionality.  If, however, you must support browsers that don't support `pattern`, or if you want to make use of RestrictedTextField's additional features, then perhaps it might be a good fit for you.
 
-The biggest difference between this plugin and `pattern` is that RestrcitedTextField allows you to (optionally) suppress invalid keystrokes in real time, rather than allow them into the field to fail validation later.  If you do want to allow invalid characters in, however, you have that option.
+The biggest difference between this plugin and `pattern` is that RestrictedTextField allows you to (optionally) suppress invalid keystrokes in real time, rather than allow them into the field to fail validation later.  If you do want to allow invalid characters in, however, you have that option.
 
 If you're only interested in `pattern`-based validation, you might still find RestrictedTextField useful.  It provides the ability to disable its own validation implementation and use `pattern` exclusively.  In this scenario, you'd just be using RestrictedTextField as a repository of pre-written regular expressions.  Although you could just copy the regular expressions from the source code, you might find it easier on code maintenance to not be dropping multiple copies of the same regular expressions into your project.
 
@@ -105,7 +105,7 @@ If you prefer not to use strictly-enforced credit card types (is Wikipedia corre
 
 ## Events
 
-These events are fired based on the state of the text field, but only if `usePatternAttr` is disabled.
+These events are fired based on the state of the text field, but only if `usePatternAttr` is set to false.
 
 | Event name        | Description                                                     |
 | ------------------| ----------------------------------------------------------------|

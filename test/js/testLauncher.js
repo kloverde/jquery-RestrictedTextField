@@ -40,6 +40,8 @@
 
    var field = null,
        status = null,
+       realtimeReadout = null,
+       currentTest = null,
        fieldContainer = null;
 
    var inputIgnoredEvent = false,
@@ -51,6 +53,8 @@
 
    $( document ).ready( function() {
       status = $( "#status" );
+      realtimeReadout = $( "#realtimeReadout" );
+      currentTest = $( "#currentTest" );
       fieldContainer = $( "#fieldContainer" );
    } );
 
@@ -97,8 +101,8 @@
    function log( msg ) {
    }
 
-   function writeStatus( title, testNum, totalTests ) {
-      status.html( title + "<br/>Test " + testNum + " of " + totalTests );
+   function writeCurrentTest( title, testNum, totalTests ) {
+      currentTest.html( title + "<br/>Test " + testNum + " of " + totalTests );
    }
 
    function validatePreBlur( params ) {
@@ -162,19 +166,27 @@
       } );
 
       QUnit.jUnitDone( function(report) {
+         if( report.results.failed === 0 ) {
+            status.html( "SUCCESS" );
+            status.addClass( "statusSuccess" );
+         } else {
+            status.html( "FAILED" );
+            status.addClass( "statusFail" );
+         }
+
+         realtimeReadout.remove();
          document.getElementById( "done" ).style.visibility = "visible";
 
          if( typeof console !== "undefined" ) {
-            console.log( report.xml );  // TODO:  Get this out of the browser
+            console.log( report.xml );  // TODO:  Export this out of the browser
          }
       } );
 
       QUnit.cases( testCases ).test( "Test", function(params) {
          initField( params.title, params.fieldType[0], params.preventInvalidInput );
-         writeStatus( params.title, testNum, testCases.length );
+         writeCurrentTest( params.title, testNum, testCases.length );
 
          simulateInput( params.input );
-
          validatePreBlur( params );
 
          log( "setting up blur validation" );

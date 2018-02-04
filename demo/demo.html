@@ -53,16 +53,9 @@
       <div id="instructions">
          <p>Here you can test drive RestrictedTextField's built-in types.  Select a type from the dropdown menu and use the checkboxes to further customize the configuration.</p>
 
-         <p>Regardless of the state of the &quot;Discard invalid keystrokes&quot; checkbox, validation is always performed on each keystroke and on blur.</p>
+         <p>If the <a href="http://caniuse.com/#search=pattern" target="_blank">pattern</a> attribute is disabled, RestrictedTextField uses its own validation implementation:  validation is performed on each keystroke and on blur, and is done regardless of the state of the &quot;Discard invalid keystrokes&quot; checkbox.  Event listeners flash the text field's border when a keystroke is discarded, and colors its border solid orange if an invalid character makes it into the field.</p>
 
-         <p>This demo declares event listeners that flash the text field's border when a keystroke is discarded, and colors its border solid red if an invalid character is allowed into the field.</p>
-
-         <p>
-            To better demonstrate the support of the <a href="http://caniuse.com/#search=pattern" target="_blank">pattern</a> attribute, the event listener which watches for invalid text
-            inside the field will be disabled when the pattern attribute is in use.  You'll notice that with the pattern attribute, the browser's built-in behavior alters the field's border
-            color, but only on blur.  Notice how this differs from RestrictedTextField's approach when the pattern attribute isn't turned on.  Note:  for types which require validation beyond
-            a regular expression (for example, a credit card number), the pattern attribute won't provide complete validation; you'll want to heed RestrictedTextField's validation events.
-         </p>
+         <p>Note that if using the pattern attribute, you will lose Luhn validation on credit card types and the Luhn type, as Luhn calculations cannot be performed with regular expressions.  Patten mode is meant to be a pure HTML5 validation.</p>
 
          <p>The demo initializes RestrictedTextField with a logging function, so you can open your browser's console to view events in real time.</p>
       </div>

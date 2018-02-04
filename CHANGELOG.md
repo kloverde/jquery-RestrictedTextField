@@ -11,7 +11,7 @@
 # Release 1.2 (December 28, 2016)
 
 * Now confirmed to work on mobile!  See README.md for a list of tested browsers.
-* Change to event firing:  validation success & validation failure events were firing pre-blur with `preventInvalidInput` enabled.  This is contrary to the documentation, which states that these events do not fire in that scenario.  The documentation reflected the intended behavior; the events no longer fire in this scenario.
+* Change to event firing:  validation success & validation failure events were firing pre-blur with `preventInvalidInput` enabled.  This was contrary to the documentation, which stated that these events do not fire in that scenario.  The documentation reflected the intended behavior; the events no longer fire in this scenario.
 * Added credit card types (AMEX, VISA, MasterCard, Discover), plus a credit card type encompassing each of these types
 * Added a [Luhn](https://en.wikipedia.org/wiki/Luhn_algorithm) type
 * Updated and redesigned the demo page

@@ -24,7 +24,7 @@
          if( this.value !== "Select Type" ) {
             createField();
          } else {
-            $( "#fieldContainer" ).html( "" );
+            fieldContainer.hide();
             $( "#code" ).html( "" );
          }
       } );
@@ -42,9 +42,12 @@
       var fieldType = document.getElementById( "fieldTypes" ).value;
       var preventInvalid = $( "#preventInvalid" ).is( ":checked" );
       var usePatternAttr = $( "#usePatternAttr" ).is( ":checked" );
-      var fieldContainer = document.getElementById( "fieldContainer" );
+      var fieldContainer = $( "#fieldContainer" );
       var field = document.createElement( "input" );
       var submit = document.createElement( "input" );
+      var code = $( "#code" );
+
+      var fieldCreated = false;
 
       field.type = "text";
       field.id = "field";
@@ -53,9 +56,9 @@
       submit.type = "submit";
       submit.value = "Submit";
 
-      fieldContainer.innerHTML = descrMap[fieldType] + "<br/><br/>";
-      fieldContainer.appendChild( field );
-      fieldContainer.appendChild( submit );
+      fieldContainer.html( descrMap[fieldType] + "<br/><br/>" );
+      fieldContainer.append( field );
+      fieldContainer.append( submit );
 
       if( !usePatternAttr ) {
          $( submit ).on( "click", function(event) {
@@ -68,47 +71,60 @@
 
       field = $( field );
 
-      field.restrictedTextField( {
-         type : fieldType,
-         preventInvalidInput : preventInvalid,
-         usePatternAttr : usePatternAttr,
-         logger : log
-      } );
+      try {
+         field.restrictedTextField( {
+            type : fieldType,
+            preventInvalidInput : preventInvalid,
+            usePatternAttr : usePatternAttr,
+            logger : log
+         } );
 
-      field.on( "inputIgnored", function(event) {
-         var jqThis = $( this );
+         fieldCreated = true;
+      } catch( e ) {
+         fieldContainer.hide();
+         code.hide();
+         alert( e );
+      }
 
-         jqThis.removeClass( "invalid" );
-         jqThis.removeClass( "inputIgnored" );
+      if( fieldCreated ) {
+         fieldContainer.show();
+         code.show();
 
-         flashBorder( jqThis, "inputIgnored", 3, 150 );
-      } )
-      .on( "validationFailed", function(event) {
-         if( !usePatternAttr ) {
+         field.on( "inputIgnored", function(event) {
             var jqThis = $( this );
+
+            jqThis.removeClass( "invalid" );
             jqThis.removeClass( "inputIgnored" );
-            jqThis.addClass( "invalid" );
-         }
-      } )
-      .on( "validationSuccess", function(event) {
-         var jqThis = $( this );
 
-         jqThis.removeClass( "inputIgnored" );
-         jqThis.removeClass( "invalid" );
-      } );
+            flashBorder( jqThis, "inputIgnored", 3, 150 );
+         } )
+         .on( "validationFailed", function(event) {
+            if( !usePatternAttr ) {
+               var jqThis = $( this );
+               jqThis.removeClass( "inputIgnored" );
+               jqThis.addClass( "invalid" );
+            }
+         } )
+         .on( "validationSuccess", function(event) {
+            var jqThis = $( this );
 
-      $( "#code" ).html(
-         "<code>\n" +
-         "$( \"#field\" ).restrictedTextField( {<br/>\n" +
-         "&nbsp;&nbsp;&nbsp;type : \"" + fieldType + "\",<br/>\n" +
-         "&nbsp;&nbsp;&nbsp;preventInvalidInput : " + preventInvalid + ",<br/>\n" +
-         "&nbsp;&nbsp;&nbsp;usePatternAttr : " + usePatternAttr + ",<br/>\n" +
-         "&nbsp;&nbsp;&nbsp;logger : log<br/>\n" +
-         "} );<br/>\n" +
-         "</code>\n"
-      );
+            jqThis.removeClass( "inputIgnored" );
+            jqThis.removeClass( "invalid" );
+         } );
 
-      field.focus();
+         code.html(
+            "<code>\n" +
+            "$( \"#field\" ).restrictedTextField( {<br/>\n" +
+            "&nbsp;&nbsp;&nbsp;type : \"" + fieldType + "\",<br/>\n" +
+            "&nbsp;&nbsp;&nbsp;preventInvalidInput : " + preventInvalid + ",<br/>\n" +
+            "&nbsp;&nbsp;&nbsp;usePatternAttr : " + usePatternAttr + ",<br/>\n" +
+            "&nbsp;&nbsp;&nbsp;logger : function( msg ) { do stuff }<br/>\n" +
+            "} );<br/>\n" +
+            "</code>\n"
+         );
+
+         field.focus();
+      }
    }
 
    function flashBorder( jqField, cssClass, times, delayMillis ) {

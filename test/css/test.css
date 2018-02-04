@@ -59,6 +59,10 @@ h1, h2 {
    height: 100%;
 }
 
+#realtimeReadout {
+   margin-top: 65px;
+}
+
 #fieldContainer {
    padding-bottom: 15px;
    clear: both;
@@ -73,7 +77,15 @@ h1, h2 {
    height: 20px;
 }
 
+.statusSuccess {
+   color: #04C932;
+}
+
+.statusFail {
+   color: #FF0000;
+}
+
 #done {
-   margin-top: 80px;
+   margin-top: 40px;
    visibility: hidden;
 }

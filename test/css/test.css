@@ -89,3 +89,8 @@ h1, h2 {
    margin-top: 40px;
    visibility: hidden;
 }
+
+#saveContainer {
+   margin-top: 75px;
+   visibility: hidden;
+}

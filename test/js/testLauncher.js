@@ -42,7 +42,8 @@
        status = null,
        realtimeReadout = null,
        currentTest = null,
-       fieldContainer = null;
+       fieldContainer = null,
+       saveButton = null;
 
    var inputIgnoredEvent = false,
        validationFailedEvent = false,
@@ -56,7 +57,12 @@
       realtimeReadout = $( "#realtimeReadout" );
       currentTest = $( "#currentTest" );
       fieldContainer = $( "#fieldContainer" );
+      saveButton = $( "#saveButton" );
    } );
+
+   function saveReport( xml ) {
+      var uriContent = "data:application/octet-stream," + encodeURIComponent( report );
+   }
 
    function resetEventFlags() {
       log( "resetting event flags" );
@@ -144,6 +150,20 @@
       }
    }
 
+   function download( filename, text ) {
+      var a = $( "<a/>", {
+         "href" : "data:text/plain;charset=utf-8," + encodeURIComponent( text ),
+         "download" : filename
+      } );
+
+      // Odd... jQuery.click() doesn't trigger the link, even if it's appended to the page first.
+      // Oh well, regular ol' JS to the rescue.
+
+      var event = document.createEvent( "MouseEvents" );
+      event.initEvent( "click", true, true );
+      a[0].dispatchEvent( event );
+   }
+
    if( validateTestCases(testCases) ) {
       QUnit.config.hidepassed = true;
 
@@ -175,11 +195,28 @@
          }
 
          realtimeReadout.remove();
-         document.getElementById( "done" ).style.visibility = "visible";
+         $( "#done" ).css( "visibility", "visible" );
 
-         if( typeof console !== "undefined" ) {
-            console.log( report.xml );  // TODO:  Export this out of the browser
-         }
+         saveButton.on( "click", function() {
+            function zeroPad( datePart ) {
+               return datePart < 10 ? "0" + datePart : datePart;
+            }
+
+            var d = new Date();
+
+            var year  = d.getFullYear(),
+                month = zeroPad( d.getMonth() + 1 ),
+                day   = zeroPad( d.getDate() ),
+                hour  = zeroPad( d.getHours() ),
+                min   = zeroPad( d.getMinutes() ),
+                sec   = zeroPad( d.getSeconds() );
+
+            var timestamp = year + "-" + month + "-" + day + "_" + hour + "-" + min + "-" + sec;
+
+            download( "RestrictedTextField-TestResult-" + timestamp + ".xml", report.xml );
+         } );
+
+         $( "#saveContainer" ).css( "visibility", "visible" );
       } );
 
       QUnit.cases( testCases ).test( "Test", function(params) {

@@ -1,6 +1,7 @@
 # Release 1.4 (UPCOMING RELEASE)
 
 * Added support for the HTML5 `pattern` attribute.  Check [caniuse.com](http://caniuse.com/#search=pattern) for browser support.
+* Added the ability to save the QUnit test report to a file
 
 
 # Release 1.3 (January 3, 2017)

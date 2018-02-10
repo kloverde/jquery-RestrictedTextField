@@ -40,7 +40,10 @@
 
    var field = null,
        status = null,
-       fieldContainer = null;
+       realtimeReadout = null,
+       currentTest = null,
+       fieldContainer = null,
+       saveButton = null;
 
    var inputIgnoredEvent = false,
        validationFailedEvent = false,
@@ -51,7 +54,10 @@
 
    $( document ).ready( function() {
       status = $( "#status" );
+      realtimeReadout = $( "#realtimeReadout" );
+      currentTest = $( "#currentTest" );
       fieldContainer = $( "#fieldContainer" );
+      saveButton = $( "#saveButton" );
    } );
 
    function resetEventFlags() {
@@ -62,14 +68,7 @@
       validationSuccessEvent = false;
    }
 
-   function initField( title, fieldType, ignore ) {
-      log( "test:  " + title );
-      log( "initField:  fieldType[" + fieldType + "], ignore[" + ignore + "]" );
-
-      field.restrictedTextField( { type : fieldType,
-                                   preventInvalidInput : ignore,
-                                   logger : log } );
-
+   function setEventListeners() {
       field.on( "inputIgnored", function() {
          log( "inputIgnored event captured" );
          inputIgnoredEvent = true;
@@ -86,6 +85,16 @@
       } );
    }
 
+   function initField( title, fieldType, ignore ) {
+      log( "test:  " + title );
+      log( "initField:  fieldType[" + fieldType + "], ignore[" + ignore + "]" );
+
+      field.restrictedTextField( { type : fieldType,
+                                   preventInvalidInput : ignore,
+                                   logger : log,
+                                   usePatternAttr : false } );
+   }
+
    function simulateInput( input ) {
       for( var i = 0; i < input.length; i++ ) {
          field.trigger( "keydown" );
@@ -97,8 +106,8 @@
    function log( msg ) {
    }
 
-   function writeStatus( title, testNum, totalTests ) {
-      status.html( title + "<br/>Test " + testNum + " of " + totalTests );
+   function writeCurrentTest( title, testNum, totalTests ) {
+      currentTest.html( title + "<br/>Test " + testNum + " of " + totalTests );
    }
 
    function validatePreBlur( params ) {
@@ -140,6 +149,20 @@
       }
    }
 
+   function download( filename, text ) {
+      var a = $( "<a/>", {
+         "href" : "data:text/plain;charset=utf-8," + encodeURIComponent( text ),
+         "download" : filename
+      } );
+
+      // Odd... jQuery.click() doesn't trigger the link, even if it's appended to the page first.
+      // Oh well, regular ol' JS to the rescue.
+
+      var event = document.createEvent( "MouseEvents" );
+      event.initEvent( "click", true, true );
+      a[0].dispatchEvent( event );
+   }
+
    if( validateTestCases(testCases) ) {
       QUnit.config.hidepassed = true;
 
@@ -158,23 +181,51 @@
          } ).appendTo( fieldContainer );
 
          field = $( fieldSelector );
+         setEventListeners();
          resetEventFlags();
       } );
 
       QUnit.jUnitDone( function(report) {
-         document.getElementById( "done" ).style.visibility = "visible";
-
-         if( typeof console !== "undefined" ) {
-            console.log( report.xml );  // TODO:  Get this out of the browser
+         if( report.results.failed === 0 ) {
+            status.html( "SUCCESS" );
+            status.addClass( "statusSuccess" );
+         } else {
+            status.html( "FAILED" );
+            status.addClass( "statusFail" );
          }
+
+         realtimeReadout.remove();
+         $( "#done" ).css( "visibility", "visible" );
+
+         saveButton.on( "click", function() {
+            function zeroPad( datePart ) {
+               return datePart < 10 ? "0" + datePart : datePart;
+            }
+
+            var d = new Date();
+
+            var year  = d.getFullYear(),
+                month = zeroPad( d.getMonth() + 1 ),
+                day   = zeroPad( d.getDate() ),
+                hour  = zeroPad( d.getHours() ),
+                min   = zeroPad( d.getMinutes() ),
+                sec   = zeroPad( d.getSeconds() );
+
+            var timestamp = year + "-" + month + "-" + day + "_" + hour + "-" + min + "-" + sec;
+
+            download( "RestrictedTextField-TestResult-" + timestamp + ".xml", report.xml );
+         } );
+
+         $( "#saveContainer" ).css( "visibility", "visible" );
       } );
 
-      QUnit.cases( testCases ).test( "Test", function(params) {
+      // Run the tests in testCases.js (pattern mode disabled)
+
+      QUnit.cases( testCases ).test( "noPatternMode", function(params) {
          initField( params.title, params.fieldType[0], params.preventInvalidInput );
-         writeStatus( params.title, testNum, testCases.length );
+         writeCurrentTest( params.title, testNum, testCases.length );
 
          simulateInput( params.input );
-
          validatePreBlur( params );
 
          log( "setting up blur validation" );
@@ -182,6 +233,61 @@
 
          field.blur();
          validatePostBlur( params );
+      } );
+
+      // Run the second set of tests (pattern mode enabled) - just need to verify that no RestrictedTextField events fire
+
+      QUnit.test( "patternMode_correctInput_noEventsFired", function() {
+         field.restrictedTextField( { type : "int",
+                                      preventInvalidInput : false,
+                                      logger : log,
+                                      usePatternAttr : true } );
+
+         writeCurrentTest( "patternMode_correctInput_noEventsFired", testNum, testNum + 1 );
+
+         simulateInput( "123" );
+         field.blur();
+
+         equal( field.val(), "123", "Field has correct value" );
+         notOk( inputIgnoredEvent, "inputIgnoredEvent should never fire when pattern mode is enabled" );
+         notOk( validationFailedEvent, "validationFailedEvent should never fire when pattern mode is enabled" );
+         notOk( validationSuccessEvent, "validationSuccessEvent should never fire when pattern mode is enabled" );
+      } );
+
+      QUnit.test( "patternMode_incorrectInput_noEventsFired", function() {
+         field.restrictedTextField( { type : "int",
+                                      preventInvalidInput : false,
+                                      logger : log,
+                                      usePatternAttr : true } );
+
+         writeCurrentTest( "patternMode_incorrectInput_noEventsFired", testNum, testNum + 1 );
+
+         simulateInput( "1a23" );
+         field.blur();
+
+         equal( field.val(), "1a23", "Field has correct value" );
+         notOk( inputIgnoredEvent, "inputIgnoredEvent should never fire when pattern mode is enabled" );
+         notOk( validationFailedEvent, "validationFailedEvent should never fire when pattern mode is enabled" );
+         notOk( validationSuccessEvent, "validationSuccessEvent should never fire when pattern mode is enabled" );
+      } );
+
+      QUnit.test( "patternMode_rejectInvalidConfiguration", function() {
+         writeCurrentTest( "patternMode_rejectInvalidConfiguration", testNum, testNum );
+
+         throws(
+            function() {
+               field.restrictedTextField( { type : "int",
+                                            preventInvalidInput : true,
+                                            logger : log,
+                                            usePatternAttr : true } );
+            }, 
+
+            function( err ) {
+               return err.toString() === "Invalid configuration:  preventInvalidInput and usePatternAttr cannot both be true";
+            },
+   
+            "Exception thrown during initilization with incorrect options"         
+         );
       } );
    }
 } )();

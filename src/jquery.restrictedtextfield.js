@@ -1,5 +1,5 @@
 /*
- * RestrictedTextField v1.3
+ * RestrictedTextField v1.4
  * https://www.github.com/kloverde/jquery-RestrictedTextField
  *
  * Copyright (c) 2016, Kurtis LoVerde
@@ -50,7 +50,7 @@
        *                       phone number, for example, you need to provide a value for partialRegex to ensure that the user will be
        *                       able to continue to type into the field.  If partialRegex is not defined or is null, the text field will
        *                       be validated against this fullRegex on every keystroke.  Notwithstanding any of the foregoing, this
-       *                       regular expression is also used to validate the text field on blur. 
+       *                       regular expression is also used to validate the text field on blur.
        *
        * @param partialRegex - RegExp object.  This regular expression describes what a valid value looks like while the user is entering
        *                       it, NOT what valid input looks like after the user has finished.  If you provide a value for this, this
@@ -63,14 +63,29 @@
    };
 
    function _addType( destination, id, fullRegex, partialRegex ) {
-      if( id == undefined || id == null ) throw "id is undefined";
-      if( !isClassName(id, "String") ) throw "id must be a string";
-      if( id.length < 1 ) throw "id is empty";
+      if( id == undefined || id == null ) {
+         throw "id is undefined";
+      }
 
-      if( fullRegex == undefined || fullRegex == null ) throw "fullRegex is undefined";
-      if( !isClassName(fullRegex, "RegExp") ) throw "fullRegex must be a RegExp object";
+      if( !isClassName(id, "String") ) {
+         throw "id must be a string";
+      }
 
-      if( partialRegex != undefined && partialRegex != null && !isClassName(partialRegex, "RegExp") ) throw "partialRegex must be a RegExp object";
+      if( id.length < 1 ) {
+         throw "id is empty";
+      }
+
+      if( fullRegex == undefined || fullRegex == null ) {
+         throw "fullRegex is undefined";
+      }
+
+      if( !isClassName(fullRegex, "RegExp") ) {
+         throw "fullRegex must be a RegExp object";
+      }
+
+      if( partialRegex != undefined && partialRegex != null && !isClassName(partialRegex, "RegExp") ) {
+         throw "partialRegex must be a RegExp object";
+      }
 
       destination[ id ] = { "fullRegex"    : fullRegex,
                             "partialRegex" : partialRegex };
@@ -80,6 +95,7 @@
       var settings = $.extend( {
          type                : null,
          preventInvalidInput : true,
+         usePatternAttr      : false,
          logger              : undefined
       }, options );
 
@@ -89,6 +105,10 @@
 
       if( this.prop("tagName").toLowerCase() !== "input" ) {
          throw "RestrictedTextField can only be invoked on an input element";
+      }
+
+      if( settings.preventInvalidInput === true && settings.usePatternAttr === true ) {
+         throw "Invalid configuration:  preventInvalidInput and usePatternAttr cannot both be true";
       }
 
       if( $.fn.restrictedTextField.types === undefined || $.fn.restrictedTextField.types === null ) {
@@ -111,15 +131,15 @@
          _addType( dest, "alpha",                   /^[a-zA-Z]+$/            , null );
          _addType( dest, "upperAlpha",              /^[A-Z]+$/               , null );
          _addType( dest, "lowerAlpha",              /^[a-z]+$/               , null );
-         _addType( dest, "alphaSpace",              /^[a-zA-Z\ ]+$/          , null );
-         _addType( dest, "upperAlphaSpace",         /^[A-Z\ ]+$/             , null );
-         _addType( dest, "lowerAlphaSpace",         /^[a-z\ ]+$/             , null );
+         _addType( dest, "alphaSpace",              /^[a-zA-Z ]+$/           , null );
+         _addType( dest, "upperAlphaSpace",         /^[A-Z ]+$/              , null );
+         _addType( dest, "lowerAlphaSpace",         /^[a-z ]+$/              , null );
          _addType( dest, "alphanumeric",            /^[a-zA-Z\d]+$/          , null );
          _addType( dest, "upperAlphanumeric",       /^[A-Z\d]+$/             , null );
          _addType( dest, "lowerAlphanumeric",       /^[a-z\d]+$/             , null );
-         _addType( dest, "alphanumericSpace",       /^[a-zA-Z\d\ ]+$/        , null );
-         _addType( dest, "upperAlphanumericSpace",  /^[A-Z\d\ ]+$/           , null );
-         _addType( dest, "lowerAlphanumericSpace",  /^[a-z\d\ ]+$/           , null );
+         _addType( dest, "alphanumericSpace",       /^[a-zA-Z\d ]+$/         , null );
+         _addType( dest, "upperAlphanumericSpace",  /^[A-Z\d ]+$/            , null );
+         _addType( dest, "lowerAlphanumericSpace",  /^[a-z\d ]+$/            , null );
          _addType( dest, "int",                     /^-?\d+$/                , partialNegativeInt );
          _addType( dest, "positiveInt",             /^\d+$/                  , null );
          _addType( dest, "negativeInt",             /^0+$|^-\d+$/            , partialNegativeInt );
@@ -209,7 +229,7 @@
          // reject a number that has no possibility of being valid.  This is the safest option, but the choice is yours.
          _addType( dest, "luhnNumber",  /^\d+$/  ,  null );
 
-         _addType( dest, "usZip",        /^\d{5}(\-\d{1,4})?$/  , /^(\d{1,5}|\d{5}\-|\d{5}\-\d{1,4})$/ );
+         _addType( dest, "usZip",        /^\d{5}(-\d{1,4})?$/   , /^(\d{1,5}|\d{5}-|\d{5}-\d{1,4})$/ );
          _addType( dest, "usZip5",       /^\d{5}$/              , /^\d{1,5}$/ );
          _addType( dest, "usZipSuffix",  /^\d{1,4}$/            , null );
       }
@@ -235,7 +255,9 @@
        * @return A single regular expression satisfying all specified types
        */
       function joinTypes() {
-         if( arguments.length < 3 ) throw "Minimum 3 arguments: boolean, id, id";
+         if( arguments.length < 3 ) {
+            throw "Minimum 3 arguments: boolean, id, id";
+         }
 
          var isFullRegex = arguments[0];
          var src = $.fn.restrictedTextField.types;
@@ -256,7 +278,9 @@
        * @return A single regular expression satisfying all provided regular expressions
        */
       function joinRegex() {
-         if( arguments.length < 2 ) throw "Minimum 2 RegExp arguments";
+         if( arguments.length < 2 ) {
+            throw "Minimum 2 RegExp arguments";
+         }
 
          var regex = new RegExp( arguments[0] );
 
@@ -271,72 +295,77 @@
          var jqThis = $( this );
          var valueBeforeCommit = "";
 
-         jqThis.on( "keydown paste", function(event) {
-            valueBeforeCommit = this.value;
-         } );
+         if( settings.usePatternAttr === true ) {
+            var str = regexes.fullRegex.toString();
+            jqThis.prop( "pattern", str[0] === "/" && str[str.length - 1] === "/" ? str.substring(1, str.length - 1) : str );
+         } else {
+            jqThis.on( "keydown paste", function(event) {
+               valueBeforeCommit = this.value;
+            } );
 
-         jqThis.on( "input", function(event) {
-            log( "caught input - new value: " + this.value );
+            jqThis.on( "input", function(event) {
+               log( "caught input - new value: " + this.value );
 
-            var jqThis = $( this );
+               var jqThis = $( this );
 
-            var passesPartialRegex = false,
-                passesFullRegex    = false;
+               var passesPartialRegex = false,
+                   passesFullRegex    = false;
 
-            var responseEvent = settings.preventInvalidInput ? null : EVENT_VALIDATION_FAILED;
+               var responseEvent = settings.preventInvalidInput ? null : EVENT_VALIDATION_FAILED;
 
-            if( this.value.length === 0 ) {
-               passesPartialRegex = true;
-               passesFullRegex = true;
+               if( this.value.length === 0 ) {
+                  passesPartialRegex = true;
+                  passesFullRegex = true;
 
-               if( !settings.preventInvalidInput ) {
-                  responseEvent = EVENT_VALIDATION_SUCCESS;
-               }
-            } else {
-               passesFullRegex = regexes.fullRegex.test( this.value );
-
-               if( regexes.partialRegex !== undefined && regexes.partialRegex !== null ) {
-                  passesPartialRegex = regexes.partialRegex.test( this.value );
-               }
-
-               if( passesFullRegex ) {
-                  log( "passes full regex" );
-                  
                   if( !settings.preventInvalidInput ) {
                      responseEvent = EVENT_VALIDATION_SUCCESS;
                   }
                } else {
-                  log( "fails full regex" );
+                  passesFullRegex = regexes.fullRegex.test( this.value );
 
-                  if( passesPartialRegex ) {
-                     log( "passes partial regex" );
+                  if( regexes.partialRegex !== undefined && regexes.partialRegex !== null ) {
+                     passesPartialRegex = regexes.partialRegex.test( this.value );
+                  }
+
+                  if( passesFullRegex ) {
+                     log( "passes full regex" );
 
                      if( !settings.preventInvalidInput ) {
                         responseEvent = EVENT_VALIDATION_SUCCESS;
                      }
                   } else {
-                     log( "fails partial regex" );
+                     log( "fails full regex" );
 
-                     if( !settings.preventInvalidInput ) {
-                        responseEvent = EVENT_VALIDATION_FAILED;
+                     if( passesPartialRegex ) {
+                        log( "passes partial regex" );
+
+                        if( !settings.preventInvalidInput ) {
+                           responseEvent = EVENT_VALIDATION_SUCCESS;
+                        }
+                     } else {
+                        log( "fails partial regex" );
+
+                        if( !settings.preventInvalidInput ) {
+                           responseEvent = EVENT_VALIDATION_FAILED;
+                        }
+                     }
+                  }
+
+                  if( !passesPartialRegex && !passesFullRegex ) {
+                     if( settings.preventInvalidInput ) {
+                        responseEvent = EVENT_INPUT_IGNORED;
+                        jqThis.val( valueBeforeCommit );
+                        log( "reverted field to \"" + valueBeforeCommit + "\"" );
                      }
                   }
                }
 
-               if( !passesPartialRegex && !passesFullRegex ) {
-                  if( settings.preventInvalidInput ) {
-                     responseEvent = EVENT_INPUT_IGNORED;
-                     jqThis.val( valueBeforeCommit );
-                     log( "reverted field to \"" + valueBeforeCommit + "\"" );
-                  }
+               if( responseEvent != null ) {
+                  log( "triggering " + responseEvent + " event " );
+                  jqThis.trigger( responseEvent );
                }
-            }
-
-            if( responseEvent != null ) {
-               log( "triggering " + responseEvent + " event " );
-               jqThis.trigger( responseEvent );
-            }
-         } );
+            } );
+         }
 
          jqThis.on( "blur", function() {
             var type = settings.type;
@@ -354,23 +383,27 @@
                   log( "blur:  formatted " + settings.type + " field to " + formatted );
                }
             } else if( type === "americanExpress" || type === "visa" || type === "masterCard" || type === "discover" || type === "creditCard" || type === "luhnNumber" ) {
-               passesFullRegex = regexes.fullRegex.test( this.value );
+               if( settings.usePatternAttr === false ) {
+                  passesFullRegex = regexes.fullRegex.test( this.value );
 
-               if( passesFullRegex ) {
-                  passesFullRegex = luhnCheck( this.value );
-                  log( passesFullRegex ? "passes Luhn check" : "fails Luhn check" );
+                  if( passesFullRegex ) {
+                     passesFullRegex = luhnCheck( this.value );
+                     log( passesFullRegex ? "passes Luhn check" : "fails Luhn check" );
+                  }
                }
-            } else {
+            } else if( settings.usePatternAttr === false ) {
                passesFullRegex = regexes.fullRegex.test( this.value );
             }
-            
-            if( this.value.length === 0 || passesFullRegex ) {
-               responseEvent = EVENT_VALIDATION_SUCCESS;
+
+            if( settings.usePatternAttr === false ) {
+               if( this.value.length === 0 || passesFullRegex ) {
+                  responseEvent = EVENT_VALIDATION_SUCCESS;
+               }
+
+               log( "triggering " + responseEvent + " event " );
+
+               jqThis.trigger( responseEvent );
             }
-
-            log( "triggering " + responseEvent + " event " );
-
-            jqThis.trigger( responseEvent );
          } );
 
          function formatMoney( value ) {
@@ -383,7 +416,7 @@
             var len         = value.length;
             var sign        = value[0] === "-" ? "-" : "";
             var openParen   = value[0] === "(" ? "(" : "";
-            var closeParen  = value[ len - 1 ] === ")" ? ")" : ""; 
+            var closeParen  = value[ len - 1 ] === ")" ? ")" : "";
             var decimalIdx  = value.indexOf( "." );
             var integerPart = value.substring( openParen === "" && sign === "" ? 0 : 1,
                                                decimalIdx > 0 ? decimalIdx -1 : (closeParen === ")" ? len - 1 : len) );
@@ -419,7 +452,9 @@
          var sum = 0;
          var checkDigit = 0;
 
-         if( isNaN(numStr) ) throw "Value [" + numStr + "] is not numeric";
+         if( isNaN(numStr) ) {
+            throw "Value [" + numStr + "] is not numeric";
+         }
 
          var doubleMe = true;
 

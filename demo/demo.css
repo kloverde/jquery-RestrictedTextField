@@ -1,3 +1,8 @@
+#instructions {
+   min-width: 45%;
+   max-width: 75%;
+}
+
 #fieldDemo{
    display: table;
 }
@@ -16,5 +21,9 @@ input.inputIgnored {
 }
 
 input.invalid {
-   border: 2px solid #FF0000;
+   border: 2px solid #FC8D3D;
+}
+
+input[type=submit] {
+   margin-left: 5px;
 }

@@ -1,9 +1,15 @@
-RestrictedTextField v1.3
+RestrictedTextField v1.4
 ========================
 
 See LICENSE for this software's licensing terms.
 
-RestrictedTextField is a jQuery plugin which uses regular expressions to validate and control input to HTML text fields.  Using 38 built-in types or types you define yourself, it allows you to suppress invalid keystrokes or to allow them into the field but be flagged incorrect.  Validation is performed on keystroke, paste and blur.
+RestrictedTextField is a jQuery plugin which uses regular expressions to validate and control input to HTML text fields.  RestrictedTextField has 38 built-in types and also allows you to define your own types.  Validation is performed on keystroke, paste and blur.
+
+You might not need this plugin for your purposes - the HTML5 `pattern` attribute provides most of the same functionality.  If, however, you must support browsers that don't support `pattern`, or if you want to make use of RestrictedTextField's additional features, then perhaps it might be a good fit for you.
+
+The biggest difference between this plugin and `pattern` is that RestrictedTextField allows you to (optionally) suppress invalid keystrokes in real time, rather than allow them into the field to fail validation later.  If you do want to allow invalid characters in, however, you have that option.
+
+If you're only interested in `pattern`-based validation, you might still find RestrictedTextField useful.  It provides the ability to disable its own validation implementation and use `pattern` exclusively.  In this scenario, you'd just be using RestrictedTextField as a repository of pre-written regular expressions.  Although you could just copy the regular expressions from the source code, you might find it easier on code maintenance to not be dropping multiple copies of the same regular expressions into your project.
 
 
 ## Features
@@ -11,6 +17,7 @@ RestrictedTextField is a jQuery plugin which uses regular expressions to validat
 * Discard invalid keystrokes or catch a validation failure event to handle it as you wish
 * Has 38 built-in types
 * Extensible:  define your own types
+* Supports (but does not rely on) the HTML 5 `pattern` attribute - can be enabled during initialization
 * Money types automatically format on blur to end in a decimal point and two digits
 
 
@@ -50,7 +57,7 @@ RestrictedTextField is a jQuery plugin which uses regular expressions to validat
 32.  MasterCard
 33.  Discover
 34.  Credit Card (combines all of the individual credit card types above)
-35.  [Luhn-valid](https://en.wikipedia.org/wiki/Luhn_algorithm) numbers
+35.  [Luhn](https://en.wikipedia.org/wiki/Luhn_algorithm) numbers - note:  if used with `pattern` mode enabled, successful validation is essentially meaningless.
 36.  US zip code (5 digits)
 37.  US zip code suffix (1-4 digits)
 38.  US zip code (5 digits with optional suffix)
@@ -83,7 +90,7 @@ RestrictedTextField is a jQuery plugin which uses regular expressions to validat
 
 Each credit card type enforces prefixes and length as specified by https://en.wikipedia.org/wiki/Payment_card_number in December, 2016.  [Luhn validation](https://en.wikipedia.org/wiki/Luhn_algorithm) is also performed.
 
-If you prefer not to use strictly-enforced credit card types (is Wikipedia correct, and is RestrictedTextField up-to-date?), you can use the Luhn type instead.  It performs basic mathematical validation, but it can only tell you that a value is invalid, not that a value IS valid.  Full validation would then be shifted to your payment card processor in the form of a rejected transaction -- or, if they provide an API for validation, you could use that.
+If you prefer not to use strictly-enforced credit card types (is Wikipedia correct, and is RestrictedTextField up-to-date?), you can use the Luhn type instead.  It performs basic mathematical validation, but that will only tell you that a credit card number is invalid, not that it IS valid.  Full validation would then be shifted to your payment card processor in the form of a rejected transaction -- or, if they provide an API for validation, you could use that, too.
 
 
 ## Configuration
@@ -93,11 +100,12 @@ If you prefer not to use strictly-enforced credit card types (is Wikipedia corre
 | `type`   | Text field type.  This is a required setting. | string | alpha, upperAlpha, lowerAlpha, alphaSpace, upperAlphaSpace, lowerAlphaSpace, alphanumeric, upperAlphanumeric, lowerAlphanumeric, alphanumericSpace, upperAlphanumericSpace, lowerAlphanumericSpace, int, positiveInt, negativeInt, strictInt, strictPositiveInt, strictNegativeInt, float, positiveFloat, negativeFloat, strictFloat, strictPositiveFloat, strictNegativeFloat, money, positiveMoney, negativeMoney, accountingMoney, negativeAccountingMoney, americanExpress, visa, masterCard, discover, creditCard, luhnNumber, usZip, usZip5, usZipSuffix | null |
 | `preventInvalidInput` | When enabled, invalid keystrokes are ignored (the value of the text field is not updated).  When disabled, invalid keystrokes are not ignored. | boolean | true/false | true |
 | `logger` | An optional callback function for logging.  If you want to enable logging, provide a function and then do whatever you wish with the message. | function | A function accepting the log message as a string argument | undefined |
+| `usePatternAttr` | When enabled, sets the HTML5 `pattern` attribute on the input field.  Check [caniuse.com](http://caniuse.com/#search=pattern) for browser support.  When pattern mode is enabled, RestrictedTextField does not fire its own validation events, nor does it perform Luhn validation on credit card types or the Luhn type.  Pattern mode is meant to be pure HTML5 behavior.  The only part of RestrictedTextField functionality that remains active is the automatic formatting of money types.| boolean | true/false | false |
 
 
 ## Events
 
-These events are fired based on the state of the text field.
+These events are fired based on the state of the text field, but only if `usePatternAttr` is set to false.
 
 | Event name        | Description                                                     |
 | ------------------| ----------------------------------------------------------------|

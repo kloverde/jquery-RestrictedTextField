@@ -60,10 +60,6 @@
       saveButton = $( "#saveButton" );
    } );
 
-   function saveReport( xml ) {
-      var uriContent = "data:application/octet-stream," + encodeURIComponent( report );
-   }
-
    function resetEventFlags() {
       log( "resetting event flags" );
 
@@ -72,14 +68,7 @@
       validationSuccessEvent = false;
    }
 
-   function initField( title, fieldType, ignore ) {
-      log( "test:  " + title );
-      log( "initField:  fieldType[" + fieldType + "], ignore[" + ignore + "]" );
-
-      field.restrictedTextField( { type : fieldType,
-                                   preventInvalidInput : ignore,
-                                   logger : log } );
-
+   function setEventListeners() {
       field.on( "inputIgnored", function() {
          log( "inputIgnored event captured" );
          inputIgnoredEvent = true;
@@ -94,6 +83,16 @@
          log( "validationSuccess event captured" );
          validationSuccessEvent = true;
       } );
+   }
+
+   function initField( title, fieldType, ignore ) {
+      log( "test:  " + title );
+      log( "initField:  fieldType[" + fieldType + "], ignore[" + ignore + "]" );
+
+      field.restrictedTextField( { type : fieldType,
+                                   preventInvalidInput : ignore,
+                                   logger : log,
+                                   usePatternAttr : false } );
    }
 
    function simulateInput( input ) {
@@ -182,6 +181,7 @@
          } ).appendTo( fieldContainer );
 
          field = $( fieldSelector );
+         setEventListeners();
          resetEventFlags();
       } );
 
@@ -219,7 +219,9 @@
          $( "#saveContainer" ).css( "visibility", "visible" );
       } );
 
-      QUnit.cases( testCases ).test( "Test", function(params) {
+      // Run the tests in testCases.js (pattern mode disabled)
+
+      QUnit.cases( testCases ).test( "noPatternMode", function(params) {
          initField( params.title, params.fieldType[0], params.preventInvalidInput );
          writeCurrentTest( params.title, testNum, testCases.length );
 
@@ -231,6 +233,61 @@
 
          field.blur();
          validatePostBlur( params );
+      } );
+
+      // Run the second set of tests (pattern mode enabled) - just need to verify that no RestrictedTextField events fire
+
+      QUnit.test( "patternMode_correctInput_noEventsFired", function() {
+         field.restrictedTextField( { type : "int",
+                                      preventInvalidInput : false,
+                                      logger : log,
+                                      usePatternAttr : true } );
+
+         writeCurrentTest( "patternMode_correctInput_noEventsFired", testNum, testNum + 1 );
+
+         simulateInput( "123" );
+         field.blur();
+
+         equal( field.val(), "123", "Field has correct value" );
+         notOk( inputIgnoredEvent, "inputIgnoredEvent should never fire when pattern mode is enabled" );
+         notOk( validationFailedEvent, "validationFailedEvent should never fire when pattern mode is enabled" );
+         notOk( validationSuccessEvent, "validationSuccessEvent should never fire when pattern mode is enabled" );
+      } );
+
+      QUnit.test( "patternMode_incorrectInput_noEventsFired", function() {
+         field.restrictedTextField( { type : "int",
+                                      preventInvalidInput : false,
+                                      logger : log,
+                                      usePatternAttr : true } );
+
+         writeCurrentTest( "patternMode_incorrectInput_noEventsFired", testNum, testNum + 1 );
+
+         simulateInput( "1a23" );
+         field.blur();
+
+         equal( field.val(), "1a23", "Field has correct value" );
+         notOk( inputIgnoredEvent, "inputIgnoredEvent should never fire when pattern mode is enabled" );
+         notOk( validationFailedEvent, "validationFailedEvent should never fire when pattern mode is enabled" );
+         notOk( validationSuccessEvent, "validationSuccessEvent should never fire when pattern mode is enabled" );
+      } );
+
+      QUnit.test( "patternMode_rejectInvalidConfiguration", function() {
+         writeCurrentTest( "patternMode_rejectInvalidConfiguration", testNum, testNum );
+
+         throws(
+            function() {
+               field.restrictedTextField( { type : "int",
+                                            preventInvalidInput : true,
+                                            logger : log,
+                                            usePatternAttr : true } );
+            }, 
+
+            function( err ) {
+               return err.toString() === "Invalid configuration:  preventInvalidInput and usePatternAttr cannot both be true";
+            },
+   
+            "Exception thrown during initilization with incorrect options"         
+         );
       } );
    }
 } )();

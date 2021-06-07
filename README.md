@@ -151,10 +151,3 @@ Many other versions of the listed browsers, whether older or newer that what's l
 * Pale Moon 25.9.6
 * Chrome 55.0.2883.91
 * Opera 4.3 / 41.1.2246.111645 - listed in the Play store as 4.3; reports as 41.1.2246.111645 from within Opera
-
-
-## Donations
-
-https://paypal.me/KurtisLoVerde/10
-
-Thank you for your support!
